@@ -1395,6 +1395,338 @@
             font-weight: 700;
         }
 
+        /* Authentication Modal Styles */
+        .auth-modal {
+            z-index: 1000;
+        }
+
+        .auth-modal-content {
+            max-width: 500px;
+            background: var(--gradient-dark);
+            border: 3px solid var(--border-neon);
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .auth-modal .modal-header {
+            background: var(--gradient-neon);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .auth-tab {
+            display: none;
+        }
+
+        .auth-tab.active {
+            display: block;
+        }
+
+        .auth-links {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .auth-links a {
+            color: var(--text-accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        .user-info {
+            color: var(--text-accent);
+            font-weight: 600;
+            margin-right: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--surface-elevated);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-neon);
+        }
+
+        .btn-icon {
+            background: var(--surface-elevated);
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .btn-icon:hover {
+            background: var(--gradient-primary);
+            border-color: var(--border-neon);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .btn-icon:active {
+            transform: translateY(0);
+        }
+
+        /* Admin Panel Styles */
+        .admin-modal {
+            z-index: 1000;
+        }
+
+        .admin-modal-content {
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--gradient-dark);
+            border: 3px solid var(--border-neon);
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .admin-modal .modal-header {
+            background: var(--gradient-error);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            display: none;
+        }
+
+        .admin-tab.active {
+            display: block;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .admin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: var(--surface-elevated);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .admin-item:hover {
+            border-color: var(--border-neon);
+            box-shadow: var(--shadow);
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .item-details {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .item-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .plan-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .plan-badge.pro {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .plan-badge.premium {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-badge.pending {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .status-badge.active {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .status-badge.rejected {
+            background: var(--gradient-error);
+            color: white;
+        }
+
+        .status-badge.cancelled {
+            background: var(--surface-color);
+            color: var(--text-secondary);
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+            border: 2px solid var(--border-success);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-success:hover {
+            background: var(--gradient-success);
+            box-shadow: var(--shadow-success);
+            transform: translateY(-2px);
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            background: var(--surface-elevated);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-neon);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .admin-settings {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--surface-elevated);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover {
+            border-color: var(--border-neon);
+            box-shadow: var(--shadow);
+        }
+
+        .no-data {
+            text-align: center;
+            color: var(--text-secondary);
+            font-style: italic;
+            padding: 2rem;
+        }
+
         .form-actions {
             display: flex;
             gap: 1rem;
@@ -1591,6 +1923,7 @@
                 <h1>🚨 WakeUpProof</h1>
             </div>
             <div class="nav-actions">
+                <button id="login-btn" class="btn-primary" onclick="showAuthModal()">🔐 Accedi</button>
                 <button id="share-btn" class="btn-icon" title="Condividi la tua vittoria">📤</button>
                 <button id="leaderboard-btn" class="btn-icon" title="Classifica">🏆</button>
                 <button id="settings-btn" class="btn-icon" title="Impostazioni">⚙️</button>
@@ -1700,6 +2033,15 @@
         // Initialize app with real modules
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('WakeUpProof Standalone loaded');
+            
+            // Check authentication status
+            if (!checkAuthStatus()) {
+                // Show login modal if not authenticated
+                setTimeout(() => {
+                    showAuthModal();
+                }, 1000);
+            }
+            
             await initializeApp();
             setupEventListeners();
             showWelcomeMessage();
@@ -2319,27 +2661,806 @@
             event.target.classList.add('active');
         }
         
+        // Authentication System
+        let currentUser = null;
+        let isLoggedIn = false;
+        
+        // Check if user is logged in
+        function checkAuthStatus() {
+            const userData = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (userData && userData.id) {
+                currentUser = userData;
+                isLoggedIn = true;
+                updateUIForLoggedInUser();
+                return true;
+            }
+            return false;
+        }
+        
+        // Show login/register modal
+        function showAuthModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay auth-modal';
+            modal.innerHTML = `
+                <div class="modal auth-modal-content">
+                    <div class="modal-header">
+                        <h3>🔐 Accedi a WakeUpProof</h3>
+                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="auth-tabs">
+                            <button class="tab-btn active" onclick="showAuthTab('login')">Accedi</button>
+                            <button class="tab-btn" onclick="showAuthTab('register')">Registrati</button>
+                        </div>
+                        
+                        <div id="auth-content">
+                            <!-- Login Tab -->
+                            <div id="login-tab" class="auth-tab active">
+                                <form id="login-form">
+                                    <div class="form-group">
+                                        <label for="login-email">Email</label>
+                                        <input type="email" id="login-email" name="email" placeholder="tua@email.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="login-password">Password</label>
+                                        <input type="password" id="login-password" name="password" placeholder="La tua password" required>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">🔑 Accedi</button>
+                                    </div>
+                                </form>
+                                <div class="auth-links">
+                                    <a href="#" onclick="showForgotPassword()">Password dimenticata?</a>
+                                </div>
+                            </div>
+                            
+                            <!-- Register Tab -->
+                            <div id="register-tab" class="auth-tab">
+                                <form id="register-form">
+                                    <div class="form-group">
+                                        <label for="register-name">Nome</label>
+                                        <input type="text" id="register-name" name="name" placeholder="Il tuo nome" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="register-email">Email</label>
+                                        <input type="email" id="register-email" name="email" placeholder="tua@email.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="register-password">Password</label>
+                                        <input type="password" id="register-password" name="password" placeholder="Scegli una password sicura" required minlength="6">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="register-confirm">Conferma Password</label>
+                                        <input type="password" id="register-confirm" name="confirm" placeholder="Conferma la password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="register-age">Età</label>
+                                        <input type="number" id="register-age" name="age" placeholder="25" min="13" max="100" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="register-terms" required>
+                                            <span class="checkmark"></span>
+                                            Accetto i <a href="#" onclick="showTerms()">Termini di Servizio</a> e la <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                                        </label>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">🚀 Registrati</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Add form listeners
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('register-form').addEventListener('submit', handleRegister);
+        }
+        
+        // Show auth tab
+        function showAuthTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.auth-tabs .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        
+        // Handle login
+        async function handleLogin(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const email = formData.get('email');
+            const password = formData.get('password');
+            
+            try {
+                const user = await loginUser(email, password);
+                if (user) {
+                    currentUser = user;
+                    isLoggedIn = true;
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    showNotification('🎉 Benvenuto in WakeUpProof!', 'success');
+                    updateUIForLoggedInUser();
+                    closeAuthModal();
+                } else {
+                    showNotification('❌ Email o password non corretti', 'error');
+                }
+            } catch (error) {
+                showNotification('❌ Errore durante il login: ' + error.message, 'error');
+            }
+        }
+        
+        // Handle register
+        async function handleRegister(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const password = formData.get('password');
+            const confirm = formData.get('confirm');
+            const age = formData.get('age');
+            const terms = document.getElementById('register-terms').checked;
+            
+            if (password !== confirm) {
+                showNotification('❌ Le password non coincidono', 'error');
+                return;
+            }
+            
+            if (!terms) {
+                showNotification('❌ Devi accettare i termini di servizio', 'error');
+                return;
+            }
+            
+            try {
+                const user = await registerUser(name, email, password, age);
+                if (user) {
+                    currentUser = user;
+                    isLoggedIn = true;
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    showNotification('🎉 Registrazione completata! Benvenuto in WakeUpProof!', 'success');
+                    updateUIForLoggedInUser();
+                    closeAuthModal();
+                } else {
+                    showNotification('❌ Errore durante la registrazione', 'error');
+                }
+            } catch (error) {
+                showNotification('❌ Errore durante la registrazione: ' + error.message, 'error');
+            }
+        }
+        
+        // Login user
+        async function loginUser(email, password) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+            return user || null;
+        }
+        
+        // Register user
+        async function registerUser(name, email, password, age) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Check if user already exists
+            if (users.find(u => u.email === email)) {
+                throw new Error('Email già registrata');
+            }
+            
+            const newUser = {
+                id: Date.now().toString(),
+                name: name,
+                email: email,
+                password: password, // In production, hash this
+                age: parseInt(age),
+                createdAt: new Date().toISOString(),
+                subscription: 'free',
+                stats: {
+                    streak: 0,
+                    challengesCompleted: 0,
+                    effectiveness: 0,
+                    totalAlarms: 0
+                },
+                preferences: {
+                    notifications: true,
+                    sound: true,
+                    vibration: true,
+                    reminder: false,
+                    analytics: true,
+                    crashReports: true,
+                    dataSync: true
+                }
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            return newUser;
+        }
+        
+        // Update UI for logged in user
+        function updateUIForLoggedInUser() {
+            if (currentUser) {
+                // Update navbar
+                const navActions = document.querySelector('.nav-actions');
+                if (navActions) {
+                    const adminButton = isAdmin() ? '<button id="admin-btn" class="btn-icon" title="Area Admin">🔐</button>' : '';
+                    
+                    navActions.innerHTML = `
+                        <span class="user-info">👤 ${currentUser.name}</span>
+                        ${adminButton}
+                        <button id="share-btn" class="btn-icon" title="Condividi la tua vittoria">📤</button>
+                        <button id="leaderboard-btn" class="btn-icon" title="Classifica">🏆</button>
+                        <button id="settings-btn" class="btn-icon" title="Impostazioni">⚙️</button>
+                        <button id="subscription-btn" class="btn-icon" title="Abbonamenti">💳</button>
+                        <button id="logout-btn" class="btn-icon" title="Logout">🚪</button>
+                    `;
+                    
+                    // Add event listeners
+                    document.getElementById('logout-btn').addEventListener('click', logout);
+                    if (isAdmin()) {
+                        document.getElementById('admin-btn').addEventListener('click', showAdminPanel);
+                    }
+                }
+                
+                // Update progress stats
+                updateProgressStats();
+                
+                // Show welcome message
+                showNotification(`👋 Benvenuto ${currentUser.name}!`, 'success');
+            }
+        }
+        
+        // Update progress stats
+        function updateProgressStats() {
+            if (currentUser) {
+                const progressValues = document.querySelectorAll('.progress-value');
+                if (progressValues.length >= 3) {
+                    progressValues[0].textContent = `${currentUser.stats.streak} giorni`;
+                    progressValues[1].textContent = `${currentUser.stats.challengesCompleted}`;
+                    progressValues[2].textContent = `${currentUser.stats.effectiveness}%`;
+                }
+            }
+        }
+        
+        // Logout user
+        function logout() {
+            if (confirm('Sei sicuro di voler uscire?')) {
+                currentUser = null;
+                isLoggedIn = false;
+                localStorage.removeItem('currentUser');
+                showNotification('👋 Arrivederci!', 'info');
+                location.reload();
+            }
+        }
+        
+        // Close auth modal
+        function closeAuthModal() {
+            const modal = document.querySelector('.auth-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        // Show forgot password
+        function showForgotPassword() {
+            showNotification('🔧 Funzionalità in arrivo!', 'info');
+        }
+        
+        // Show terms
+        function showTerms() {
+            showNotification('📄 Termini di Servizio in arrivo!', 'info');
+        }
+        
+        // Show privacy
+        function showPrivacy() {
+            showNotification('🔒 Privacy Policy in arrivo!', 'info');
+        }
+        
+        // Admin System
+        const ADMIN_EMAILS = ['admin@wakeupproof.com', '250862-italia@admin.com'];
+        
+        // Check if user is admin
+        function isAdmin() {
+            return currentUser && ADMIN_EMAILS.includes(currentUser.email);
+        }
+        
+        // Show admin panel
+        function showAdminPanel() {
+            if (!isAdmin()) {
+                showNotification('❌ Accesso negato. Solo gli admin possono accedere.', 'error');
+                return;
+            }
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay admin-modal';
+            modal.innerHTML = `
+                <div class="modal admin-modal-content">
+                    <div class="modal-header">
+                        <h3>🔐 Area Riservata Admin</h3>
+                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="admin-tabs">
+                            <button class="tab-btn active" onclick="showAdminTab('subscriptions')">💳 Abbonamenti</button>
+                            <button class="tab-btn" onclick="showAdminTab('users')">👥 Utenti</button>
+                            <button class="tab-btn" onclick="showAdminTab('stats')">📊 Statistiche</button>
+                            <button class="tab-btn" onclick="showAdminTab('settings')">⚙️ Impostazioni</button>
+                        </div>
+                        
+                        <div id="admin-content">
+                            <!-- Subscriptions Tab -->
+                            <div id="subscriptions-tab" class="admin-tab active">
+                                <h4>💳 Gestione Abbonamenti</h4>
+                                <div class="admin-actions">
+                                    <button class="btn-primary" onclick="refreshSubscriptions()">🔄 Aggiorna</button>
+                                    <button class="btn-secondary" onclick="exportSubscriptions()">📤 Esporta</button>
+                                </div>
+                                <div id="subscriptions-list" class="admin-list">
+                                    <!-- Subscriptions will be loaded here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Users Tab -->
+                            <div id="users-tab" class="admin-tab">
+                                <h4>👥 Gestione Utenti</h4>
+                                <div class="admin-actions">
+                                    <button class="btn-primary" onclick="refreshUsers()">🔄 Aggiorna</button>
+                                    <button class="btn-secondary" onclick="exportUsers()">📤 Esporta</button>
+                                    <button class="btn-error" onclick="deleteAllUsers()">🗑️ Elimina Tutti</button>
+                                </div>
+                                <div id="users-list" class="admin-list">
+                                    <!-- Users will be loaded here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Stats Tab -->
+                            <div id="stats-tab" class="admin-tab">
+                                <h4>📊 Statistiche Globali</h4>
+                                <div class="admin-stats">
+                                    <div class="stat-card">
+                                        <div class="stat-icon">👥</div>
+                                        <div class="stat-info">
+                                            <div class="stat-number" id="total-users">0</div>
+                                            <div class="stat-label">Utenti Totali</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-icon">💳</div>
+                                        <div class="stat-info">
+                                            <div class="stat-number" id="total-subscriptions">0</div>
+                                            <div class="stat-label">Abbonamenti Attivi</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-icon">💰</div>
+                                        <div class="stat-info">
+                                            <div class="stat-number" id="total-revenue">€0</div>
+                                            <div class="stat-label">Ricavi Totali</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-icon">🎯</div>
+                                        <div class="stat-info">
+                                            <div class="stat-number" id="total-challenges">0</div>
+                                            <div class="stat-label">Challenge Completati</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Settings Tab -->
+                            <div id="settings-tab" class="admin-tab">
+                                <h4>⚙️ Impostazioni Admin</h4>
+                                <div class="admin-settings">
+                                    <div class="setting-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="maintenance-mode" onchange="toggleMaintenanceMode()">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Modalità Manutenzione</span>
+                                    </div>
+                                    <div class="setting-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="new-registrations" onchange="toggleNewRegistrations()">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Nuove Registrazioni</span>
+                                    </div>
+                                    <div class="setting-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="challenge-mode" onchange="toggleChallengeMode()">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Modalità Challenge</span>
+                                    </div>
+                                </div>
+                                <div class="admin-actions">
+                                    <button class="btn-primary" onclick="backupData()">💾 Backup Dati</button>
+                                    <button class="btn-secondary" onclick="restoreData()">📥 Ripristina</button>
+                                    <button class="btn-error" onclick="resetSystem()">🔄 Reset Sistema</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Load admin data
+            loadAdminData();
+        }
+        
+        // Show admin tab
+        function showAdminTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.admin-tabs .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Load specific data
+            if (tabName === 'subscriptions') {
+                loadSubscriptions();
+            } else if (tabName === 'users') {
+                loadUsers();
+            } else if (tabName === 'stats') {
+                loadStats();
+            }
+        }
+        
+        // Load admin data
+        function loadAdminData() {
+            loadStats();
+        }
+        
+        // Load subscriptions
+        function loadSubscriptions() {
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            const subscriptionsList = document.getElementById('subscriptions-list');
+            subscriptionsList.innerHTML = '';
+            
+            if (subscriptions.length === 0) {
+                subscriptionsList.innerHTML = '<p class="no-data">Nessun abbonamento trovato</p>';
+                return;
+            }
+            
+            subscriptions.forEach(sub => {
+                const user = users.find(u => u.id === sub.userId);
+                const subscriptionElement = document.createElement('div');
+                subscriptionElement.className = 'admin-item';
+                subscriptionElement.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-title">${user ? user.name : 'Utente Sconosciuto'}</div>
+                        <div class="item-details">
+                            <span class="plan-badge ${sub.plan}">${sub.plan.toUpperCase()}</span>
+                            <span class="status-badge ${sub.status}">${sub.status.toUpperCase()}</span>
+                            <span class="date">${new Date(sub.createdAt).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        ${sub.status === 'pending' ? `
+                            <button class="btn-success" onclick="approveSubscription('${sub.id}')">✅ Approva</button>
+                            <button class="btn-error" onclick="rejectSubscription('${sub.id}')">❌ Rifiuta</button>
+                        ` : `
+                            <button class="btn-secondary" onclick="viewSubscription('${sub.id}')">👁️ Visualizza</button>
+                            <button class="btn-error" onclick="cancelSubscription('${sub.id}')">🚫 Cancella</button>
+                        `}
+                    </div>
+                `;
+                subscriptionsList.appendChild(subscriptionElement);
+            });
+        }
+        
+        // Load users
+        function loadUsers() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const usersList = document.getElementById('users-list');
+            usersList.innerHTML = '';
+            
+            if (users.length === 0) {
+                usersList.innerHTML = '<p class="no-data">Nessun utente trovato</p>';
+                return;
+            }
+            
+            users.forEach(user => {
+                const userElement = document.createElement('div');
+                userElement.className = 'admin-item';
+                userElement.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-title">${user.name}</div>
+                        <div class="item-details">
+                            <span class="email">${user.email}</span>
+                            <span class="age">${user.age} anni</span>
+                            <span class="date">${new Date(user.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        <div class="item-stats">
+                            <span>Streak: ${user.stats.streak}</span>
+                            <span>Challenge: ${user.stats.challengesCompleted}</span>
+                            <span>Efficacia: ${user.stats.effectiveness}%</span>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-primary" onclick="viewUser('${user.id}')">👁️ Visualizza</button>
+                        <button class="btn-secondary" onclick="editUser('${user.id}')">✏️ Modifica</button>
+                        <button class="btn-error" onclick="deleteUser('${user.id}')">🗑️ Elimina</button>
+                    </div>
+                `;
+                usersList.appendChild(userElement);
+            });
+        }
+        
+        // Load stats
+        function loadStats() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            
+            // Calculate stats
+            const totalUsers = users.length;
+            const activeSubscriptions = subscriptions.filter(s => s.status === 'active').length;
+            const totalRevenue = subscriptions.filter(s => s.status === 'active').reduce((sum, s) => {
+                const planPrices = { pro: 4.99, premium: 9.99 };
+                return sum + (planPrices[s.plan] || 0);
+            }, 0);
+            const totalChallenges = users.reduce((sum, user) => sum + user.stats.challengesCompleted, 0);
+            
+            // Update UI
+            document.getElementById('total-users').textContent = totalUsers;
+            document.getElementById('total-subscriptions').textContent = activeSubscriptions;
+            document.getElementById('total-revenue').textContent = `€${totalRevenue.toFixed(2)}`;
+            document.getElementById('total-challenges').textContent = totalChallenges;
+        }
+        
+        // Admin actions
+        function approveSubscription(subscriptionId) {
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            const subscription = subscriptions.find(s => s.id === subscriptionId);
+            
+            if (subscription) {
+                subscription.status = 'active';
+                subscription.approvedAt = new Date().toISOString();
+                localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+                
+                // Update user subscription
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.id === subscription.userId);
+                if (user) {
+                    user.subscription = subscription.plan;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                showNotification('✅ Abbonamento approvato!', 'success');
+                loadSubscriptions();
+            }
+        }
+        
+        function rejectSubscription(subscriptionId) {
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            const subscription = subscriptions.find(s => s.id === subscriptionId);
+            
+            if (subscription) {
+                subscription.status = 'rejected';
+                subscription.rejectedAt = new Date().toISOString();
+                localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+                
+                showNotification('❌ Abbonamento rifiutato!', 'warning');
+                loadSubscriptions();
+            }
+        }
+        
+        function viewSubscription(subscriptionId) {
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            const subscription = subscriptions.find(s => s.id === subscriptionId);
+            
+            if (subscription) {
+                showNotification(`📋 Abbonamento ${subscription.plan.toUpperCase()} - ${subscription.status.toUpperCase()}`, 'info');
+            }
+        }
+        
+        function cancelSubscription(subscriptionId) {
+            if (confirm('Sei sicuro di voler cancellare questo abbonamento?')) {
+                const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+                const subscription = subscriptions.find(s => s.id === subscriptionId);
+                
+                if (subscription) {
+                    subscription.status = 'cancelled';
+                    subscription.cancelledAt = new Date().toISOString();
+                    localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+                    
+                    showNotification('🚫 Abbonamento cancellato!', 'warning');
+                    loadSubscriptions();
+                }
+            }
+        }
+        
+        function viewUser(userId) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.id === userId);
+            
+            if (user) {
+                showNotification(`👤 ${user.name} - ${user.email}`, 'info');
+            }
+        }
+        
+        function editUser(userId) {
+            showNotification('✏️ Funzionalità di modifica in arrivo!', 'info');
+        }
+        
+        function deleteUser(userId) {
+            if (confirm('Sei sicuro di voler eliminare questo utente?')) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const filteredUsers = users.filter(u => u.id !== userId);
+                localStorage.setItem('users', JSON.stringify(filteredUsers));
+                
+                showNotification('🗑️ Utente eliminato!', 'warning');
+                loadUsers();
+            }
+        }
+        
+        function deleteAllUsers() {
+            if (confirm('⚠️ ATTENZIONE: Questa azione eliminerà TUTTI gli utenti!\n\nSei sicuro di voler continuare?')) {
+                if (confirm('🚨 ULTIMA CONFERMA: Eliminare tutti gli utenti?')) {
+                    localStorage.removeItem('users');
+                    localStorage.removeItem('currentUser');
+                    showNotification('🗑️ Tutti gli utenti eliminati!', 'warning');
+                    location.reload();
+                }
+            }
+        }
+        
+        function refreshSubscriptions() {
+            loadSubscriptions();
+            showNotification('🔄 Abbonamenti aggiornati!', 'success');
+        }
+        
+        function refreshUsers() {
+            loadUsers();
+            showNotification('🔄 Utenti aggiornati!', 'success');
+        }
+        
+        function exportSubscriptions() {
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            const dataStr = JSON.stringify(subscriptions, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `subscriptions-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showNotification('📤 Abbonamenti esportati!', 'success');
+        }
+        
+        function exportUsers() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const dataStr = JSON.stringify(users, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `users-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showNotification('📤 Utenti esportati!', 'success');
+        }
+        
+        function toggleMaintenanceMode() {
+            const isEnabled = document.getElementById('maintenance-mode').checked;
+            localStorage.setItem('maintenanceMode', isEnabled);
+            showNotification(isEnabled ? '🔧 Modalità manutenzione attivata!' : '✅ Modalità manutenzione disattivata!', 'info');
+        }
+        
+        function toggleNewRegistrations() {
+            const isEnabled = document.getElementById('new-registrations').checked;
+            localStorage.setItem('newRegistrations', isEnabled);
+            showNotification(isEnabled ? '✅ Nuove registrazioni abilitate!' : '🚫 Nuove registrazioni disabilitate!', 'info');
+        }
+        
+        function toggleChallengeMode() {
+            const isEnabled = document.getElementById('challenge-mode').checked;
+            localStorage.setItem('challengeMode', isEnabled);
+            showNotification(isEnabled ? '🎯 Modalità challenge attivata!' : '⏸️ Modalità challenge disattivata!', 'info');
+        }
+        
+        function backupData() {
+            const data = {
+                users: JSON.parse(localStorage.getItem('users') || '[]'),
+                subscriptions: JSON.parse(localStorage.getItem('subscriptions') || '[]'),
+                alarms: JSON.parse(localStorage.getItem('alarms') || '[]'),
+                backupDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `wakeupproof-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showNotification('💾 Backup completato!', 'success');
+        }
+        
+        function restoreData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            
+                            if (data.users) localStorage.setItem('users', JSON.stringify(data.users));
+                            if (data.subscriptions) localStorage.setItem('subscriptions', JSON.stringify(data.subscriptions));
+                            if (data.alarms) localStorage.setItem('alarms', JSON.stringify(data.alarms));
+                            
+                            showNotification('📥 Dati ripristinati!', 'success');
+                            location.reload();
+                        } catch (error) {
+                            showNotification('❌ Errore nel ripristino dei dati', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+        
+        function resetSystem() {
+            if (confirm('⚠️ ATTENZIONE: Questa azione resetterà TUTTO il sistema!\n\nSei sicuro di voler continuare?')) {
+                if (confirm('🚨 ULTIMA CONFERMA: Reset completo del sistema?')) {
+                    localStorage.clear();
+                    showNotification('🔄 Sistema resettato!', 'warning');
+                    location.reload();
+                }
+            }
+        }
+
         // User Data Management
         function loadUserData() {
-            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            if (!currentUser) return;
             
             // Load profile data
-            if (userData.name) document.getElementById('user-name').value = userData.name;
-            if (userData.email) document.getElementById('user-email').value = userData.email;
-            if (userData.age) document.getElementById('user-age').value = userData.age;
-            if (userData.timezone) document.getElementById('user-timezone').value = userData.timezone;
-            if (userData.goals) document.getElementById('user-goals').value = userData.goals;
+            if (currentUser.name) document.getElementById('user-name').value = currentUser.name;
+            if (currentUser.email) document.getElementById('user-email').value = currentUser.email;
+            if (currentUser.age) document.getElementById('user-age').value = currentUser.age;
+            if (currentUser.timezone) document.getElementById('user-timezone').value = currentUser.timezone;
+            if (currentUser.goals) document.getElementById('user-goals').value = currentUser.goals;
             
             // Load notification settings
-            if (userData.notifications !== undefined) document.getElementById('notifications-enabled').checked = userData.notifications;
-            if (userData.sound !== undefined) document.getElementById('sound-enabled').checked = userData.sound;
-            if (userData.vibration !== undefined) document.getElementById('vibration-enabled').checked = userData.vibration;
-            if (userData.reminder !== undefined) document.getElementById('reminder-enabled').checked = userData.reminder;
-            
-            // Load privacy settings
-            if (userData.analytics !== undefined) document.getElementById('analytics-enabled').checked = userData.analytics;
-            if (userData.crashReports !== undefined) document.getElementById('crash-reports-enabled').checked = userData.crashReports;
-            if (userData.dataSync !== undefined) document.getElementById('data-sync-enabled').checked = userData.dataSync;
+            if (currentUser.preferences) {
+                if (currentUser.preferences.notifications !== undefined) document.getElementById('notifications-enabled').checked = currentUser.preferences.notifications;
+                if (currentUser.preferences.sound !== undefined) document.getElementById('sound-enabled').checked = currentUser.preferences.sound;
+                if (currentUser.preferences.vibration !== undefined) document.getElementById('vibration-enabled').checked = currentUser.preferences.vibration;
+                if (currentUser.preferences.reminder !== undefined) document.getElementById('reminder-enabled').checked = currentUser.preferences.reminder;
+                if (currentUser.preferences.analytics !== undefined) document.getElementById('analytics-enabled').checked = currentUser.preferences.analytics;
+                if (currentUser.preferences.crashReports !== undefined) document.getElementById('crash-reports-enabled').checked = currentUser.preferences.crashReports;
+                if (currentUser.preferences.dataSync !== undefined) document.getElementById('data-sync-enabled').checked = currentUser.preferences.dataSync;
+            }
         }
         
         function saveUserData() {
@@ -2371,22 +3492,25 @@
             
             const plan = plans[planType];
             if (confirm(`Vuoi acquistare il piano ${plan.name} per ${plan.price}?\n\nCaratteristiche:\n${plan.features.join('\n')}\n\n💡 Prova gratis per 7 giorni!`)) {
-                // Simulate purchase process
-                showNotification(`🛒 Acquisto ${plan.name} in corso...`, 'info');
+                // Create subscription request
+                const subscription = {
+                    id: Date.now().toString(),
+                    userId: currentUser.id,
+                    plan: planType,
+                    status: 'pending',
+                    createdAt: new Date().toISOString(),
+                    price: plan.price
+                };
                 
-                setTimeout(() => {
-                    localStorage.setItem('subscription', JSON.stringify({
-                        plan: planType,
-                        status: 'active',
-                        startDate: new Date().toISOString(),
-                        trialEnd: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-                    }));
-                    
-                    showNotification(`🎉 Piano ${plan.name} attivato! Prova gratuita di 7 giorni iniziata!`, 'success');
-                    
-                    // Update UI
-                    updateSubscriptionUI();
-                }, 2000);
+                // Save subscription request
+                const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+                subscriptions.push(subscription);
+                localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+                
+                showNotification(`🛒 Richiesta abbonamento ${plan.name} inviata! In attesa di approvazione admin.`, 'info');
+                
+                // Update UI
+                updateSubscriptionUI();
             }
         }
         
