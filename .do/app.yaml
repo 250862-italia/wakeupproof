@@ -1,0 +1,18 @@
+name: wakeupproof
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: wakeupproof/wakeupproof
+    branch: main
+  run_command: npx serve . -p $PORT
+  environment_slug: node-js
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  routes:
+  - path: /
+  health_check:
+    http_path: /standalone.html
+  envs:
+  - key: NODE_ENV
+    value: production

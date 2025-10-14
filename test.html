@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WakeUpProof - Test Page</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #1976d2;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .test-result.success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+        .test-result.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #f44336;
+        }
+        .test-result.warning {
+            background: #fff3e0;
+            color: #ef6c00;
+            border: 1px solid #ff9800;
+        }
+        button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1565c0;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .feature-card h3 {
+            margin-top: 0;
+            color: #1976d2;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-indicator.success { background: #4caf50; }
+        .status-indicator.error { background: #f44336; }
+        .status-indicator.warning { background: #ff9800; }
+    </style>
+</head>
+<body>
+    <h1>🚨 WakeUpProof - Test Page</h1>
+    <p>Questa pagina testa tutte le funzionalità dell'app WakeUpProof PWA.</p>
+
+    <div class="test-section">
+        <h2>🔧 Test Sistema</h2>
+        <div id="system-tests"></div>
+        <button onclick="runSystemTests()">Esegui Test Sistema</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📱 Test PWA</h2>
+        <div id="pwa-tests"></div>
+        <button onclick="runPWATests()">Esegui Test PWA</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 Test Challenge</h2>
+        <div id="challenge-tests"></div>
+        <button onclick="runChallengeTests()">Esegui Test Challenge</button>
+    </div>
+
+    <div class="test-section">
+        <h2>💾 Test Database</h2>
+        <div id="database-tests"></div>
+        <button onclick="runDatabaseTests()">Esegui Test Database</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🔔 Test Notifiche</h2>
+        <div id="notification-tests"></div>
+        <button onclick="runNotificationTests()">Esegui Test Notifiche</button>
+    </div>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3>📸 Camera</h3>
+            <p>Test camera e foto</p>
+            <button onclick="testCamera()">Test Camera</button>
+        </div>
+        
+        <div class="feature-card">
+            <h3>🚶 Sensori</h3>
+            <p>Test accelerometro e passi</p>
+            <button onclick="testSensors()">Test Sensori</button>
+        </div>
+        
+        <div class="feature-card">
+            <h3>📡 NFC/QR</h3>
+            <p>Test scanner NFC e QR</p>
+            <button onclick="testNFCQR()">Test NFC/QR</button>
+        </div>
+        
+        <div class="feature-card">
+            <h3>💳 Abbonamenti</h3>
+            <p>Test sistema abbonamenti</p>
+            <button onclick="testSubscriptions()">Test Abbonamenti</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Risultati Test</h2>
+        <div id="test-results"></div>
+        <button onclick="runAllTests()">Esegui Tutti i Test</button>
+        <button onclick="clearResults()">Cancella Risultati</button>
+    </div>
+
+    <script>
+        // Test results storage
+        let testResults = [];
+
+        function addTestResult(testName, status, message) {
+            const result = {
+                name: testName,
+                status: status,
+                message: message,
+                timestamp: new Date().toISOString()
+            };
+            testResults.push(result);
+            return result;
+        }
+
+        function displayTestResult(containerId, result) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const div = document.createElement('div');
+            div.className = `test-result ${result.status}`;
+            div.innerHTML = `
+                <span class="status-indicator ${result.status}"></span>
+                <strong>${result.name}:</strong> ${result.message}
+            `;
+            container.appendChild(div);
+        }
+
+        async function runSystemTests() {
+            const container = document.getElementById('system-tests');
+            container.innerHTML = '';
+
+            // Test 1: Browser support
+            const browserSupport = {
+                serviceWorker: 'serviceWorker' in navigator,
+                indexedDB: 'indexedDB' in window,
+                notifications: 'Notification' in window,
+                camera: 'mediaDevices' in navigator,
+                motion: 'DeviceMotionEvent' in window,
+                wakeLock: 'wakeLock' in navigator
+            };
+
+            for (const [feature, supported] of Object.entries(browserSupport)) {
+                const result = addTestResult(
+                    `Browser Support - ${feature}`,
+                    supported ? 'success' : 'warning',
+                    supported ? 'Supportato' : 'Non supportato'
+                );
+                displayTestResult('system-tests', result);
+            }
+
+            // Test 2: PWA features
+            const pwaFeatures = {
+                manifest: document.querySelector('link[rel="manifest"]') !== null,
+                serviceWorker: 'serviceWorker' in navigator,
+                https: location.protocol === 'https:' || location.hostname === 'localhost'
+            };
+
+            for (const [feature, supported] of Object.entries(pwaFeatures)) {
+                const result = addTestResult(
+                    `PWA Feature - ${feature}`,
+                    supported ? 'success' : 'error',
+                    supported ? 'Attivo' : 'Mancante'
+                );
+                displayTestResult('system-tests', result);
+            }
+        }
+
+        async function runPWATests() {
+            const container = document.getElementById('pwa-tests');
+            container.innerHTML = '';
+
+            // Test manifest
+            try {
+                const manifestResponse = await fetch('/manifest.json');
+                const manifest = await manifestResponse.json();
+                
+                const result = addTestResult(
+                    'Manifest JSON',
+                    'success',
+                    `Caricato: ${manifest.name}`
+                );
+                displayTestResult('pwa-tests', result);
+            } catch (error) {
+                const result = addTestResult(
+                    'Manifest JSON',
+                    'error',
+                    `Errore: ${error.message}`
+                );
+                displayTestResult('pwa-tests', result);
+            }
+
+            // Test service worker
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    const result = addTestResult(
+                        'Service Worker',
+                        'success',
+                        `Registrato: ${registration.scope}`
+                    );
+                    displayTestResult('pwa-tests', result);
+                } catch (error) {
+                    const result = addTestResult(
+                        'Service Worker',
+                        'error',
+                        `Errore: ${error.message}`
+                    );
+                    displayTestResult('pwa-tests', result);
+                }
+            }
+        }
+
+        async function runChallengeTests() {
+            const container = document.getElementById('challenge-tests');
+            container.innerHTML = '';
+
+            // Test challenge engine
+            if (typeof window.challengeEngine !== 'undefined') {
+                const result = addTestResult(
+                    'Challenge Engine',
+                    'success',
+                    'Inizializzato correttamente'
+                );
+                displayTestResult('challenge-tests', result);
+            } else {
+                const result = addTestResult(
+                    'Challenge Engine',
+                    'error',
+                    'Non trovato'
+                );
+                displayTestResult('challenge-tests', result);
+            }
+
+            // Test camera handler
+            if (typeof window.cameraHandler !== 'undefined') {
+                const result = addTestResult(
+                    'Camera Handler',
+                    'success',
+                    'Inizializzato correttamente'
+                );
+                displayTestResult('challenge-tests', result);
+            } else {
+                const result = addTestResult(
+                    'Camera Handler',
+                    'error',
+                    'Non trovato'
+                );
+                displayTestResult('challenge-tests', result);
+            }
+        }
+
+        async function runDatabaseTests() {
+            const container = document.getElementById('database-tests');
+            container.innerHTML = '';
+
+            // Test database
+            if (typeof window.database !== 'undefined') {
+                try {
+                    await window.database.init();
+                    const result = addTestResult(
+                        'Database',
+                        'success',
+                        'Inizializzato correttamente'
+                    );
+                    displayTestResult('database-tests', result);
+                } catch (error) {
+                    const result = addTestResult(
+                        'Database',
+                        'error',
+                        `Errore: ${error.message}`
+                    );
+                    displayTestResult('database-tests', result);
+                }
+            } else {
+                const result = addTestResult(
+                    'Database',
+                    'error',
+                    'Non trovato'
+                );
+                displayTestResult('database-tests', result);
+            }
+        }
+
+        async function runNotificationTests() {
+            const container = document.getElementById('notification-tests');
+            container.innerHTML = '';
+
+            // Test notifications
+            if ('Notification' in window) {
+                const permission = Notification.permission;
+                const result = addTestResult(
+                    'Notifiche',
+                    permission === 'granted' ? 'success' : 'warning',
+                    `Permesso: ${permission}`
+                );
+                displayTestResult('notification-tests', result);
+
+                if (permission === 'granted') {
+                    // Test notification
+                    try {
+                        const notification = new Notification('Test WakeUpProof', {
+                            body: 'Test notifica funzionante!',
+                            icon: '/icons/icon-192x192.png'
+                        });
+                        
+                        setTimeout(() => notification.close(), 3000);
+                        
+                        const result2 = addTestResult(
+                            'Test Notifica',
+                            'success',
+                            'Notifica inviata'
+                        );
+                        displayTestResult('notification-tests', result2);
+                    } catch (error) {
+                        const result2 = addTestResult(
+                            'Test Notifica',
+                            'error',
+                            `Errore: ${error.message}`
+                        );
+                        displayTestResult('notification-tests', result2);
+                    }
+                }
+            } else {
+                const result = addTestResult(
+                    'Notifiche',
+                    'error',
+                    'Non supportate'
+                );
+                displayTestResult('notification-tests', result);
+            }
+        }
+
+        async function testCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                stream.getTracks().forEach(track => track.stop());
+                
+                const result = addTestResult(
+                    'Test Camera',
+                    'success',
+                    'Camera accessibile'
+                );
+                displayTestResult('test-results', result);
+            } catch (error) {
+                const result = addTestResult(
+                    'Test Camera',
+                    'error',
+                    `Errore: ${error.message}`
+                );
+                displayTestResult('test-results', result);
+            }
+        }
+
+        async function testSensors() {
+            if ('DeviceMotionEvent' in window) {
+                const result = addTestResult(
+                    'Test Sensori',
+                    'success',
+                    'Accelerometro supportato'
+                );
+                displayTestResult('test-results', result);
+            } else {
+                const result = addTestResult(
+                    'Test Sensori',
+                    'warning',
+                    'Accelerometro non supportato'
+                );
+                displayTestResult('test-results', result);
+            }
+        }
+
+        async function testNFCQR() {
+            const result = addTestResult(
+                'Test NFC/QR',
+                'warning',
+                'Funzionalità mock per demo'
+            );
+            displayTestResult('test-results', result);
+        }
+
+        async function testSubscriptions() {
+            if (typeof window.subscriptionService !== 'undefined') {
+                const plan = window.subscriptionService.getCurrentPlan();
+                const result = addTestResult(
+                    'Test Abbonamenti',
+                    'success',
+                    `Piano attuale: ${plan}`
+                );
+                displayTestResult('test-results', result);
+            } else {
+                const result = addTestResult(
+                    'Test Abbonamenti',
+                    'error',
+                    'Service non trovato'
+                );
+                displayTestResult('test-results', result);
+            }
+        }
+
+        async function runAllTests() {
+            clearResults();
+            
+            await runSystemTests();
+            await runPWATests();
+            await runChallengeTests();
+            await runDatabaseTests();
+            await runNotificationTests();
+            
+            // Summary
+            const totalTests = testResults.length;
+            const successTests = testResults.filter(r => r.status === 'success').length;
+            const errorTests = testResults.filter(r => r.status === 'error').length;
+            const warningTests = testResults.filter(r => r.status === 'warning').length;
+            
+            const summary = addTestResult(
+                'Riepilogo Test',
+                errorTests > 0 ? 'error' : warningTests > 0 ? 'warning' : 'success',
+                `Totale: ${totalTests}, Successo: ${successTests}, Errori: ${errorTests}, Warning: ${warningTests}`
+            );
+            displayTestResult('test-results', summary);
+        }
+
+        function clearResults() {
+            testResults = [];
+            document.getElementById('test-results').innerHTML = '';
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                runAllTests();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
