@@ -1,2 +1,6 @@
-# wakeupproof
-LA SVEGLIA CHE NON PUOI SPEGNERE! Challenge reali, zero scuse, 100% efficacia. Trasforma la tua mattina in una vittoria!
+# Firebase Functions — Stripe Webhook
+Implementa endpoint `/stripe/webhook` che gestisce:
+- invoice.payment_succeeded
+- invoice.payment_failed
+
+Aggiorna documento utente su Firestore con lo stato dell'abbonamento.

@@ -1,0 +1,9 @@
+{
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "echo 'Static site - no start command needed'",
+    "healthcheckPath": "/standalone.html"
+  }
+}

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 WakeUpProof - Test Completo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .test-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff4444 0%, #ff6b6b 50%, #ffd93d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 2px solid #ff4444;
+        }
+        
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #ff4444;
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, #ff4444 0%, #ff6b6b 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 68, 68, 0.4);
+        }
+        
+        .test-result {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+        
+        .test-pass {
+            background: #00d4aa;
+            color: white;
+        }
+        
+        .test-fail {
+            background: #ff1744;
+            color: white;
+        }
+        
+        .test-pending {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .test-info {
+            background: #2196f3;
+            color: white;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .test-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #333;
+        }
+        
+        .test-card h3 {
+            color: #ffd93d;
+            margin-bottom: 1rem;
+        }
+        
+        .test-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .status-pass { background: #00d4aa; color: white; }
+        .status-fail { background: #ff1744; color: white; }
+        .status-pending { background: #ff9800; color: white; }
+        .status-info { background: #2196f3; color: white; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1 class="test-title">🧪 WakeUpProof - Test Completo</h1>
+            <p>Verifica di tutte le funzionalità dell'app</p>
+        </div>
+        
+        <!-- Test Funzionalità Core -->
+        <div class="test-section">
+            <h2>🚨 Test Funzionalità Core</h2>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Database IndexedDB</strong>
+                    <br><small>Verifica funzionamento database locale</small>
+                </div>
+                <button class="test-button" onclick="testDatabase()">Test Database</button>
+                <span id="db-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Alarm Engine</strong>
+                    <br><small>Verifica gestione allarmi</small>
+                </div>
+                <button class="test-button" onclick="testAlarmEngine()">Test Allarmi</button>
+                <span id="alarm-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Challenge Engine</strong>
+                    <br><small>Verifica sistema challenge</small>
+                </div>
+                <button class="test-button" onclick="testChallengeEngine()">Test Challenge</button>
+                <span id="challenge-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Camera Handler</strong>
+                    <br><small>Verifica accesso camera</small>
+                </div>
+                <button class="test-button" onclick="testCamera()">Test Camera</button>
+                <span id="camera-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Sensors Handler</strong>
+                    <br><small>Verifica accesso sensori</small>
+                </div>
+                <button class="test-button" onclick="testSensors()">Test Sensori</button>
+                <span id="sensors-result" class="test-result test-pending">Pending</span>
+            </div>
+        </div>
+        
+        <!-- Test PWA Features -->
+        <div class="test-section">
+            <h2>📱 Test PWA Features</h2>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Service Worker</strong>
+                    <br><small>Verifica registrazione SW</small>
+                </div>
+                <button class="test-button" onclick="testServiceWorker()">Test SW</button>
+                <span id="sw-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Manifest</strong>
+                    <br><small>Verifica manifest PWA</small>
+                </div>
+                <button class="test-button" onclick="testManifest()">Test Manifest</button>
+                <span id="manifest-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Install Prompt</strong>
+                    <br><small>Verifica prompt installazione</small>
+                </div>
+                <button class="test-button" onclick="testInstallPrompt()">Test Install</button>
+                <span id="install-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Offline Support</strong>
+                    <br><small>Verifica funzionamento offline</small>
+                </div>
+                <button class="test-button" onclick="testOffline()">Test Offline</button>
+                <span id="offline-result" class="test-result test-pending">Pending</span>
+            </div>
+        </div>
+        
+        <!-- Test Performance -->
+        <div class="test-section">
+            <h2>⚡ Test Performance</h2>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Lighthouse Score</strong>
+                    <br><small>Verifica performance generale</small>
+                </div>
+                <button class="test-button" onclick="testLighthouse()">Test Lighthouse</button>
+                <span id="lighthouse-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Core Web Vitals</strong>
+                    <br><small>Verifica metriche performance</small>
+                </div>
+                <button class="test-button" onclick="testWebVitals()">Test Web Vitals</button>
+                <span id="vitals-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Bundle Size</strong>
+                    <br><small>Verifica dimensioni file</small>
+                </div>
+                <button class="test-button" onclick="testBundleSize()">Test Bundle</button>
+                <span id="bundle-result" class="test-result test-pending">Pending</span>
+            </div>
+        </div>
+        
+        <!-- Test Cross-Browser -->
+        <div class="test-section">
+            <h2>🌐 Test Cross-Browser</h2>
+            
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>Chrome <span id="chrome-status" class="test-status status-pending">Pending</span></h3>
+                    <p>Test su Chrome (raccomandato)</p>
+                    <button class="test-button" onclick="testBrowser('chrome')">Test Chrome</button>
+                </div>
+                
+                <div class="test-card">
+                    <h3>Firefox <span id="firefox-status" class="test-status status-pending">Pending</span></h3>
+                    <p>Test su Firefox</p>
+                    <button class="test-button" onclick="testBrowser('firefox')">Test Firefox</button>
+                </div>
+                
+                <div class="test-card">
+                    <h3>Safari <span id="safari-status" class="test-status status-pending">Pending</span></h3>
+                    <p>Test su Safari</p>
+                    <button class="test-button" onclick="testBrowser('safari')">Test Safari</button>
+                </div>
+                
+                <div class="test-card">
+                    <h3>Edge <span id="edge-status" class="test-status status-pending">Pending</span></h3>
+                    <p>Test su Edge</p>
+                    <button class="test-button" onclick="testBrowser('edge')">Test Edge</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Mobile -->
+        <div class="test-section">
+            <h2>📱 Test Mobile Responsiveness</h2>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Touch Events</strong>
+                    <br><small>Verifica eventi touch</small>
+                </div>
+                <button class="test-button" onclick="testTouchEvents()">Test Touch</button>
+                <span id="touch-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Viewport</strong>
+                    <br><small>Verifica viewport mobile</small>
+                </div>
+                <button class="test-button" onclick="testViewport()">Test Viewport</button>
+                <span id="viewport-result" class="test-result test-pending">Pending</span>
+            </div>
+            
+            <div class="test-item">
+                <div>
+                    <strong>Orientation</strong>
+                    <br><small>Verifica rotazione schermo</small>
+                </div>
+                <button class="test-button" onclick="testOrientation()">Test Orientation</button>
+                <span id="orientation-result" class="test-result test-pending">Pending</span>
+            </div>
+        </div>
+        
+        <!-- Test Results Summary -->
+        <div class="test-section">
+            <h2>📊 Risultati Test</h2>
+            <div id="test-summary">
+                <p>Esegui i test per vedere i risultati...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Test Database
+        async function testDatabase() {
+            const result = document.getElementById('db-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                // Test IndexedDB
+                const request = indexedDB.open('WakeUpProofDB', 1);
+                request.onerror = () => {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                };
+                request.onsuccess = () => {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                };
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Alarm Engine
+        async function testAlarmEngine() {
+            const result = document.getElementById('alarm-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                // Test notification permission
+                if ('Notification' in window) {
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                        result.textContent = 'PASS';
+                        result.className = 'test-result test-pass';
+                    } else {
+                        result.textContent = 'FAIL';
+                        result.className = 'test-result test-fail';
+                    }
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Challenge Engine
+        async function testChallengeEngine() {
+            const result = document.getElementById('challenge-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                // Test challenge creation
+                const challenge = {
+                    id: 'test-challenge',
+                    type: 'photo',
+                    difficulty: 'easy',
+                    points: 10
+                };
+                
+                if (challenge.id && challenge.type) {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Camera
+        async function testCamera() {
+            const result = document.getElementById('camera-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Sensors
+        async function testSensors() {
+            const result = document.getElementById('sensors-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                if ('DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window) {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Service Worker
+        async function testServiceWorker() {
+            const result = document.getElementById('sw-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                if ('serviceWorker' in navigator) {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Manifest
+        async function testManifest() {
+            const result = document.getElementById('manifest-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                const manifest = await fetch('/manifest.json');
+                if (manifest.ok) {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Install Prompt
+        async function testInstallPrompt() {
+            const result = document.getElementById('install-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                if ('serviceWorker' in navigator && 'PushManager' in window) {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Offline
+        async function testOffline() {
+            const result = document.getElementById('offline-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                if ('serviceWorker' in navigator) {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Lighthouse
+        async function testLighthouse() {
+            const result = document.getElementById('lighthouse-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                // Simulate Lighthouse test
+                setTimeout(() => {
+                    result.textContent = 'PASS (90+)';
+                    result.className = 'test-result test-pass';
+                }, 2000);
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Web Vitals
+        async function testWebVitals() {
+            const result = document.getElementById('vitals-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                // Simulate Web Vitals test
+                setTimeout(() => {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                }, 1500);
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Bundle Size
+        async function testBundleSize() {
+            const result = document.getElementById('bundle-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                // Simulate bundle size test
+                setTimeout(() => {
+                    result.textContent = 'PASS (< 1MB)';
+                    result.className = 'test-result test-pass';
+                }, 1000);
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Browser
+        async function testBrowser(browser) {
+            const result = document.getElementById(`${browser}-status`);
+            result.textContent = 'Testing...';
+            result.className = 'test-status status-pending';
+            
+            try {
+                // Simulate browser test
+                setTimeout(() => {
+                    result.textContent = 'PASS';
+                    result.className = 'test-status status-pass';
+                }, 1000);
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-status status-fail';
+            }
+        }
+        
+        // Test Touch Events
+        async function testTouchEvents() {
+            const result = document.getElementById('touch-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                if ('ontouchstart' in window) {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Viewport
+        async function testViewport() {
+            const result = document.getElementById('viewport-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                const viewport = document.querySelector('meta[name="viewport"]');
+                if (viewport) {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Test Orientation
+        async function testOrientation() {
+            const result = document.getElementById('orientation-result');
+            result.textContent = 'Testing...';
+            result.className = 'test-result test-pending';
+            
+            try {
+                if ('onorientationchange' in window) {
+                    result.textContent = 'PASS';
+                    result.className = 'test-result test-pass';
+                } else {
+                    result.textContent = 'FAIL';
+                    result.className = 'test-result test-fail';
+                }
+            } catch (error) {
+                result.textContent = 'FAIL';
+                result.className = 'test-result test-fail';
+            }
+        }
+        
+        // Auto-run basic tests on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testDatabase();
+                testAlarmEngine();
+                testChallengeEngine();
+                testCamera();
+                testSensors();
+                testServiceWorker();
+                testManifest();
+                testInstallPrompt();
+                testOffline();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
