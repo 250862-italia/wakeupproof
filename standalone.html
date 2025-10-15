@@ -1558,6 +1558,88 @@
             color: var(--text-secondary);
         }
 
+        /* Chatbot Styles */
+        .chatbot-modal {
+            max-width: 500px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            max-height: 400px;
+        }
+
+        .chatbot-message {
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .bot-message .message-content {
+            background: var(--surface-elevated);
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .user-message {
+            text-align: right;
+        }
+
+        .user-message .message-content {
+            background: var(--accent-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            display: inline-block;
+            max-width: 80%;
+        }
+
+        .chatbot-input {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--surface-elevated);
+            border-radius: 8px;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--text-primary);
+        }
+
+        .chatbot-input button {
+            padding: 0.75rem 1rem;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-input button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
         /* Payment Configuration Styles */
         .payment-config {
             display: flex;
@@ -2264,6 +2346,7 @@
                 <button id="leaderboard-btn" class="btn-icon" title="Classifica">🏆</button>
                 <button id="settings-btn" class="btn-icon" title="Impostazioni">⚙️</button>
                 <button id="subscription-btn" class="btn-icon" title="Abbonamenti">💳</button>
+                <button id="chatbot-btn" class="btn-icon" title="Chatbot AI">🤖</button>
             </div>
         </nav>
 
@@ -2438,6 +2521,7 @@
             document.getElementById('leaderboard-btn').addEventListener('click', showLeaderboard);
             document.getElementById('settings-btn').addEventListener('click', showSettings);
             document.getElementById('subscription-btn').addEventListener('click', showSubscriptions);
+            document.getElementById('chatbot-btn').addEventListener('click', showChatbotModal);
         }
 
         function showWelcomeMessage() {
@@ -5080,6 +5164,155 @@
             refreshPaymentStatus();
         }
 
+        // Chatbot Functions
+        function showChatbotModal() {
+            document.getElementById('chatbot-modal').style.display = 'flex';
+            document.getElementById('chatbot-input').focus();
+        }
+
+        function closeChatbotModal() {
+            document.getElementById('chatbot-modal').style.display = 'none';
+        }
+
+        function sendChatbotMessage() {
+            const input = document.getElementById('chatbot-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addChatbotMessage(message, 'user');
+            input.value = '';
+            
+            // Get bot response
+            const response = getChatbotResponse(message);
+            
+            // Simulate typing delay
+            setTimeout(() => {
+                addChatbotMessage(response, 'bot');
+            }, 1000);
+        }
+
+        function addChatbotMessage(message, sender) {
+            const messagesContainer = document.getElementById('chatbot-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chatbot-message ${sender}-message`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.innerHTML = message;
+            
+            messageDiv.appendChild(contentDiv);
+            messagesContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getChatbotResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            // Alarm related questions
+            if (message.includes('allarme') || message.includes('sveglia')) {
+                return `🚨 <strong>Allarmi WakeUpProof:</strong><br><br>
+                • <strong>Creare:</strong> Clicca "Nuovo Allarme" e configura orario, giorni, suono<br>
+                • <strong>Modificare:</strong> Clicca il pulsante ✏️ sull'allarme<br>
+                • <strong>Eliminare:</strong> Clicca il pulsante 🗑️ sull'allarme<br>
+                • <strong>Challenge:</strong> Ogni allarme ha challenge casuali per svegliarti!`;
+            }
+            
+            // Subscription questions
+            if (message.includes('abbonamento') || message.includes('piano') || message.includes('prezzo')) {
+                return `💳 <strong>Abbonamenti WakeUpProof:</strong><br><br>
+                • <strong>Free:</strong> 3 allarmi, challenge base<br>
+                • <strong>Pro (€4.99/mese):</strong> Allarmi illimitati, challenge avanzati<br>
+                • <strong>Premium (€9.99/mese):</strong> Tutto incluso, challenge estreme<br><br>
+                💡 <strong>Prova gratis per 7 giorni!</strong>`;
+            }
+            
+            // Challenge questions
+            if (message.includes('challenge') || message.includes('sfida')) {
+                return `🎯 <strong>Challenge WakeUpProof:</strong><br><br>
+                • <strong>Fisiche:</strong> Flessioni, salti, equilibrio<br>
+                • <strong>Mentali:</strong> Calcoli, memoria, puzzle<br>
+                • <strong>Creative:</strong> Disegno, scrittura, canto<br>
+                • <strong>Estreme:</strong> Solo per Premium!<br><br>
+                🔥 <strong>Zero scuse, 100% efficacia!</strong>`;
+            }
+            
+            // Admin questions
+            if (message.includes('admin') || message.includes('amministratore')) {
+                return `🔐 <strong>Area Admin:</strong><br><br>
+                • <strong>Login:</strong> admin@wakeupproof.com / admin123<br>
+                • <strong>Gestione:</strong> Utenti, abbonamenti, statistiche<br>
+                • <strong>Pagamenti:</strong> Configurazione Stripe/PayPal<br>
+                • <strong>Impostazioni:</strong> Sistema e manutenzione<br><br>
+                ⚠️ <strong>Solo per amministratori!</strong>`;
+            }
+            
+            // General help
+            if (message.includes('aiuto') || message.includes('help') || message.includes('come')) {
+                return `🤖 <strong>Come posso aiutarti:</strong><br><br>
+                • <strong>Allarmi:</strong> Come creare, modificare, eliminare<br>
+                • <strong>Abbonamenti:</strong> Piani, prezzi, funzionalità<br>
+                • <strong>Challenge:</strong> Tipi, difficoltà, obiettivi<br>
+                • <strong>Admin:</strong> Accesso, gestione, configurazioni<br><br>
+                💡 <strong>Fai una domanda specifica!</strong>`;
+            }
+            
+            // Default response
+            return `🤖 <strong>WakeUpProof AI:</strong><br><br>
+            Non ho capito la tua domanda. Prova a chiedere:<br><br>
+            • "Come creo un allarme?"<br>
+            • "Come funzionano gli abbonamenti?"<br>
+            • "Cosa sono le challenge?"<br>
+            • "Come accedo all'admin?"<br><br>
+            💡 <strong>Sii più specifico per una risposta migliore!</strong>`;
+        }
+
+        // Enter key support for chatbot
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotInput = document.getElementById('chatbot-input');
+            if (chatbotInput) {
+                chatbotInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendChatbotMessage();
+                    }
+                });
+            }
+        });
+
     </script>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbot-modal" class="modal" style="display: none;">
+        <div class="modal-content chatbot-modal">
+            <div class="modal-header">
+                <h2>🤖 Chatbot AI - WakeUpProof</h2>
+                <button class="close-btn" onclick="closeChatbotModal()">&times;</button>
+            </div>
+            <div class="chatbot-container">
+                <div class="chatbot-messages" id="chatbot-messages">
+                    <div class="chatbot-message bot-message">
+                        <div class="message-content">
+                            <strong>🤖 WakeUpProof AI:</strong> Ciao! Sono il tuo assistente virtuale per WakeUpProof. 
+                            Posso aiutarti con domande su allarmi, abbonamenti, challenge e molto altro!
+                            <br><br>
+                            <strong>💡 Prova a chiedere:</strong>
+                            <br>• "Come creo un allarme?"
+                            <br>• "Come funzionano gli abbonamenti?"
+                            <br>• "Cosa sono le challenge?"
+                            <br>• "Come accedo all'admin?"
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-input">
+                    <input type="text" id="chatbot-input" placeholder="Scrivi la tua domanda..." maxlength="500">
+                    <button id="chatbot-send" onclick="sendChatbotMessage()">📤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
