@@ -3656,6 +3656,11 @@
                     showNotification('🎉 Registrazione completata! Benvenuto in WAKEUPG!', 'success');
                     updateUIForLoggedInUser();
                     closeAuthModal();
+                    
+                    // Show admin notification if admin is logged in
+                    if (isAdmin()) {
+                        showNotification('👥 Nuovo utente registrato! Controlla l\'admin panel.', 'info');
+                    }
                 } else {
                     showNotification('❌ Errore durante la registrazione', 'error');
                 }
@@ -3708,8 +3713,14 @@
             
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
-            console.log('User registered and saved:', newUser);
-            console.log('All users after registration:', users);
+            console.log('✅ User registered and saved:', newUser);
+            console.log('📊 All users after registration:', users);
+            
+            // Refresh admin panel if open
+            if (document.getElementById('admin-modal') && document.getElementById('admin-modal').style.display !== 'none') {
+                console.log('🔄 Refreshing admin panel after user registration');
+                loadUsers();
+            }
             
             return newUser;
         }
@@ -4052,6 +4063,7 @@
             if (tabName === 'subscriptions') {
                 loadSubscriptions();
             } else if (tabName === 'users') {
+                console.log('👥 Loading users tab');
                 loadUsers();
             } else if (tabName === 'stats') {
                 loadStats();
@@ -4131,27 +4143,34 @@
         // Load users
         function loadUsers() {
             let users = JSON.parse(localStorage.getItem('users') || '[]');
-            console.log('Loading users from localStorage:', users);
+            console.log('🔍 Loading users from localStorage:', users);
+            console.log('📊 Total users found:', users.length);
             
             // Se non ci sono utenti, crea alcuni demo
             if (users.length === 0) {
+                console.log('📝 No users found, creating demo users');
                 users = [
                     {
                         id: 'demo_user_1',
                         name: 'Mario Rossi',
                         email: 'mario.rossi@email.com',
                         age: 28,
-                        createdAt: new Date().toISOString()
+                        createdAt: new Date().toISOString(),
+                        stats: { streak: 5, challengesCompleted: 12, effectiveness: 85, totalAlarms: 8 }
                     },
                     {
                         id: 'demo_user_2',
                         name: 'Giulia Bianchi',
                         email: 'giulia.bianchi@email.com',
                         age: 32,
-                        createdAt: new Date(Date.now() - 86400000).toISOString()
+                        createdAt: new Date(Date.now() - 86400000).toISOString(),
+                        stats: { streak: 3, challengesCompleted: 8, effectiveness: 92, totalAlarms: 5 }
                     }
                 ];
                 localStorage.setItem('users', JSON.stringify(users));
+                console.log('✅ Demo users created and saved');
+            } else {
+                console.log('👥 Real users found, displaying them');
             }
             
             const usersList = document.getElementById('users-list');
@@ -4316,6 +4335,7 @@
         }
         
         function refreshUsers() {
+            console.log('🔄 Manual refresh users requested');
             loadUsers();
             showNotification('🔄 Utenti aggiornati!', 'success');
         }
