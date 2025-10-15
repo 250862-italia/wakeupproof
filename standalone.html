@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚨 WAKEUPGHE - La Sveglia che NON Puoi Spegnere! v2.0 - CACHE BUST</title>
+    <title>🚨 WAKEUPG - La Sveglia che NON Puoi Spegnere! v2.0 - CACHE BUST</title>
     
     <!-- PWA Meta Tags -->
     <meta name="description" content="🚨 LA SVEGLIA CHE NON PUOI SPEGNERE! Challenge reali, zero scuse, 100% efficacia. Trasforma la tua mattina in una vittoria! v2.0 - Admin completo con pagamenti!">
@@ -13,7 +13,7 @@
     <meta name="build" content="2024-10-14-21:30">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="WAKEUPGHE">
+    <meta name="apple-mobile-web-app-title" content="WAKEUPG">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -2344,7 +2344,7 @@
         <!-- Navigation -->
         <nav class="navbar">
             <div class="nav-brand">
-                <h1>🚨 WAKEUPGHE v2.0</h1>
+                <h1>🚨 WAKEUPG v2.0</h1>
             </div>
             <div class="nav-actions">
                 <button id="login-btn" class="btn-primary" onclick="showAuthModal()">🔐 Accedi</button>
@@ -2444,14 +2444,14 @@
     <!-- All modules are now integrated directly in standalone.html -->
 
     <script>
-        // Real WAKEUPGHE functionality
+        // Real WAKEUPG functionality
         let alarmCount = 0;
         let challengeCount = 0;
         let isInitialized = false;
 
         // Initialize app with real modules
         document.addEventListener('DOMContentLoaded', async function() {
-            console.log('WAKEUPGHE Standalone loaded');
+            console.log('WAKEUPG Standalone loaded');
             
             // Register Service Worker for PWA
             if ('serviceWorker' in navigator) {
@@ -2504,7 +2504,7 @@
                 await loadAlarms();
                 
                 isInitialized = true;
-                console.log('WAKEUPGHE fully initialized');
+                console.log('WAKEUPG fully initialized');
             } catch (error) {
                 console.error('Error initializing app:', error);
                 showNotification('Errore inizializzazione app', 'error');
@@ -2905,11 +2905,11 @@
         }
 
         function shareVictory() {
-            const shareText = "🚨 Ho appena sconfitto la pigrizia con WAKEUPGHE! La sveglia che NON puoi spegnere! 💪 #WAKEUPGHE #NoMoreSnooze";
+            const shareText = "🚨 Ho appena sconfitto la pigrizia con WAKEUPG! La sveglia che NON puoi spegnere! 💪 #WAKEUPG #NoMoreSnooze";
             
             if (navigator.share) {
                 navigator.share({
-                    title: 'WAKEUPGHE - La Sveglia Impossibile',
+                    title: 'WAKEUPG - La Sveglia Impossibile',
                     text: shareText,
                     url: window.location.href
                 });
@@ -3175,7 +3175,7 @@
             modal.innerHTML = `
                 <div class="modal auth-modal-content">
                     <div class="modal-header">
-                        <h3>🔐 Accedi a WAKEUPGHE</h3>
+                        <h3>🔐 Accedi a WAKEUPG</h3>
                         <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
                     </div>
                     <div class="modal-body">
@@ -3283,7 +3283,7 @@
                     currentUser = user;
                     isLoggedIn = true;
                     localStorage.setItem('currentUser', JSON.stringify(user));
-                    showNotification('🎉 Benvenuto in WAKEUPGHE!', 'success');
+                    showNotification('🎉 Benvenuto in WAKEUPG!', 'success');
                     updateUIForLoggedInUser();
                     closeAuthModal();
                 } else {
@@ -3321,7 +3321,7 @@
                     currentUser = user;
                     isLoggedIn = true;
                     localStorage.setItem('currentUser', JSON.stringify(user));
-                    showNotification('🎉 Registrazione completata! Benvenuto in WAKEUPGHE!', 'success');
+                    showNotification('🎉 Registrazione completata! Benvenuto in WAKEUPG!', 'success');
                     updateUIForLoggedInUser();
                     closeAuthModal();
                 } else {
@@ -4278,7 +4278,7 @@
             { id: 'color_sequence', name: 'Ripeti i colori: Rosso-Verde-Blu-Giallo', type: 'mental', difficulty: 'easy', icon: '🌈' },
             { id: 'reverse_counting', name: 'Conta alla rovescia da 50 a 0', type: 'mental', difficulty: 'medium', icon: '🔢' },
             { id: 'alphabet_backwards', name: 'Recita l\'alfabeto al contrario', type: 'mental', difficulty: 'hard', icon: '🔤' },
-            { id: 'word_count', name: 'Conta le lettere in "WAKEUPGHE"', type: 'mental', difficulty: 'easy', icon: '📝' },
+            { id: 'word_count', name: 'Conta le lettere in "WAKEUPG"', type: 'mental', difficulty: 'easy', icon: '📝' },
             { id: 'pattern_recognition', name: 'Completa: 2, 4, 8, 16, ?', type: 'mental', difficulty: 'medium', icon: '🔍' },
             { id: 'spelling_bee', name: 'Spella "IMPOSSIBILE"', type: 'mental', difficulty: 'medium', icon: '✍️' },
             { id: 'logic_puzzle', name: 'Se oggi è mercoledì, che giorno sarà tra 100 giorni?', type: 'mental', difficulty: 'hard', icon: '🧩' },
@@ -5484,7 +5484,7 @@
             }
             
             // Default response
-            return `🤖 <strong>OH CIAO! Sono il chatbot più EPICO di WAKEUPGHE!</strong> 🎪<br><br>
+            return `🤖 <strong>OH CIAO! Sono il chatbot più EPICO di WAKEUPG!</strong> 🎪<br><br>
             <strong>Sono qui per trasformare le tue mattine in avventure epiche!</strong> 🚀<br><br>
             <strong>Posso aiutarti con:</strong><br>
             • 🚨 Sveglie impossibili da spegnere<br>
@@ -5521,14 +5521,14 @@
     <div id="chatbot-modal" class="modal" style="display: none;">
         <div class="modal-content chatbot-modal">
             <div class="modal-header">
-                <h2>🤖 Chatbot AI - WAKEUPGHE</h2>
+                <h2>🤖 Chatbot AI - WAKEUPG</h2>
                 <button class="close-btn" onclick="closeChatbotModal()">&times;</button>
             </div>
             <div class="chatbot-container">
                 <div class="chatbot-messages" id="chatbot-messages">
                     <div class="chatbot-message bot-message">
                         <div class="message-content">
-                            <strong>🤖 WAKEUPGHE AI:</strong> Ciao! Sono il tuo assistente virtuale per WAKEUPGHE. 
+                            <strong>🤖 WAKEUPG AI:</strong> Ciao! Sono il tuo assistente virtuale per WAKEUPG. 
                             Posso aiutarti con domande su allarmi, abbonamenti, challenge e molto altro!
                             <br><br>
                             <strong>💡 Prova a chiedere:</strong>
