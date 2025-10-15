@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wakeup-proof.vercel.app/sitemap.xml

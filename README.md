@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚨 WakeUpProof - La Sveglia Che Non Puoi Spegnere!
 
 ## 🎯 Cos'è WakeUpProof?
@@ -173,3 +174,11 @@ MIT License - vedi file LICENSE per dettagli
 ---
 
 **🚨 WakeUpProof - Trasforma la tua mattina in una vittoria! 🚀**
+=======
+# Firebase Functions — Stripe Webhook
+Implementa endpoint `/stripe/webhook` che gestisce:
+- invoice.payment_succeeded
+- invoice.payment_failed
+
+Aggiorna documento utente su Firestore con lo stato dell'abbonamento.
+>>>>>>> 5c0a8dbffaebab03f192a1957597a48bd85dfd5e

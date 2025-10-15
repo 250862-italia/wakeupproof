@@ -1,0 +1,1 @@
+Inserisci qui il modello MobileCLIP ONNX quantizzato quando pronto.
