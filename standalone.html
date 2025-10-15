@@ -3666,17 +3666,17 @@
                                     </div>
                                     <div class="setting-item">
                                         <label class="switch">
-                                            <input type="checkbox" id="new-registrations" onchange="toggleNewRegistrations()">
+                                            <input type="checkbox" id="new-registrations" checked disabled>
                                             <span class="slider"></span>
                                         </label>
-                                        <span>Nuove Registrazioni</span>
+                                        <span>Nuove Registrazioni <strong>(SEMPRE ATTIVE)</strong></span>
                                     </div>
                                     <div class="setting-item">
                                         <label class="switch">
-                                            <input type="checkbox" id="challenge-mode" onchange="toggleChallengeMode()">
+                                            <input type="checkbox" id="challenge-mode" checked disabled>
                                             <span class="slider"></span>
                                         </label>
-                                        <span>Modalità Challenge</span>
+                                        <span>Modalità Challenge <strong>(SEMPRE ATTIVE)</strong></span>
                                     </div>
                                 </div>
                                 <div class="admin-actions">
@@ -3969,15 +3969,13 @@
         }
         
         function toggleNewRegistrations() {
-            const isEnabled = document.getElementById('new-registrations').checked;
-            localStorage.setItem('newRegistrations', isEnabled);
-            showNotification(isEnabled ? '✅ Nuove registrazioni abilitate!' : '🚫 Nuove registrazioni disabilitate!', 'info');
+            // SEMPRE ATTIVE - Non modificabile
+            showNotification('✅ Nuove registrazioni sono SEMPRE ATTIVE!', 'info');
         }
         
         function toggleChallengeMode() {
-            const isEnabled = document.getElementById('challenge-mode').checked;
-            localStorage.setItem('challengeMode', isEnabled);
-            showNotification(isEnabled ? '🎯 Modalità challenge attivata!' : '⏸️ Modalità challenge disattivata!', 'info');
+            // SEMPRE ATTIVE - Non modificabile
+            showNotification('🎯 Modalità challenge è SEMPRE ATTIVA!', 'info');
         }
         
         function backupData() {
@@ -5162,6 +5160,10 @@
             
             // Aggiorna stato pagamenti
             refreshPaymentStatus();
+            
+            // SEMPRE ATTIVE - Force enable registrations and challenges
+            localStorage.setItem('newRegistrations', true);
+            localStorage.setItem('challengeMode', true);
         }
 
         // Chatbot Functions
