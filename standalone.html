@@ -18,6 +18,12 @@
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="WAKEUPG">
+    <meta name="msapplication-TileColor" content="#1976d2">
+    <meta name="msapplication-tap-highlight" content="no">
+    
     <!-- PWA Icons -->
     <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png">
@@ -2498,6 +2504,16 @@
                 try {
                     const registration = await navigator.serviceWorker.register('/sw.js');
                     console.log('Service Worker registered:', registration);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                showNotification('Nuova versione disponibile! Ricarica la pagina.', 'info');
+                            }
+                        });
+                    });
                 } catch (error) {
                     console.error('Service Worker registration failed:', error);
                 }

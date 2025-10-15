@@ -6,17 +6,8 @@ const DYNAMIC_CACHE = 'wakeup-proof-dynamic-v1.0.0';
 // Files da cachare
 const STATIC_FILES = [
     '/',
-    '/index.html',
+    '/standalone.html',
     '/manifest.json',
-    '/styles/main.css',
-    '/js/app.js',
-    '/js/database.js',
-    '/js/alarm-engine.js',
-    '/js/challenge-engine.js',
-    '/js/camera-handler.js',
-    '/js/sensors-handler.js',
-    '/js/subscription-service.js',
-    '/js/ui-manager.js',
     '/icons/icon-192x192.png',
     '/icons/icon-512x512.png'
 ];
@@ -90,7 +81,7 @@ self.addEventListener('fetch', event => {
                     .catch(() => {
                         // Fallback per offline
                         if (request.destination === 'document') {
-                            return caches.match('/index.html');
+                            return caches.match('/standalone.html');
                         }
                     });
             })
@@ -110,11 +101,11 @@ self.addEventListener('push', event => {
     console.log('Push notification received');
     
     const options = {
-        body: event.data ? event.data.text() : 'WakeUpProof - Sveglia attiva!',
+        body: event.data ? event.data.text() : 'WAKEUPG - Sveglia attiva!',
         icon: '/icons/icon-192x192.png',
         badge: '/icons/icon-72x72.png',
         vibrate: [200, 100, 200],
-        tag: 'wakeup-proof-alarm',
+        tag: 'wakeupg-alarm',
         requireInteraction: true,
         actions: [
             {
@@ -126,7 +117,7 @@ self.addEventListener('push', event => {
     };
 
     event.waitUntil(
-        self.registration.showNotification('WakeUpProof', options)
+        self.registration.showNotification('WAKEUPG', options)
     );
 });
 

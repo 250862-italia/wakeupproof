@@ -1,9 +1,9 @@
 {
-  "id": "wakeupproof-anti-snooze-alarm",
-  "name": "WakeUpProof - Sveglia Anti-Snooze",
-  "short_name": "WakeUpProof",
+  "id": "wakeupg-anti-snooze-alarm",
+  "name": "WAKEUPG - Sveglia Anti-Snooze",
+  "short_name": "WAKEUPG",
   "description": "Sveglia a prova di scuse con challenge verificati on-device",
-  "start_url": "/",
+  "start_url": "/standalone.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1976d2",
