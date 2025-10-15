@@ -2398,6 +2398,9 @@
                 <button id="subscription-btn" class="btn-icon" title="Abbonamenti">💳</button>
                 <button id="chatbot-btn" class="btn-icon" title="Chatbot AI" style="background: var(--accent-color); color: white;">🤖</button>
                 <button id="test-alarm-btn" class="btn-icon" title="Test Sveglia" onclick="testAlarm()" style="background: #ff6b6b; color: white;">🧪</button>
+                <button id="stress-test-btn" class="btn-icon" title="Stress Test Completo" onclick="stressTest()" style="background: #9b59b6; color: white;">🚀</button>
+                <button id="test-multiple-btn" class="btn-icon" title="Test Sveglie Multiple" onclick="testMultipleAlarms()" style="background: #e67e22; color: white;">⏰</button>
+                <button id="test-challenge-btn" class="btn-icon" title="Test Challenge System" onclick="testChallengeSystem()" style="background: #27ae60; color: white;">🎯</button>
             </div>
         </nav>
 
@@ -2636,6 +2639,207 @@
                 sound: 'classic'
             };
             triggerAlarm(testAlarm);
+        }
+        
+        // STRESS TEST COMPLETO
+        function stressTest() {
+            console.log('🚀 INIZIO STRESS TEST COMPLETO WAKEUPG');
+            
+            // Test 1: Sistema Timer
+            console.log('⏰ Test 1: Sistema Timer');
+            console.log('Timer attivo:', alarmTimer ? 'SI' : 'NO');
+            console.log('Interval:', alarmTimer ? '5 secondi' : 'NON ATTIVO');
+            
+            // Test 2: LocalStorage
+            console.log('💾 Test 2: LocalStorage');
+            const alarms = JSON.parse(localStorage.getItem('alarms') || '[]');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            console.log('Sveglie salvate:', alarms.length);
+            console.log('Utenti salvati:', users.length);
+            console.log('Abbonamenti salvati:', subscriptions.length);
+            
+            // Test 3: Audio System
+            console.log('🔊 Test 3: Audio System');
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                console.log('AudioContext:', audioContext.state);
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume().then(() => {
+                        console.log('AudioContext riattivato');
+                    });
+                }
+            } catch (error) {
+                console.error('Errore AudioContext:', error);
+            }
+            
+            // Test 4: Challenge System
+            console.log('🎯 Test 4: Challenge System');
+            const challenge = getRandomChallenge();
+            console.log('Challenge random:', challenge);
+            console.log('Totale challenge disponibili:', secretChallenges.length);
+            
+            // Test 5: Admin System
+            console.log('🔐 Test 5: Admin System');
+            console.log('Admin logged in:', isAdmin());
+            console.log('Current user:', currentUser ? currentUser.name : 'Nessuno');
+            
+            // Test 6: PWA System
+            console.log('📱 Test 6: PWA System');
+            console.log('Service Worker:', 'sw.js' in navigator.serviceWorker ? 'Disponibile' : 'Non disponibile');
+            console.log('Manifest:', document.querySelector('link[rel="manifest"]') ? 'Presente' : 'Mancante');
+            
+            // Test 7: Modal System
+            console.log('🪟 Test 7: Modal System');
+            const modals = document.querySelectorAll('.modal');
+            console.log('Modal presenti:', modals.length);
+            
+            // Test 8: Notification System
+            console.log('🔔 Test 8: Notification System');
+            showNotification('🧪 Stress Test in corso...', 'info');
+            
+            // Test 9: Alarm Creation
+            console.log('⏰ Test 9: Alarm Creation');
+            const testAlarm = {
+                id: 'stress-test-alarm',
+                name: 'Stress Test Alarm',
+                time: new Date(Date.now() + 60000).toTimeString().slice(0, 5), // 1 minuto da ora
+                enabled: true,
+                days: [],
+                sound: 'classic',
+                challenges: true
+            };
+            
+            // Salva sveglia di test
+            const existingAlarms = JSON.parse(localStorage.getItem('alarms') || '[]');
+            existingAlarms.push(testAlarm);
+            localStorage.setItem('alarms', JSON.stringify(existingAlarms));
+            console.log('Sveglia di test creata:', testAlarm);
+            
+            // Test 10: User Registration
+            console.log('👤 Test 10: User Registration');
+            const testUser = {
+                id: 'stress-test-user',
+                name: 'Stress Test User',
+                email: 'stress@test.com',
+                password: 'test123',
+                age: 25,
+                createdAt: new Date().toISOString(),
+                subscription: 'free',
+                stats: { streak: 0, challengesCompleted: 0, effectiveness: 0, totalAlarms: 0 }
+            };
+            
+            const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+            existingUsers.push(testUser);
+            localStorage.setItem('users', JSON.stringify(existingUsers));
+            console.log('Utente di test creato:', testUser);
+            
+            // Test 11: Challenge Execution
+            console.log('🎯 Test 11: Challenge Execution');
+            const randomChallenge = getRandomChallenge();
+            console.log('Challenge selezionata:', randomChallenge);
+            
+            // Test 12: Audio Playback
+            console.log('🔊 Test 12: Audio Playback');
+            playAlarmSound('classic');
+            
+            // Test 13: Modal Display
+            console.log('🪟 Test 13: Modal Display');
+            showAlarmChallengeModal(testAlarm);
+            
+            // Test 14: Timer Check
+            console.log('⏰ Test 14: Timer Check');
+            checkAlarms();
+            
+            // Test 15: System Status
+            console.log('📊 Test 15: System Status');
+            console.log('App initialized:', isInitialized);
+            console.log('User logged in:', isLoggedIn);
+            console.log('Admin mode:', isAdmin());
+            console.log('Active alarms:', activeAlarms.length);
+            
+            console.log('✅ STRESS TEST COMPLETATO!');
+            showNotification('🧪 Stress Test completato! Controlla la console per i risultati.', 'success');
+        }
+        
+        // TEST SVEGLIE MULTIPLE
+        function testMultipleAlarms() {
+            console.log('⏰ TEST SVEGLIE MULTIPLE');
+            
+            // Crea 5 sveglie con orari diversi
+            const now = new Date();
+            const alarms = [];
+            
+            for (let i = 1; i <= 5; i++) {
+                const alarmTime = new Date(now.getTime() + (i * 30000)); // Ogni 30 secondi
+                const alarm = {
+                    id: `test-alarm-${i}`,
+                    name: `Test Alarm ${i}`,
+                    time: alarmTime.toTimeString().slice(0, 5),
+                    enabled: true,
+                    days: [],
+                    sound: ['classic', 'beep', 'buzz', 'chime'][i % 4],
+                    challenges: true
+                };
+                alarms.push(alarm);
+                console.log(`Sveglia ${i} creata per le ${alarm.time}`);
+            }
+            
+            // Salva tutte le sveglie
+            const existingAlarms = JSON.parse(localStorage.getItem('alarms') || '[]');
+            existingAlarms.push(...alarms);
+            localStorage.setItem('alarms', JSON.stringify(existingAlarms));
+            
+            console.log('✅ 5 sveglie di test create!');
+            showNotification('⏰ 5 sveglie di test create! Controlla la console per i dettagli.', 'success');
+            
+            // Mostra countdown
+            let countdown = 5;
+            const countdownInterval = setInterval(() => {
+                console.log(`⏳ Countdown: ${countdown} secondi`);
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    console.log('🚨 Test sveglie completato!');
+                }
+                countdown--;
+            }, 1000);
+        }
+        
+        // TEST CHALLENGE SYSTEM
+        function testChallengeSystem() {
+            console.log('🎯 TEST CHALLENGE SYSTEM');
+            
+            // Test tutte le 20 challenge
+            console.log('📋 Testando tutte le 20 challenge disponibili:');
+            secretChallenges.forEach((challenge, index) => {
+                console.log(`${index + 1}. ${challenge.icon} ${challenge.name} (${challenge.type} - ${challenge.difficulty})`);
+            });
+            
+            // Test challenge random
+            console.log('🎲 Test challenge random:');
+            for (let i = 0; i < 5; i++) {
+                const randomChallenge = getRandomChallenge();
+                console.log(`Challenge ${i + 1}: ${randomChallenge.icon} ${randomChallenge.name}`);
+            }
+            
+            // Test challenge per tipo
+            console.log('📊 Test challenge per tipo:');
+            const types = ['physical', 'mental', 'creative', 'sensory'];
+            types.forEach(type => {
+                const challenge = getChallengeByType(type);
+                console.log(`${type}: ${challenge.icon} ${challenge.name}`);
+            });
+            
+            // Test challenge per difficoltà
+            console.log('⚡ Test challenge per difficoltà:');
+            const difficulties = ['easy', 'medium', 'hard', 'extreme'];
+            difficulties.forEach(difficulty => {
+                const challenge = getChallengeByDifficulty(difficulty);
+                console.log(`${difficulty}: ${challenge.icon} ${challenge.name}`);
+            });
+            
+            console.log('✅ Challenge system test completato!');
+            showNotification('🎯 Challenge system test completato! Controlla la console.', 'success');
         }
         
         function checkAlarms() {
