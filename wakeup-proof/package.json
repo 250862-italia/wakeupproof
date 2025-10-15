@@ -1,0 +1,18 @@
+{
+  "name": "wakeupproof-admin",
+  "version": "1.0.0",
+  "description": "WakeUpProof - Anti-Snooze Alarm App with Admin Panel",
+  "main": "standalone.html",
+  "scripts": {
+    "start": "npx serve .",
+    "deploy": "npx vercel --prod --yes",
+    "deploy:netlify": "npx netlify-cli deploy --prod --dir .",
+    "deploy:surge": "npx surge . wakeupproof-admin.surge.sh"
+  },
+  "keywords": ["alarm", "wakeup", "pwa", "admin", "subscription"],
+  "author": "250862-italia",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}

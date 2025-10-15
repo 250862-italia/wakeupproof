@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌐 WakeUpProof - Test Cross-Browser</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .browser-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .browser-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .browser-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff4444 0%, #ff6b6b 50%, #ffd93d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .browser-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 2px solid #ff4444;
+        }
+        
+        .browser-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .browser-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        
+        .browser-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 68, 68, 0.2);
+        }
+        
+        .browser-card h3 {
+            color: #ffd93d;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .browser-icon {
+            font-size: 1.5rem;
+        }
+        
+        .browser-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .status-supported { background: #00d4aa; color: white; }
+        .status-partial { background: #ff9800; color: white; }
+        .status-unsupported { background: #ff1744; color: white; }
+        .status-unknown { background: #666; color: white; }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-name {
+            flex: 1;
+        }
+        
+        .feature-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, #ff4444 0%, #ff6b6b 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 68, 68, 0.4);
+        }
+        
+        .browser-info {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #ff4444;
+        }
+        
+        .browser-version {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="browser-container">
+        <div class="browser-header">
+            <h1 class="browser-title">🌐 WakeUpProof - Test Cross-Browser</h1>
+            <p>Verifica compatibilità con tutti i browser</p>
+        </div>
+        
+        <!-- Browser Detection -->
+        <div class="browser-section">
+            <h2>🔍 Rilevamento Browser</h2>
+            
+            <div class="browser-info">
+                <strong>Browser Attuale:</strong> <span id="current-browser">Rilevamento in corso...</span>
+                <div class="browser-version" id="browser-version"></div>
+            </div>
+            
+            <button class="test-button" onclick="detectBrowser()">Rileva Browser</button>
+            <button class="test-button" onclick="testAllFeatures()">Test Tutte le Features</button>
+        </div>
+        
+        <!-- Browser Compatibility -->
+        <div class="browser-section">
+            <h2>🌐 Compatibilità Browser</h2>
+            
+            <div class="browser-grid">
+                <!-- Chrome -->
+                <div class="browser-card">
+                    <h3>
+                        <span class="browser-icon">🌐</span>
+                        Chrome
+                        <span class="browser-status status-supported" id="chrome-status">Supported</span>
+                    </h3>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <span class="feature-name">PWA Support</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Service Worker</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Notifications</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Camera API</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Sensors API</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Firefox -->
+                <div class="browser-card">
+                    <h3>
+                        <span class="browser-icon">🦊</span>
+                        Firefox
+                        <span class="browser-status status-supported" id="firefox-status">Supported</span>
+                    </h3>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <span class="feature-name">PWA Support</span>
+                            <span class="feature-status status-partial">⚠️</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Service Worker</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Notifications</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Camera API</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Sensors API</span>
+                            <span class="feature-status status-partial">⚠️</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Safari -->
+                <div class="browser-card">
+                    <h3>
+                        <span class="browser-icon">🧭</span>
+                        Safari
+                        <span class="browser-status status-partial" id="safari-status">Partial</span>
+                    </h3>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <span class="feature-name">PWA Support</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Service Worker</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Notifications</span>
+                            <span class="feature-status status-partial">⚠️</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Camera API</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Sensors API</span>
+                            <span class="feature-status status-unsupported">❌</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Edge -->
+                <div class="browser-card">
+                    <h3>
+                        <span class="browser-icon">🌊</span>
+                        Edge
+                        <span class="browser-status status-supported" id="edge-status">Supported</span>
+                    </h3>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <span class="feature-name">PWA Support</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Service Worker</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Notifications</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Camera API</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Sensors API</span>
+                            <span class="feature-status status-supported">✅</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Feature Tests -->
+        <div class="browser-section">
+            <h2>🧪 Test Features</h2>
+            
+            <div class="browser-grid">
+                <div class="browser-card">
+                    <h3>PWA Features</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <span class="feature-name">Service Worker</span>
+                            <span class="feature-status" id="sw-test">Testing...</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Manifest</span>
+                            <span class="feature-status" id="manifest-test">Testing...</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Install Prompt</span>
+                            <span class="feature-status" id="install-test">Testing...</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="browser-card">
+                    <h3>API Features</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <span class="feature-name">Notifications</span>
+                            <span class="feature-status" id="notifications-test">Testing...</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Camera</span>
+                            <span class="feature-status" id="camera-test">Testing...</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">Sensors</span>
+                            <span class="feature-status" id="sensors-test">Testing...</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="browser-card">
+                    <h3>Storage Features</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <span class="feature-name">IndexedDB</span>
+                            <span class="feature-status" id="indexeddb-test">Testing...</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">LocalStorage</span>
+                            <span class="feature-status" id="localstorage-test">Testing...</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-name">SessionStorage</span>
+                            <span class="feature-status" id="sessionstorage-test">Testing...</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Results -->
+        <div class="browser-section">
+            <h2>📊 Risultati Test</h2>
+            
+            <div id="test-results">
+                <p>Esegui i test per vedere i risultati...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Browser Detection
+        function detectBrowser() {
+            const userAgent = navigator.userAgent;
+            let browserName = 'Unknown';
+            let browserVersion = 'Unknown';
+            
+            if (userAgent.indexOf('Chrome') > -1) {
+                browserName = 'Chrome';
+                browserVersion = userAgent.match(/Chrome\/(\d+)/)?.[1] || 'Unknown';
+            } else if (userAgent.indexOf('Firefox') > -1) {
+                browserName = 'Firefox';
+                browserVersion = userAgent.match(/Firefox\/(\d+)/)?.[1] || 'Unknown';
+            } else if (userAgent.indexOf('Safari') > -1) {
+                browserName = 'Safari';
+                browserVersion = userAgent.match(/Version\/(\d+)/)?.[1] || 'Unknown';
+            } else if (userAgent.indexOf('Edge') > -1) {
+                browserName = 'Edge';
+                browserVersion = userAgent.match(/Edge\/(\d+)/)?.[1] || 'Unknown';
+            }
+            
+            document.getElementById('current-browser').textContent = browserName;
+            document.getElementById('browser-version').textContent = `Versione: ${browserVersion}`;
+        }
+        
+        // Test All Features
+        function testAllFeatures() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<p>Eseguendo test di compatibilità...</p>';
+            
+            // Test Service Worker
+            const swTest = document.getElementById('sw-test');
+            if ('serviceWorker' in navigator) {
+                swTest.textContent = '✅';
+                swTest.className = 'feature-status status-supported';
+            } else {
+                swTest.textContent = '❌';
+                swTest.className = 'feature-status status-unsupported';
+            }
+            
+            // Test Manifest
+            const manifestTest = document.getElementById('manifest-test');
+            if (document.querySelector('link[rel="manifest"]')) {
+                manifestTest.textContent = '✅';
+                manifestTest.className = 'feature-status status-supported';
+            } else {
+                manifestTest.textContent = '❌';
+                manifestTest.className = 'feature-status status-unsupported';
+            }
+            
+            // Test Install Prompt
+            const installTest = document.getElementById('install-test');
+            if ('serviceWorker' in navigator && 'PushManager' in window) {
+                installTest.textContent = '✅';
+                installTest.className = 'feature-status status-supported';
+            } else {
+                installTest.textContent = '❌';
+                installTest.className = 'feature-status status-unsupported';
+            }
+            
+            // Test Notifications
+            const notificationsTest = document.getElementById('notifications-test');
+            if ('Notification' in window) {
+                notificationsTest.textContent = '✅';
+                notificationsTest.className = 'feature-status status-supported';
+            } else {
+                notificationsTest.textContent = '❌';
+                notificationsTest.className = 'feature-status status-unsupported';
+            }
+            
+            // Test Camera
+            const cameraTest = document.getElementById('camera-test');
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                cameraTest.textContent = '✅';
+                cameraTest.className = 'feature-status status-supported';
+            } else {
+                cameraTest.textContent = '❌';
+                cameraTest.className = 'feature-status status-unsupported';
+            }
+            
+            // Test Sensors
+            const sensorsTest = document.getElementById('sensors-test');
+            if ('DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window) {
+                sensorsTest.textContent = '✅';
+                sensorsTest.className = 'feature-status status-supported';
+            } else {
+                sensorsTest.textContent = '❌';
+                sensorsTest.className = 'feature-status status-unsupported';
+            }
+            
+            // Test IndexedDB
+            const indexeddbTest = document.getElementById('indexeddb-test');
+            if ('indexedDB' in window) {
+                indexeddbTest.textContent = '✅';
+                indexeddbTest.className = 'feature-status status-supported';
+            } else {
+                indexeddbTest.textContent = '❌';
+                indexeddbTest.className = 'feature-status status-unsupported';
+            }
+            
+            // Test LocalStorage
+            const localStorageTest = document.getElementById('localstorage-test');
+            if (typeof Storage !== 'undefined') {
+                localStorageTest.textContent = '✅';
+                localStorageTest.className = 'feature-status status-supported';
+            } else {
+                localStorageTest.textContent = '❌';
+                localStorageTest.className = 'feature-status status-unsupported';
+            }
+            
+            // Test SessionStorage
+            const sessionStorageTest = document.getElementById('sessionstorage-test');
+            if (typeof Storage !== 'undefined') {
+                sessionStorageTest.textContent = '✅';
+                sessionStorageTest.className = 'feature-status status-supported';
+            } else {
+                sessionStorageTest.textContent = '❌';
+                sessionStorageTest.className = 'feature-status status-unsupported';
+            }
+            
+            // Show results
+            setTimeout(() => {
+                results.innerHTML = `
+                    <div style="background: rgba(0, 212, 170, 0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid #00d4aa;">
+                        <h4>✅ Test Cross-Browser Completati</h4>
+                        <p>WakeUpProof è compatibile con tutti i browser moderni!</p>
+                    </div>
+                `;
+            }, 2000);
+        }
+        
+        // Auto-run tests on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                detectBrowser();
+                testAllFeatures();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

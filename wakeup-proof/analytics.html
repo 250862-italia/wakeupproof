@@ -1,0 +1,57 @@
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+</script>
+
+<!-- Vercel Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+
+<!-- Custom Analytics -->
+<script>
+  // Track app installs
+  window.addEventListener('beforeinstallprompt', (e) => {
+    gtag('event', 'pwa_install_prompt', {
+      event_category: 'PWA',
+      event_label: 'Install Prompt Shown'
+    });
+  });
+
+  // Track alarm creation
+  function trackAlarmCreation() {
+    gtag('event', 'alarm_created', {
+      event_category: 'User Action',
+      event_label: 'New Alarm'
+    });
+  }
+
+  // Track challenge completion
+  function trackChallengeCompletion(challengeType) {
+    gtag('event', 'challenge_completed', {
+      event_category: 'Challenge',
+      event_label: challengeType
+    });
+  }
+
+  // Track subscription upgrade
+  function trackSubscriptionUpgrade(plan) {
+    gtag('event', 'subscription_upgrade', {
+      event_category: 'Monetization',
+      event_label: plan
+    });
+  }
+
+  // Track social sharing
+  function trackSocialShare(platform) {
+    gtag('event', 'social_share', {
+      event_category: 'Social',
+      event_label: platform
+    });
+  }
+</script>

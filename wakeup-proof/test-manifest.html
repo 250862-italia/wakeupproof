@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Manifest - WakeUpProof</title>
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <h1>Test Manifest WakeUpProof</h1>
+    <p>Questo file testa se il manifest è accessibile.</p>
+    
+    <script>
+        // Test manifest access
+        fetch('manifest.json')
+            .then(response => response.json())
+            .then(manifest => {
+                console.log('Manifest caricato:', manifest);
+                document.body.innerHTML += '<p>✅ Manifest caricato correttamente!</p>';
+                document.body.innerHTML += '<p>ID: ' + manifest.id + '</p>';
+                document.body.innerHTML += '<p>Nome: ' + manifest.name + '</p>';
+            })
+            .catch(error => {
+                console.error('Errore caricamento manifest:', error);
+                document.body.innerHTML += '<p>❌ Errore caricamento manifest: ' + error.message + '</p>';
+            });
+    </script>
+</body>
+</html>

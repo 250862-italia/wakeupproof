@@ -1,0 +1,8 @@
+{
+  "domain": "wakeupproof-payments.surge.sh",
+  "project": "wakeup-proof",
+  "build": {
+    "publish": ".",
+    "cleanUrls": true
+  }
+}
