@@ -727,6 +727,23 @@
             text-align: center;
             margin: 1rem 0;
         }
+        
+        .challenge-instructions {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .challenge-instructions p {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .challenge-instructions strong {
+            color: #2e7d32;
+        }
 
         @keyframes alarm-glow {
             0%, 100% { box-shadow: var(--shadow); }
@@ -3010,13 +3027,9 @@
             // Play alarm sound
             playAlarmSound(alarm.sound || 'classic');
             
-            // Show challenge modal if enabled
-            if (alarm.challenges && alarm.challenges.length > 0) {
-                showAlarmChallengeModal(alarm);
-            } else {
-                // Simple alarm without challenges
-                showSimpleAlarmModal(alarm);
-            }
+            // FORZA CHALLENGE OBBLIGATORIA PER TUTTE LE SVEGLIE
+            console.log('🎯 Forcing mandatory challenge for all alarms');
+            showAlarmChallengeModal(alarm);
         }
         
         // Global alarm sound variables
@@ -3109,53 +3122,7 @@
             }
         }
         
-        function showSimpleAlarmModal(alarm) {
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.id = 'alarm-modal';
-            modal.innerHTML = `
-                <div class="modal-content alarm-modal-content">
-                    <div class="modal-header alarm-header">
-                        <h3>🚨 SVEGLIA ATTIVA! 🚨</h3>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alarm-info">
-                            <h4>${alarm.name || 'Allarme'}</h4>
-                            <p><strong>Orario:</strong> ${alarm.time}</p>
-                            <p><strong>Suono:</strong> ${alarm.sound || 'classic'}</p>
-                            <p><strong>Stato:</strong> <span class="alarm-status">SUONANDO</span></p>
-                        </div>
-                        <div class="alarm-actions">
-                            <button id="stop-alarm-btn" onclick="stopAlarm('${alarm.id}')" class="btn btn-danger btn-large">
-                                ⏹️ SPEGNI SVEGLIA
-                            </button>
-                        </div>
-                        <div class="alarm-warning">
-                            <p>⚠️ La sveglia continuerà a suonare finché non la spegni!</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            modal.style.display = 'flex';
-            
-            // Make modal non-dismissible
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-            });
-            
-            // Add pulsing animation to the stop button
-            const stopBtn = document.getElementById('stop-alarm-btn');
-            if (stopBtn) {
-                stopBtn.style.animation = 'pulse 1s infinite';
-                stopBtn.style.fontSize = '1.2rem';
-                stopBtn.style.padding = '1rem 2rem';
-            }
-        }
+        // REMOVED: showSimpleAlarmModal - Tutte le sveglie ora hanno challenge obbligatorie
         
         function showAlarmChallengeModal(alarm) {
             const modal = document.createElement('div');
@@ -3164,28 +3131,26 @@
             modal.innerHTML = `
                 <div class="modal-content alarm-modal-content">
                     <div class="modal-header alarm-header">
-                        <h3>🚨 SVEGLIA CHALLENGE! 🚨</h3>
+                        <h3>🚨 CHALLENGE OBBLIGATORIA! 🚨</h3>
                     </div>
                     <div class="modal-body">
                         <div class="alarm-info">
                             <h4>${alarm.name || 'Allarme'}</h4>
                             <p><strong>Orario:</strong> ${alarm.time}</p>
                             <p><strong>Stato:</strong> <span class="alarm-status">SUONANDO</span></p>
-                            <p><strong>⚠️ Completa la challenge per spegnere la sveglia!</strong></p>
+                            <p><strong>🎯 DEVI completare la challenge per spegnere la sveglia!</strong></p>
                         </div>
                         <div class="challenge-content">
-                            <div id="challenge-display">Caricamento challenge...</div>
+                            <div id="challenge-display">Caricamento challenge obbligatoria...</div>
                         </div>
                         <div class="alarm-actions">
                             <button id="complete-challenge-btn" class="btn btn-success btn-large" onclick="completeAlarmChallenge('${alarm.id}')">
                                 ✅ COMPLETA CHALLENGE
                             </button>
-                            <button id="force-stop-btn" class="btn btn-danger btn-large" onclick="stopAlarm('${alarm.id}')">
-                                🔇 SPEGNI COMUNQUE
-                            </button>
                         </div>
                         <div class="alarm-warning">
-                            <p>⚠️ La sveglia continuerà a suonare finché non completi la challenge o la spegni!</p>
+                            <p>⚠️ IMPOSSIBILE spegnere la sveglia senza completare la challenge!</p>
+                            <p>🎯 La sveglia continuerà a suonare finché non completi l'azione richiesta!</p>
                         </div>
                     </div>
                 </div>
@@ -3202,20 +3167,14 @@
                 }
             });
             
-            // Add pulsing animation to buttons
+            // Add pulsing animation to complete button
             const completeBtn = document.getElementById('complete-challenge-btn');
-            const forceStopBtn = document.getElementById('force-stop-btn');
             
             if (completeBtn) {
                 completeBtn.style.animation = 'pulse 1s infinite';
-                completeBtn.style.fontSize = '1.1rem';
-                completeBtn.style.padding = '0.8rem 1.5rem';
-            }
-            
-            if (forceStopBtn) {
-                forceStopBtn.style.animation = 'pulse 1s infinite';
-                forceStopBtn.style.fontSize = '1.1rem';
-                forceStopBtn.style.padding = '0.8rem 1.5rem';
+                completeBtn.style.fontSize = '1.2rem';
+                completeBtn.style.padding = '1rem 2rem';
+                completeBtn.style.width = '100%';
             }
             
             // Load random challenge
@@ -3229,10 +3188,17 @@
             challengeDisplay.innerHTML = `
                 <div class="challenge-content">
                     <div class="challenge-text">
-                        <h3>🚨 SVEGLIA RANDOM! 🚨</h3>
+                        <h3>🎯 CHALLENGE OBBLIGATORIA! 🎯</h3>
                         <h4>${challenge.icon} ${challenge.name}</h4>
                         <p><strong>Tipo:</strong> ${challenge.type} | <strong>Difficoltà:</strong> ${challenge.difficulty}</p>
-                        <p><em>Devi completare questa sfida per spegnere la sveglia!</em></p>
+                        <p><strong>⚠️ OBBLIGATORIO:</strong> Devi completare questa azione per spegnere la sveglia!</p>
+                        <div class="challenge-instructions">
+                            <p><strong>ISTRUZIONI:</strong></p>
+                            <p>1. Leggi attentamente la challenge</p>
+                            <p>2. Esegui l'azione richiesta</p>
+                            <p>3. Clicca "COMPLETA CHALLENGE" solo dopo aver fatto l'azione</p>
+                            <p>4. La sveglia si spegnerà automaticamente</p>
+                        </div>
                     </div>
                 </div>
             `;
@@ -5013,31 +4979,35 @@
             document.body.appendChild(modal);
         }
 
-        // 20 SVEGLIE RANDOM - L'utente NON può scegliere!
+        // CHALLENGE OBBLIGATORIE PER SVEGLIE - L'utente DEVE completarle!
         const secretChallenges = [
-            { id: 'jumping_jacks', name: 'Fai 20 jumping jacks', type: 'physical', difficulty: 'medium', icon: '💪' },
-            { id: 'push_ups', name: 'Fai 10 flessioni', type: 'physical', difficulty: 'hard', icon: '🏋️' },
-            { id: 'squats', name: 'Fai 15 squat', type: 'physical', difficulty: 'medium', icon: '🦵' },
-            { id: 'plank', name: 'Mantieni il plank per 30 secondi', type: 'physical', difficulty: 'hard', icon: '🤸' },
-            { id: 'burpees', name: 'Fai 5 burpees', type: 'physical', difficulty: 'extreme', icon: '🔥' },
+            // CHALLENGE FISICHE OBBLIGATORIE
+            { id: 'get_up_bed', name: 'ALZATI DAL LETTO e vai in cucina', type: 'physical', difficulty: 'medium', icon: '🛏️', mandatory: true },
+            { id: 'kitchen_photo', name: 'Fai una FOTO alla cucina', type: 'physical', difficulty: 'easy', icon: '📸', mandatory: true },
+            { id: 'drink_water', name: 'BEVI un bicchiere d\'acqua', type: 'physical', difficulty: 'easy', icon: '💧', mandatory: true },
+            { id: 'open_window', name: 'APRI la finestra e respira aria fresca', type: 'physical', difficulty: 'easy', icon: '🪟', mandatory: true },
+            { id: 'stretch_arms', name: 'ALLUNGA le braccia verso l\'alto', type: 'physical', difficulty: 'easy', icon: '🤸', mandatory: true },
             
-            { id: 'math_problem', name: 'Rispondi: 15 x 23 = ?', type: 'mental', difficulty: 'medium', icon: '🧮' },
-            { id: 'word_scramble', name: 'Trova la parola: RATNSU', type: 'mental', difficulty: 'easy', icon: '🔤' },
-            { id: 'memory_sequence', name: 'Ripeti la sequenza: 7-2-9-1-4', type: 'mental', difficulty: 'medium', icon: '🧠' },
-            { id: 'color_sequence', name: 'Ripeti i colori: Rosso-Verde-Blu-Giallo', type: 'mental', difficulty: 'easy', icon: '🌈' },
-            { id: 'reverse_counting', name: 'Conta alla rovescia da 50 a 0', type: 'mental', difficulty: 'medium', icon: '🔢' },
+            // CHALLENGE MENTALI OBBLIGATORIE
+            { id: 'say_good_morning', name: 'Dì "BUONGIORNO" ad alta voce', type: 'mental', difficulty: 'easy', icon: '🌅', mandatory: true },
+            { id: 'count_to_ten', name: 'CONTA da 1 a 10 ad alta voce', type: 'mental', difficulty: 'easy', icon: '🔢', mandatory: true },
+            { id: 'name_day', name: 'Dì che GIORNO è oggi', type: 'mental', difficulty: 'easy', icon: '📅', mandatory: true },
+            { id: 'weather_check', name: 'GUARDA fuori e dimmi che tempo fa', type: 'mental', difficulty: 'easy', icon: '🌤️', mandatory: true },
+            { id: 'positive_thought', name: 'PENSA a una cosa positiva per oggi', type: 'mental', difficulty: 'medium', icon: '💭', mandatory: true },
             
-            { id: 'drawing', name: 'Disegna un gatto in 30 secondi', type: 'creative', difficulty: 'easy', icon: '🎨' },
-            { id: 'poetry', name: 'Recita una poesia a memoria', type: 'creative', difficulty: 'medium', icon: '📝' },
-            { id: 'singing', name: 'Canta "Happy Birthday" ad alta voce', type: 'creative', difficulty: 'easy', icon: '🎤' },
-            { id: 'storytelling', name: 'Racconta una storia in 1 minuto', type: 'creative', difficulty: 'medium', icon: '📚' },
-            { id: 'improv', name: 'Fai 30 secondi di improvvisazione teatrale', type: 'creative', difficulty: 'hard', icon: '🎭' },
+            // CHALLENGE CREATIVE OBBLIGATORIE
+            { id: 'smile_mirror', name: 'SORRIDI allo specchio', type: 'creative', difficulty: 'easy', icon: '😊', mandatory: true },
+            { id: 'sing_morning', name: 'CANTA una canzone del mattino', type: 'creative', difficulty: 'easy', icon: '🎵', mandatory: true },
+            { id: 'dance_move', name: 'Fai un PASSO di danza', type: 'creative', difficulty: 'easy', icon: '💃', mandatory: true },
+            { id: 'clap_hands', name: 'BATTI le mani 10 volte', type: 'creative', difficulty: 'easy', icon: '👏', mandatory: true },
+            { id: 'jump_once', name: 'SALTA una volta sul posto', type: 'creative', difficulty: 'easy', icon: '🦘', mandatory: true },
             
-            { id: 'taste_test', name: 'Assaggia qualcosa di dolce', type: 'sensory', difficulty: 'easy', icon: '🍯' },
-            { id: 'smell_test', name: 'Annusa 3 cose diverse', type: 'sensory', difficulty: 'easy', icon: '👃' },
-            { id: 'touch_test', name: 'Tocca 5 texture diverse', type: 'sensory', difficulty: 'easy', icon: '✋' },
-            { id: 'balance_test', name: 'Mantieni l\'equilibrio su un piede per 30 secondi', type: 'sensory', difficulty: 'medium', icon: '⚖️' },
-            { id: 'color_test', name: 'Trova 5 oggetti di colori diversi', type: 'sensory', difficulty: 'easy', icon: '🌈' }
+            // CHALLENGE SENSORIALI OBBLIGATORIE
+            { id: 'touch_face', name: 'TOCCA il tuo viso con le mani', type: 'sensory', difficulty: 'easy', icon: '✋', mandatory: true },
+            { id: 'deep_breath', name: 'Fai 3 RESPIRI profondi', type: 'sensory', difficulty: 'easy', icon: '🫁', mandatory: true },
+            { id: 'look_around', name: 'GUARDA intorno a te e descrivi 3 oggetti', type: 'sensory', difficulty: 'easy', icon: '👀', mandatory: true },
+            { id: 'listen_sounds', name: 'ASCOLTA i suoni intorno a te', type: 'sensory', difficulty: 'easy', icon: '👂', mandatory: true },
+            { id: 'feel_texture', name: 'TOCCA 3 superfici diverse', type: 'sensory', difficulty: 'easy', icon: '🤲', mandatory: true }
         ];
         
         // Challenge Selection System - 20 SVEGLIE RANDOM!
