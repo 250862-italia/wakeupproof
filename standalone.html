@@ -3355,27 +3355,27 @@
                                         <p>Supporto email</p>
                                         <button class="btn-secondary" id="free-plan">Attuale</button>
                                     </div>
-                                    <div class="plan-card">
-                                        <h4>⭐ Pro</h4>
-                                        <p>Allarmi illimitati</p>
-                                        <p>Challenge avanzati</p>
-                                        <p>Suonerie personalizzate</p>
-                                        <p>Supporto prioritario</p>
-                                        <button class="btn-primary" onclick="purchasePlan('pro')">€4.99/mese</button>
-                                    </div>
-                                    <div class="plan-card">
-                                        <h4>💎 Premium</h4>
-                                        <p>Tutto incluso</p>
-                                        <p>Challenge estreme</p>
-                                        <p>Analytics avanzate</p>
-                                        <p>Supporto 24/7</p>
-                                        <button class="btn-primary" onclick="purchasePlan('premium')">€9.99/mese</button>
-                                    </div>
+                                <div class="plan-card">
+                                    <h4>⭐ Pro</h4>
+                                    <p>Allarmi illimitati</p>
+                                    <p>Challenge avanzati</p>
+                                    <p>Suonerie personalizzate</p>
+                                    <p>Supporto prioritario</p>
+                                    <button class="btn-secondary" disabled>Presto Disponibile</button>
+                                </div>
+                                <div class="plan-card">
+                                    <h4>💎 Premium</h4>
+                                    <p>Tutto incluso</p>
+                                    <p>Challenge estreme</p>
+                                    <p>Analytics avanzate</p>
+                                    <p>Supporto 24/7</p>
+                                    <button class="btn-secondary" disabled>Presto Disponibile</button>
+                                </div>
                                 </div>
                                 <div class="subscription-info">
-                                    <p>💡 <strong>Prova gratis per 7 giorni!</strong></p>
-                                    <p>🔄 Annulla quando vuoi</p>
-                                    <p>🔒 Pagamenti sicuri</p>
+                                    <p>🚧 <strong>Abbonamenti temporaneamente disabilitati</strong></p>
+                                    <p>💡 <strong>Versione gratuita disponibile</strong></p>
+                                    <p>🔄 <strong>Presto torneranno gli abbonamenti</strong></p>
                                 </div>
                             </div>
                         </div>
@@ -3603,6 +3603,7 @@
         // Register user
         async function registerUser(name, email, password, age) {
             const users = JSON.parse(localStorage.getItem('users') || '[]');
+            console.log('Current users before registration:', users);
             
             // Check if user already exists
             if (users.find(u => u.email === email)) {
@@ -3636,6 +3637,9 @@
             
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
+            console.log('User registered and saved:', newUser);
+            console.log('All users after registration:', users);
+            
             return newUser;
         }
         
@@ -4056,6 +4060,7 @@
         // Load users
         function loadUsers() {
             let users = JSON.parse(localStorage.getItem('users') || '[]');
+            console.log('Loading users from localStorage:', users);
             
             // Se non ci sono utenti, crea alcuni demo
             if (users.length === 0) {
@@ -4079,12 +4084,15 @@
             }
             
             const usersList = document.getElementById('users-list');
+            console.log('Users list element:', usersList);
             usersList.innerHTML = '';
             
             if (users.length === 0) {
                 usersList.innerHTML = '<p class="no-data">Nessun utente trovato</p>';
                 return;
             }
+            
+            console.log('Displaying', users.length, 'users');
             
             users.forEach(user => {
                 const userElement = document.createElement('div');
@@ -5090,36 +5098,8 @@
         // PaymentService is now integrated directly - no fallback needed
 
         async function purchasePlan(planId) {
-            try {
-                if (!paymentService) {
-                    showNotification('Sistema di pagamento non disponibile', 'error');
-                    return;
-                }
-
-                const currentUser = getCurrentUser();
-                if (!currentUser) {
-                    showNotification('Devi essere loggato per acquistare un abbonamento', 'error');
-                    return;
-                }
-
-                const product = paymentService.getProduct(planId);
-                if (!product) {
-                    showNotification('Prodotto non trovato', 'error');
-                    return;
-                }
-
-                // Verifica se l'utente ha già un abbonamento attivo
-                if (currentUser.subscription && currentUser.subscription.status === 'active') {
-                    showNotification('Hai già un abbonamento attivo!', 'warning');
-                    return;
-                }
-
-                // Show payment modal
-                showPaymentModal(product, currentUser);
-            } catch (error) {
-                console.error('Errore acquisto piano:', error);
-                showNotification('Errore durante l\'acquisto', 'error');
-            }
+            showNotification('🚧 Abbonamenti temporaneamente disabilitati', 'warning');
+            return;
         }
 
         function showPaymentModal(product, user) {
