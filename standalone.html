@@ -4729,6 +4729,7 @@
             // Fallback: create simple payment service
             paymentService = {
                 getProduct: function(planId) {
+                    console.log('getProduct chiamato con planId:', planId);
                     const products = {
                         'pro': { 
                             id: 'pro', 
@@ -4757,18 +4758,24 @@
                             ]
                         }
                     };
-                    return products[planId] || null;
+                    const product = products[planId] || null;
+                    console.log('Product trovato:', product);
+                    return product;
                 },
                 processPayment: async function(paymentData) {
+                    console.log('processPayment chiamato con:', paymentData);
                     // Simula pagamento
                     await new Promise(resolve => setTimeout(resolve, 2000));
                     
                     // Simula successo/fallimento (90% successo)
                     const success = Math.random() > 0.1;
+                    console.log('Payment success:', success);
                     
                     if (success) {
+                        console.log('Payment successful, updating user subscription...');
                         // Aggiorna abbonamento utente
                         const currentUser = getCurrentUser();
+                        console.log('Current user:', currentUser);
                         if (currentUser) {
                             const subscription = {
                                 id: 'SUB_' + Date.now(),
@@ -4790,23 +4797,29 @@
                             
                             // Aggiorna localStorage
                             const users = JSON.parse(localStorage.getItem('users') || '[]');
+                            console.log('Users in localStorage:', users);
                             const userIndex = users.findIndex(u => u.id === currentUser.id);
+                            console.log('User index:', userIndex);
                             if (userIndex !== -1) {
                                 users[userIndex] = currentUser;
                                 localStorage.setItem('users', JSON.stringify(users));
+                                console.log('User updated in localStorage');
                             }
                             
                             // Aggiorna abbonamenti admin
                             const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
-                            subscriptions.push({
+                            console.log('Current subscriptions:', subscriptions);
+                            const newSubscription = {
                                 id: subscription.id,
                                 userId: currentUser.id,
                                 plan: paymentData.productId,
                                 status: 'active',
                                 createdAt: new Date().toISOString(),
                                 price: `€${paymentData.paymentDetails.amount}/mese`
-                            });
+                            };
+                            subscriptions.push(newSubscription);
                             localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+                            console.log('New subscription added:', newSubscription);
                         }
                         
                         return { 
@@ -4827,18 +4840,26 @@
 
         async function purchasePlan(planId) {
             try {
+                console.log('purchasePlan chiamato con planId:', planId);
+                console.log('paymentService:', paymentService);
+                
                 if (!paymentService) {
+                    console.error('PaymentService non disponibile');
                     showNotification('Sistema di pagamento non disponibile', 'error');
                     return;
                 }
 
                 const currentUser = getCurrentUser();
+                console.log('currentUser:', currentUser);
+                
                 if (!currentUser) {
                     showNotification('Devi essere loggato per acquistare un abbonamento', 'error');
                     return;
                 }
 
                 const product = paymentService.getProduct(planId);
+                console.log('product:', product);
+                
                 if (!product) {
                     showNotification('Prodotto non trovato', 'error');
                     return;
@@ -4850,6 +4871,7 @@
                     return;
                 }
 
+                console.log('Mostrando payment modal...');
                 // Show payment modal
                 showPaymentModal(product, currentUser);
             } catch (error) {
