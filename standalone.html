@@ -1514,6 +1514,12 @@
             gap: 1rem;
             justify-content: flex-end;
         }
+        
+        .total-final {
+            border-top: 2px solid var(--accent-color);
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
 
         .success-message {
             text-align: center;
@@ -4906,7 +4912,7 @@
                                 <span>IVA (22%):</span>
                                 <span>€${(product.price * 0.22).toFixed(2)}</span>
                             </div>
-                            <div class="total-line total">
+                            <div class="total-line total-final">
                                 <span><strong>Totale:</strong></span>
                                 <span><strong>€${(product.price * 1.22).toFixed(2)}</strong></span>
                             </div>
@@ -4914,7 +4920,7 @@
                         
                         <div class="payment-actions">
                             <button class="btn-secondary" onclick="closePaymentModal()">Annulla</button>
-                            <button class="btn-primary" onclick="processPayment('${product.id}')">💳 Paga Ora</button>
+                            <button class="btn-primary" onclick="processPayment('${product.id}')">💳 Acquista Ora</button>
                         </div>
                     </div>
                 </div>
@@ -4926,8 +4932,11 @@
 
         async function processPayment(productId) {
             try {
+                console.log('processPayment chiamato con productId:', productId);
                 const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+                console.log('Payment method selezionato:', paymentMethod);
                 const currentUser = getCurrentUser();
+                console.log('Current user:', currentUser);
                 
                 showNotification('Elaborazione pagamento...', 'info');
                 
@@ -4945,6 +4954,7 @@
                 };
                 
                 const result = await paymentService.processPayment(paymentData);
+                console.log('Payment result:', result);
                 
                 if (result.success) {
                     showNotification('Pagamento completato con successo!', 'success');
@@ -4973,6 +4983,22 @@
             const modal = document.querySelector('.modal');
             if (modal) {
                 modal.remove();
+            }
+        }
+        
+        function updateUserSubscriptionUI() {
+            const currentUser = getCurrentUser();
+            if (currentUser && currentUser.subscription) {
+                console.log('Aggiornando UI per abbonamento:', currentUser.subscription);
+                // Aggiorna i pulsanti degli abbonamenti
+                const planButtons = document.querySelectorAll('[onclick*="purchasePlan"]');
+                planButtons.forEach(btn => {
+                    if (btn.onclick.toString().includes(currentUser.subscription.productId)) {
+                        btn.textContent = 'Attuale';
+                        btn.className = 'btn-secondary';
+                        btn.disabled = true;
+                    }
+                });
             }
         }
 
