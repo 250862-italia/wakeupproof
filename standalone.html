@@ -2397,6 +2397,7 @@
                 <button id="settings-btn" class="btn-icon" title="Impostazioni">⚙️</button>
                 <button id="subscription-btn" class="btn-icon" title="Abbonamenti">💳</button>
                 <button id="chatbot-btn" class="btn-icon" title="Chatbot AI" style="background: var(--accent-color); color: white;">🤖</button>
+                <button id="test-alarm-btn" class="btn-icon" title="Test Sveglia" onclick="testAlarm()" style="background: #ff6b6b; color: white;">🧪</button>
             </div>
         </nav>
 
@@ -2612,9 +2613,29 @@
                 clearInterval(alarmTimer);
             }
             
-            // Check every 30 seconds
-            alarmTimer = setInterval(checkAlarms, 30000);
-            console.log('Alarm timer started - checking every 30 seconds');
+            // Check every 5 seconds for better responsiveness
+            alarmTimer = setInterval(checkAlarms, 5000);
+            console.log('Alarm timer started - checking every 5 seconds');
+            
+            // Test alarm immediately for debugging
+            setTimeout(() => {
+                console.log('🧪 Testing alarm system...');
+                checkAlarms();
+            }, 1000);
+        }
+        
+        // Test function to manually trigger alarm
+        function testAlarm() {
+            console.log('🧪 Manual alarm test triggered');
+            const testAlarm = {
+                id: 'test-alarm',
+                name: 'Test Alarm',
+                time: new Date().toTimeString().slice(0, 5),
+                enabled: true,
+                days: [],
+                sound: 'classic'
+            };
+            triggerAlarm(testAlarm);
         }
         
         function checkAlarms() {
@@ -2622,21 +2643,39 @@
             const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
             const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
             
-            console.log('Checking alarms at:', currentTime, 'Day:', currentDay);
+            console.log('🔍 Checking alarms at:', currentTime, 'Day:', currentDay);
             
             // Get all alarms from localStorage
             const alarms = JSON.parse(localStorage.getItem('alarms') || '[]');
+            console.log('📋 Total alarms found:', alarms.length);
             
-            alarms.forEach(alarm => {
+            alarms.forEach((alarm, index) => {
+                console.log(`⏰ Alarm ${index + 1}:`, {
+                    name: alarm.name,
+                    time: alarm.time,
+                    enabled: alarm.enabled,
+                    days: alarm.days,
+                    id: alarm.id
+                });
+                
                 if (alarm.enabled && alarm.time === currentTime) {
+                    console.log('✅ Time match found for alarm:', alarm.name);
+                    
                     // Check if alarm should trigger today
                     const shouldTrigger = checkAlarmDay(alarm, currentDay);
+                    console.log('📅 Should trigger today:', shouldTrigger);
                     
                     if (shouldTrigger && !activeAlarms.includes(alarm.id)) {
-                        console.log('ALARM TRIGGERED:', alarm);
+                        console.log('🚨 ALARM TRIGGERED:', alarm);
                         triggerAlarm(alarm);
                         activeAlarms.push(alarm.id);
+                    } else if (activeAlarms.includes(alarm.id)) {
+                        console.log('⚠️ Alarm already active:', alarm.name);
                     }
+                } else if (alarm.enabled) {
+                    console.log('⏳ Alarm not yet time:', alarm.name, 'Expected:', alarm.time, 'Current:', currentTime);
+                } else {
+                    console.log('❌ Alarm disabled:', alarm.name);
                 }
             });
         }
@@ -2678,6 +2717,8 @@
         
         function playAlarmSound(soundType) {
             try {
+                console.log('🔊 Attempting to play alarm sound:', soundType);
+                
                 // Create audio context
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 
@@ -2707,25 +2748,39 @@
                         duration = 0.5;
                 }
                 
-                // Play sound
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
+                // Play sound multiple times for better effect
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                        oscillator.type = 'sine';
+                        
+                        gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + duration);
+                        
+                        console.log('🔊 Sound played:', i + 1, 'of 3');
+                    }, i * 600); // 600ms between sounds
+                }
                 
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-                oscillator.type = 'sine';
-                
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + duration);
-                
-                console.log('Alarm sound played:', soundType);
+                console.log('✅ Alarm sound sequence started:', soundType);
             } catch (error) {
-                console.error('Error playing alarm sound:', error);
+                console.error('❌ Error playing alarm sound:', error);
+                // Fallback: try to play a simple beep
+                try {
+                    const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8N2JNQY+');
+                    audio.play();
+                    console.log('🔊 Fallback sound played');
+                } catch (fallbackError) {
+                    console.error('❌ Fallback sound also failed:', fallbackError);
+                }
             }
         }
         
