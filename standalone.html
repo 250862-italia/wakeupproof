@@ -2401,6 +2401,8 @@
                 <button id="stress-test-btn" class="btn-icon" title="Stress Test Completo" onclick="stressTest()" style="background: #9b59b6; color: white;">🚀</button>
                 <button id="test-multiple-btn" class="btn-icon" title="Test Sveglie Multiple" onclick="testMultipleAlarms()" style="background: #e67e22; color: white;">⏰</button>
                 <button id="test-challenge-btn" class="btn-icon" title="Test Challenge System" onclick="testChallengeSystem()" style="background: #27ae60; color: white;">🎯</button>
+                <button id="refresh-admin-btn" class="btn-icon" title="Refresh Admin Panel" onclick="refreshAdminPanel()" style="background: #3498db; color: white;">🔄</button>
+                <button id="verify-data-btn" class="btn-icon" title="Verifica Dati Stress Test" onclick="verifyStressTestData()" style="background: #8e44ad; color: white;">🔍</button>
             </div>
         </nav>
 
@@ -2641,6 +2643,49 @@
             triggerAlarm(testAlarm);
         }
         
+        // REFRESH ADMIN PANEL
+        function refreshAdminPanel() {
+            console.log('🔄 Refreshing admin panel data');
+            if (document.getElementById('admin-modal') && document.getElementById('admin-modal').style.display !== 'none') {
+                loadUsers();
+                loadSubscriptions();
+                loadStats();
+                showNotification('🔄 Admin panel aggiornato!', 'success');
+            }
+        }
+        
+        // VERIFICA DATI STRESS TEST
+        function verifyStressTestData() {
+            console.log('🔍 VERIFICA DATI STRESS TEST');
+            
+            const alarms = JSON.parse(localStorage.getItem('alarms') || '[]');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            
+            console.log('📊 DATI ATTUALE:');
+            console.log('Sveglie totali:', alarms.length);
+            console.log('Utenti totali:', users.length);
+            console.log('Abbonamenti totali:', subscriptions.length);
+            
+            // Cerca dati stress test
+            const stressAlarms = alarms.filter(alarm => alarm.id.includes('stress-test') || alarm.id.includes('test-alarm'));
+            const stressUsers = users.filter(user => user.id.includes('stress-test') || user.email.includes('stress@test'));
+            
+            console.log('🧪 DATI STRESS TEST:');
+            console.log('Sveglie stress test:', stressAlarms.length);
+            console.log('Utenti stress test:', stressUsers.length);
+            
+            if (stressAlarms.length > 0) {
+                console.log('Sveglie stress test trovate:', stressAlarms);
+            }
+            
+            if (stressUsers.length > 0) {
+                console.log('Utenti stress test trovati:', stressUsers);
+            }
+            
+            showNotification(`🔍 Verifica completata! Sveglie: ${alarms.length}, Utenti: ${users.length}`, 'info');
+        }
+        
         // STRESS TEST COMPLETO
         function stressTest() {
             console.log('🚀 INIZIO STRESS TEST COMPLETO WAKEUPG');
@@ -2714,7 +2759,8 @@
             const existingAlarms = JSON.parse(localStorage.getItem('alarms') || '[]');
             existingAlarms.push(testAlarm);
             localStorage.setItem('alarms', JSON.stringify(existingAlarms));
-            console.log('Sveglia di test creata:', testAlarm);
+            console.log('✅ Sveglia di test creata:', testAlarm);
+            console.log('📊 Totale sveglie dopo stress test:', existingAlarms.length);
             
             // Test 10: User Registration
             console.log('👤 Test 10: User Registration');
@@ -2732,7 +2778,8 @@
             const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
             existingUsers.push(testUser);
             localStorage.setItem('users', JSON.stringify(existingUsers));
-            console.log('Utente di test creato:', testUser);
+            console.log('✅ Utente di test creato:', testUser);
+            console.log('📊 Totale utenti dopo stress test:', existingUsers.length);
             
             // Test 11: Challenge Execution
             console.log('🎯 Test 11: Challenge Execution');
@@ -2760,6 +2807,14 @@
             
             console.log('✅ STRESS TEST COMPLETATO!');
             showNotification('🧪 Stress Test completato! Controlla la console per i risultati.', 'success');
+            
+            // Refresh admin panel if open
+            if (document.getElementById('admin-modal') && document.getElementById('admin-modal').style.display !== 'none') {
+                console.log('🔄 Refreshing admin panel after stress test');
+                loadUsers();
+                loadSubscriptions();
+                loadStats();
+            }
         }
         
         // TEST SVEGLIE MULTIPLE
