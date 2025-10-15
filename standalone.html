@@ -1520,6 +1520,44 @@
             padding-top: 0.5rem;
             margin-top: 0.5rem;
         }
+        
+        .alarm-info {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .alarm-info h4 {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .alarm-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .challenge-content {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .challenge-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .challenge-type {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
 
         .success-message {
             text-align: center;
@@ -2448,6 +2486,8 @@
         let alarmCount = 0;
         let challengeCount = 0;
         let isInitialized = false;
+        let alarmTimer = null;
+        let activeAlarms = [];
 
         // Initialize app with real modules
         document.addEventListener('DOMContentLoaded', async function() {
@@ -2503,6 +2543,9 @@
                 // Load existing alarms
                 await loadAlarms();
                 
+                // Start alarm timer
+                startAlarmTimer();
+                
                 isInitialized = true;
                 console.log('WAKEUPG fully initialized');
             } catch (error) {
@@ -2545,6 +2588,224 @@
                 console.error('Error loading alarms:', error);
                 showNotification('Errore caricamento allarmi', 'error');
             }
+        }
+        
+        function startAlarmTimer() {
+            // Clear existing timer
+            if (alarmTimer) {
+                clearInterval(alarmTimer);
+            }
+            
+            // Check every 30 seconds
+            alarmTimer = setInterval(checkAlarms, 30000);
+            console.log('Alarm timer started - checking every 30 seconds');
+        }
+        
+        function checkAlarms() {
+            const now = new Date();
+            const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            
+            console.log('Checking alarms at:', currentTime, 'Day:', currentDay);
+            
+            // Get all alarms from localStorage
+            const alarms = JSON.parse(localStorage.getItem('alarms') || '[]');
+            
+            alarms.forEach(alarm => {
+                if (alarm.enabled && alarm.time === currentTime) {
+                    // Check if alarm should trigger today
+                    const shouldTrigger = checkAlarmDay(alarm, currentDay);
+                    
+                    if (shouldTrigger && !activeAlarms.includes(alarm.id)) {
+                        console.log('ALARM TRIGGERED:', alarm);
+                        triggerAlarm(alarm);
+                        activeAlarms.push(alarm.id);
+                    }
+                }
+            });
+        }
+        
+        function checkAlarmDay(alarm, currentDay) {
+            if (!alarm.days || alarm.days.length === 0) {
+                return true; // Daily alarm
+            }
+            
+            // Convert alarm days to numbers (1=Monday, 2=Tuesday, etc.)
+            const alarmDays = alarm.days.map(day => {
+                if (typeof day === 'string') {
+                    const dayMap = { 'monday': 1, 'tuesday': 2, 'wednesday': 3, 'thursday': 4, 'friday': 5, 'saturday': 6, 'sunday': 0 };
+                    return dayMap[day.toLowerCase()] || parseInt(day);
+                }
+                return parseInt(day);
+            });
+            
+            return alarmDays.includes(currentDay);
+        }
+        
+        function triggerAlarm(alarm) {
+            console.log('🚨 ALARM TRIGGERED:', alarm.name || 'Allarme');
+            
+            // Show alarm notification
+            showNotification(`🚨 Sveglia: ${alarm.name || 'Allarme'}`, 'warning');
+            
+            // Play alarm sound
+            playAlarmSound(alarm.sound || 'classic');
+            
+            // Show challenge modal if enabled
+            if (alarm.challenges && alarm.challenges.length > 0) {
+                showAlarmChallengeModal(alarm);
+            } else {
+                // Simple alarm without challenges
+                showSimpleAlarmModal(alarm);
+            }
+        }
+        
+        function playAlarmSound(soundType) {
+            try {
+                // Create audio context
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Generate different sounds based on type
+                let frequency = 800;
+                let duration = 0.5;
+                
+                switch(soundType) {
+                    case 'classic':
+                        frequency = 800;
+                        duration = 0.5;
+                        break;
+                    case 'beep':
+                        frequency = 1000;
+                        duration = 0.3;
+                        break;
+                    case 'buzz':
+                        frequency = 200;
+                        duration = 1.0;
+                        break;
+                    case 'chime':
+                        frequency = 523; // C5
+                        duration = 0.8;
+                        break;
+                    default:
+                        frequency = 800;
+                        duration = 0.5;
+                }
+                
+                // Play sound
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+                
+                console.log('Alarm sound played:', soundType);
+            } catch (error) {
+                console.error('Error playing alarm sound:', error);
+            }
+        }
+        
+        function showSimpleAlarmModal(alarm) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>🚨 Sveglia Attiva</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alarm-info">
+                            <h4>${alarm.name || 'Allarme'}</h4>
+                            <p>Orario: ${alarm.time}</p>
+                            <p>Suono: ${alarm.sound || 'classic'}</p>
+                        </div>
+                        <div class="alarm-actions">
+                            <button class="btn-primary" onclick="stopAlarm('${alarm.id}')">🔇 Spegni Sveglia</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.style.display = 'flex';
+        }
+        
+        function showAlarmChallengeModal(alarm) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>🚨 Sveglia Challenge</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alarm-info">
+                            <h4>${alarm.name || 'Allarme'}</h4>
+                            <p>Completa la challenge per spegnere la sveglia!</p>
+                        </div>
+                        <div class="challenge-content">
+                            <div id="challenge-display">Caricamento challenge...</div>
+                        </div>
+                        <div class="alarm-actions">
+                            <button class="btn-primary" onclick="completeAlarmChallenge('${alarm.id}')">✅ Completa Challenge</button>
+                            <button class="btn-secondary" onclick="stopAlarm('${alarm.id}')">🔇 Spegni Comunque</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.style.display = 'flex';
+            
+            // Load random challenge
+            loadRandomChallenge(alarm.id);
+        }
+        
+        function loadRandomChallenge(alarmId) {
+            const challenges = [
+                { text: "Fai 10 jumping jacks", type: "physical" },
+                { text: "Conta da 50 a 0 alla rovescia", type: "mental" },
+                { text: "Canta 'Happy Birthday' ad alta voce", type: "creative" },
+                { text: "Fai 5 flessioni", type: "physical" },
+                { text: "Rispondi: 7 x 8 = ?", type: "mental" }
+            ];
+            
+            const randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+            document.getElementById('challenge-display').innerHTML = `
+                <div class="challenge-text">${randomChallenge.text}</div>
+                <div class="challenge-type">${randomChallenge.type}</div>
+            `;
+        }
+        
+        function completeAlarmChallenge(alarmId) {
+            console.log('Challenge completed for alarm:', alarmId);
+            stopAlarm(alarmId);
+        }
+        
+        function stopAlarm(alarmId) {
+            console.log('Stopping alarm:', alarmId);
+            
+            // Remove from active alarms
+            activeAlarms = activeAlarms.filter(id => id !== alarmId);
+            
+            // Close modal
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal.remove();
+            }
+            
+            // Stop any playing sounds
+            // Note: Web Audio API sounds will stop automatically after duration
+            
+            showNotification('Sveglia spenta! 🎉', 'success');
         }
 
         function displayAlarms(alarms) {
