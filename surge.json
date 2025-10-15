@@ -1,31 +1,8 @@
 {
-  "domain": "wakeupproof.surge.sh",
+  "domain": "wakeupproof-payments.surge.sh",
   "project": "wakeup-proof",
-  "public": ".",
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/standalone.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "**/*.html",
-      "headers": [
-        {
-          "name": "Cache-Control",
-          "value": "public, max-age=3600"
-        }
-      ]
-    },
-    {
-      "source": "**/*.(css|js|png|jpg|jpeg|gif|ico|svg)",
-      "headers": [
-        {
-          "name": "Cache-Control",
-          "value": "public, max-age=31536000"
-        }
-      ]
-    }
-  ]
+  "build": {
+    "publish": ".",
+    "cleanUrls": true
+  }
 }

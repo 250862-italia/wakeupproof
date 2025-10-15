@@ -1,18 +1,21 @@
-name: wakeupproof
+name: wakeup-proof
 services:
 - name: web
   source_dir: /
   github:
-    repo: wakeupproof/wakeupproof
+    repo: username/wakeup-proof
     branch: main
-  run_command: npx serve . -p $PORT
-  environment_slug: node-js
+  run_command: echo "Static site - no run command needed"
+  environment_slug: static
   instance_count: 1
   instance_size_slug: basic-xxs
   routes:
   - path: /
-  health_check:
-    http_path: /standalone.html
-  envs:
-  - key: NODE_ENV
-    value: production
+  static_sites:
+  - name: wakeup-proof
+    source_dir: /
+    github:
+      repo: username/wakeup-proof
+      branch: main
+    routes:
+    - path: /

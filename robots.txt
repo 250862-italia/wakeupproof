@@ -1,9 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wakeupproof-h7dt5uhqi-250862-italias-projects.vercel.app/sitemap.xml
-
-# PWA specific
-Allow: /manifest.json
-Allow: /sw.js
-Allow: /icons/
+Sitemap: https://wakeup-proof.vercel.app/sitemap.xml

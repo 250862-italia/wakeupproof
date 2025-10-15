@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "wakeupproof",
+  "name": "wakeupproof-v2",
   "builds": [
     {
       "src": "standalone.html",
@@ -11,6 +11,10 @@
     {
       "src": "/",
       "dest": "/standalone.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }

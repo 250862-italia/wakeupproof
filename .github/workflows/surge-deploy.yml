@@ -1,0 +1,29 @@
+name: Deploy to Surge.sh
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install Surge
+      run: npm install -g surge
+      
+    - name: Deploy to Surge
+      run: surge . wakeup-proof-250862-italia.surge.sh
+      env:
+        SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+        SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}

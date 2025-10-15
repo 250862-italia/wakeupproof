@@ -1,8 +1,1 @@
-# Netlify redirects
 /*    /standalone.html   200
-
-# SPA fallback
-/    /standalone.html   200
-
-# API routes (if needed in future)
-/api/*    /api/:splat   200

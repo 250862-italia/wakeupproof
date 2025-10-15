@@ -3,12 +3,12 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "No build needed - static files"
+        - echo "No build needed"
     build:
       commands:
-        - echo "Static files ready"
+        - echo "No build needed"
   artifacts:
-    baseDirectory: .
+    baseDirectory: /
     files:
       - '**/*'
   cache:

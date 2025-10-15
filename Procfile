@@ -1,1 +1,1 @@
-web: npx serve . -p $PORT
+web: node deploy-server.js

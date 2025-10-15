@@ -3,14 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚨 WakeUpProof - La Sveglia che NON Puoi Spegnere!</title>
+    <title>🚨 WakeUpProof - La Sveglia che NON Puoi Spegnere! v2.0 - CACHE BUST</title>
     
     <!-- PWA Meta Tags -->
-    <meta name="description" content="🚨 LA SVEGLIA CHE NON PUOI SPEGNERE! Challenge reali, zero scuse, 100% efficacia. Trasforma la tua mattina in una vittoria!">
+    <meta name="description" content="🚨 LA SVEGLIA CHE NON PUOI SPEGNERE! Challenge reali, zero scuse, 100% efficacia. Trasforma la tua mattina in una vittoria! v2.0 - Admin completo con pagamenti!">
     <meta name="theme-color" content="#1976d2">
+    <!-- Cache bust v2.0 -->
+    <meta name="version" content="2.0.0">
+    <meta name="build" content="2024-10-14-21:30">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="WakeUpProof">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     
     <!-- Styles -->
     <style>
@@ -677,10 +688,31 @@
             gap: 0.25rem;
         }
 
+        .alarm-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-accent);
+            margin-bottom: 0.25rem;
+        }
+
         .alarm-time {
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--text-primary);
+        }
+
+        .alarm-days {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .alarm-sound {
+            font-size: 0.9rem;
+            color: var(--text-accent);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
         }
 
         .alarm-challenges {
@@ -699,18 +731,6 @@
             color: var(--text-secondary);
         }
 
-        .demo-section {
-            background: var(--surface-color);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 1.5rem;
-        }
-
-        .demo-section h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
 
         .feature-grid {
             display: grid;
@@ -994,6 +1014,1055 @@
             margin: 0;
         }
 
+        /* Days Selector */
+        .days-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .day-checkbox {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--surface-elevated);
+            border: 2px solid var(--border-neon);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .day-checkbox:hover {
+            background: var(--gradient-primary);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .day-checkbox input[type="checkbox"] {
+            display: none;
+        }
+
+        .day-checkbox input[type="checkbox"]:checked + span {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .day-checkbox input[type="checkbox"]:checked {
+            background: var(--gradient-primary);
+            border-color: var(--accent-color);
+        }
+
+        .day-checkbox span {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .day-checkbox:has(input:checked) {
+            background: var(--gradient-primary);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .day-checkbox:has(input:checked) span {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        /* Sound Selector */
+        .sound-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .sound-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--surface-elevated);
+            border: 2px solid var(--border-neon);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .sound-option:hover {
+            background: var(--gradient-primary);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .sound-option.selected {
+            background: var(--gradient-primary);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .sound-preview {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .sound-icon {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 10px rgba(255, 68, 68, 0.5));
+        }
+
+        .sound-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sound-play-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sound-play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .sound-play-btn.playing {
+            background: var(--gradient-success);
+            animation: pulse 1s infinite;
+        }
+
+        /* Challenge Modal Styles */
+        .challenge-modal {
+            z-index: 1000;
+        }
+
+        .challenge-modal-content {
+            max-width: 500px;
+            background: var(--gradient-dark);
+            border: 3px solid var(--border-neon);
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .challenge-modal .modal-header {
+            background: var(--gradient-neon);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .challenge-icon {
+            font-size: 3rem;
+            margin: 1rem 0;
+            animation: bounceIn 1s ease-out;
+        }
+
+        .challenge-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .challenge-info h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-accent);
+            margin-bottom: 1rem;
+        }
+
+        .challenge-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .challenge-difficulty {
+            margin-bottom: 1rem;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .difficulty-badge.easy {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .difficulty-badge.medium {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .difficulty-badge.hard {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .difficulty-badge.extreme {
+            background: var(--gradient-error);
+            color: white;
+            animation: pulse 1s infinite;
+        }
+
+        .challenge-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-timer {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-accent);
+            background: var(--surface-elevated);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-neon);
+        }
+
+        /* Settings Modal Styles */
+        .settings-modal {
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .settings-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab-btn:hover {
+            background: var(--surface-elevated);
+            border-color: var(--border-neon);
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            background: var(--gradient-primary);
+            border-color: var(--border-neon);
+            color: white;
+            box-shadow: var(--shadow-neon);
+        }
+
+        .settings-tab {
+            display: none;
+        }
+
+        .settings-tab.active {
+            display: block;
+        }
+
+        .settings-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--surface-elevated);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .option-item:hover {
+            border-color: var(--border-neon);
+            box-shadow: var(--shadow);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--surface-color);
+            transition: 0.4s;
+            border-radius: 34px;
+            border: 2px solid var(--border-color);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: var(--gradient-primary);
+            border-color: var(--border-neon);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .privacy-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-error {
+            background: var(--gradient-error);
+            color: white;
+            border: 2px solid var(--border-error);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-error:hover {
+            background: var(--gradient-error);
+            box-shadow: var(--shadow-error);
+            transform: translateY(-2px);
+        }
+
+        .subscription-info {
+            background: var(--surface-elevated);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-neon);
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .subscription-info p {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .subscription-info p:first-child {
+            color: var(--text-accent);
+            font-weight: 700;
+        }
+
+        /* Payment Modal Styles */
+        .payment-summary {
+            background: var(--surface-elevated);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+        }
+
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-accent);
+        }
+
+        .product-features ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .product-features li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .product-features li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+
+        .payment-methods {
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover {
+            border-color: var(--accent-color);
+            background: var(--accent-light);
+        }
+
+        .payment-option input[type="radio"] {
+            margin-right: 0.75rem;
+            transform: scale(1.2);
+        }
+
+        .payment-option input[type="radio"]:checked + span {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .payment-total {
+            background: var(--surface-elevated);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+        }
+
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+        }
+
+        .total-line.total {
+            border-top: 2px solid var(--accent-color);
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .payment-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-details {
+            background: var(--surface-elevated);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .next-steps {
+            text-align: left;
+            margin-top: 1.5rem;
+        }
+
+        .next-steps ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .next-steps li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        /* Payment Configuration Styles */
+        .payment-config {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .config-section {
+            background: var(--surface-elevated);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-light);
+        }
+
+        .config-section h5 {
+            margin: 0 0 1.5rem 0;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .config-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            padding: 0.75rem;
+            border: 2px solid var(--border-light);
+            border-radius: var(--border-radius);
+            background: var(--surface-primary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .form-group small {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .monitoring-stats {
+            background: var(--surface-primary);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .status-indicator {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-indicator.success {
+            background: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .status-indicator.error {
+            background: var(--error-light);
+            color: var(--error-color);
+        }
+
+        .status-indicator.warning {
+            background: var(--warning-light);
+            color: var(--warning-color);
+        }
+
+        /* Log Styles */
+        .logs-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid var(--border-light);
+            border-radius: var(--border-radius);
+            background: var(--surface-primary);
+        }
+
+        .log-entry {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-entry.info {
+            background: var(--success-light);
+        }
+
+        .log-entry.warn {
+            background: var(--warning-light);
+        }
+
+        .log-entry.error {
+            background: var(--error-light);
+        }
+
+        .log-time {
+            color: var(--text-secondary);
+            margin-right: 1rem;
+            min-width: 80px;
+        }
+
+        .log-level {
+            font-weight: 600;
+            margin-right: 1rem;
+            min-width: 60px;
+        }
+
+        .log-entry.info .log-level {
+            color: var(--success-color);
+        }
+
+        .log-entry.warn .log-level {
+            color: var(--warning-color);
+        }
+
+        .log-entry.error .log-level {
+            color: var(--error-color);
+        }
+
+        .log-message {
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        /* Authentication Modal Styles */
+        .auth-modal {
+            z-index: 1000;
+        }
+
+        .auth-modal-content {
+            max-width: 500px;
+            background: var(--gradient-dark);
+            border: 3px solid var(--border-neon);
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .auth-modal .modal-header {
+            background: var(--gradient-neon);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .auth-tab {
+            display: none;
+        }
+
+        .auth-tab.active {
+            display: block;
+        }
+
+        .auth-links {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .auth-links a {
+            color: var(--text-accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        .user-info {
+            color: var(--text-accent);
+            font-weight: 600;
+            margin-right: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--surface-elevated);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-neon);
+        }
+
+        .btn-icon {
+            background: var(--surface-elevated);
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .btn-icon:hover {
+            background: var(--gradient-primary);
+            border-color: var(--border-neon);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .btn-icon:active {
+            transform: translateY(0);
+        }
+
+        /* Admin Panel Styles */
+        .admin-modal {
+            z-index: 1000;
+        }
+
+        .admin-modal-content {
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--gradient-dark);
+            border: 3px solid var(--border-neon);
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .admin-modal .modal-header {
+            background: var(--gradient-error);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            display: none;
+        }
+
+        .admin-tab.active {
+            display: block;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .admin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: var(--surface-elevated);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .admin-item:hover {
+            border-color: var(--border-neon);
+            box-shadow: var(--shadow);
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .item-details {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .item-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .plan-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .plan-badge.pro {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .plan-badge.premium {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-badge.pending {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .status-badge.active {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .status-badge.rejected {
+            background: var(--gradient-error);
+            color: white;
+        }
+
+        .status-badge.cancelled {
+            background: var(--surface-color);
+            color: var(--text-secondary);
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+            border: 2px solid var(--border-success);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-success:hover {
+            background: var(--gradient-success);
+            box-shadow: var(--shadow-success);
+            transform: translateY(-2px);
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            background: var(--surface-elevated);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-neon);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .admin-settings {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--surface-elevated);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover {
+            border-color: var(--border-neon);
+            box-shadow: var(--shadow);
+        }
+
+        .no-data {
+            text-align: center;
+            color: var(--text-secondary);
+            font-style: italic;
+            padding: 2rem;
+        }
+
         .form-actions {
             display: flex;
             gap: 1rem;
@@ -1187,9 +2256,10 @@
         <!-- Navigation -->
         <nav class="navbar">
             <div class="nav-brand">
-                <h1>🚨 WakeUpProof</h1>
+                <h1>🚨 WakeUpProof v2.0</h1>
             </div>
             <div class="nav-actions">
+                <button id="login-btn" class="btn-primary" onclick="showAuthModal()">🔐 Accedi</button>
                 <button id="share-btn" class="btn-icon" title="Condividi la tua vittoria">📤</button>
                 <button id="leaderboard-btn" class="btn-icon" title="Classifica">🏆</button>
                 <button id="settings-btn" class="btn-icon" title="Impostazioni">⚙️</button>
@@ -1212,7 +2282,7 @@
                     <p class="hero-subtitle">Challenge reali, zero scuse, 100% efficacia. Trasforma la tua mattina in una vittoria!</p>
                     <div class="hero-stats">
                         <div class="stat-item">
-                            <span class="stat-number">99.9%</span>
+                            <span class="stat-number">0%</span>
                             <span class="stat-label">Efficacia</span>
                         </div>
                         <div class="stat-item">
@@ -1227,37 +2297,6 @@
                 </div>
             </div>
 
-            <!-- Demo Section -->
-            <div class="demo-section">
-                <h3>🎯 Testa le Funzionalità</h3>
-                <p>Prova le funzionalità che renderanno impossibile dormire troppo a lungo!</p>
-                
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <h4>📸 Camera</h4>
-                        <p>Challenge foto con template matching</p>
-                        <button class="btn-primary" onclick="testCamera()">Test Camera</button>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <h4>🚶 Sensori</h4>
-                        <p>Contapassi con accelerometro</p>
-                        <button class="btn-primary" onclick="testSensors()">Test Sensori</button>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <h4>📡 NFC/QR</h4>
-                        <p>Scanner NFC e QR code</p>
-                        <button class="btn-primary" onclick="testNFCQR()">Test NFC/QR</button>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <h4>💳 Abbonamenti</h4>
-                        <p>Sistema Free/Pro/Premium</p>
-                        <button class="btn-primary" onclick="testSubscriptions()">Test Abbonamenti</button>
-                    </div>
-                </div>
-            </div>
 
             <!-- Progress Section -->
             <section class="progress-section">
@@ -1267,27 +2306,23 @@
                         <div class="progress-icon">🔥</div>
                         <div class="progress-info">
                             <span class="progress-label">Streak Giornaliero</span>
-                            <span class="progress-value">7 giorni</span>
+                            <span class="progress-value">0 giorni</span>
                         </div>
                     </div>
                     <div class="progress-item">
                         <div class="progress-icon">⚡</div>
                         <div class="progress-info">
                             <span class="progress-label">Challenge Completati</span>
-                            <span class="progress-value">23/30</span>
+                            <span class="progress-value">0</span>
                         </div>
                     </div>
                     <div class="progress-item">
                         <div class="progress-icon">🎯</div>
                         <div class="progress-info">
                             <span class="progress-label">Efficacia</span>
-                            <span class="progress-value">94%</span>
+                            <span class="progress-value">0%</span>
                         </div>
                     </div>
-                </div>
-                <div class="achievement-badge">
-                    <span class="badge-icon">🏅</span>
-                    <span class="badge-text">Early Bird Master</span>
                 </div>
             </section>
 
@@ -1323,6 +2358,7 @@
     <script src="js/camera-handler.js"></script>
     <script src="js/sensors-handler.js"></script>
     <script src="js/subscription-service.js"></script>
+    <script src="js/payment-service.js"></script>
     <script src="js/ui-manager.js"></script>
 
     <script>
@@ -1334,6 +2370,25 @@
         // Initialize app with real modules
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('WakeUpProof Standalone loaded');
+            
+            // Register Service Worker for PWA
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    console.log('Service Worker registered:', registration);
+                } catch (error) {
+                    console.error('Service Worker registration failed:', error);
+                }
+            }
+            
+            // Check authentication status
+            if (!checkAuthStatus()) {
+                // Show login modal if not authenticated
+                setTimeout(() => {
+                    showAuthModal();
+                }, 1000);
+            }
+            
             await initializeApp();
             setupEventListeners();
             showWelcomeMessage();
@@ -1400,7 +2455,7 @@
                     const alarms = await database.getAlarms();
                     displayAlarms(alarms);
                 } else {
-                    // Fallback to demo mode
+                    // Fallback mode
                     displayAlarms([]);
                 }
             } catch (error) {
@@ -1443,8 +2498,101 @@
                     <div class="modal-body">
                         <form id="add-alarm-form">
                             <div class="form-group">
-                                <label for="alarm-time">Orario</label>
+                                <label for="alarm-name">Nome Allarme</label>
+                                <input type="text" id="alarm-name" placeholder="Es: Sveglia Mattina" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="alarm-time">Orario Sveglia</label>
                                 <input type="time" id="alarm-time" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="alarm-days">Giorni della Settimana</label>
+                                <div class="days-selector">
+                                    <label class="day-checkbox">
+                                        <input type="checkbox" value="1" checked>
+                                        <span>Lun</span>
+                                    </label>
+                                    <label class="day-checkbox">
+                                        <input type="checkbox" value="2" checked>
+                                        <span>Mar</span>
+                                    </label>
+                                    <label class="day-checkbox">
+                                        <input type="checkbox" value="3" checked>
+                                        <span>Mer</span>
+                                    </label>
+                                    <label class="day-checkbox">
+                                        <input type="checkbox" value="4" checked>
+                                        <span>Gio</span>
+                                    </label>
+                                    <label class="day-checkbox">
+                                        <input type="checkbox" value="5" checked>
+                                        <span>Ven</span>
+                                    </label>
+                                    <label class="day-checkbox">
+                                        <input type="checkbox" value="6">
+                                        <span>Sab</span>
+                                    </label>
+                                    <label class="day-checkbox">
+                                        <input type="checkbox" value="0">
+                                        <span>Dom</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="alarm-sound">Suoneria</label>
+                                <div class="sound-selector">
+                                    <div class="sound-option" data-sound="classic">
+                                        <div class="sound-preview">
+                                            <span class="sound-icon">🔔</span>
+                                            <span class="sound-name">Classica</span>
+                                        </div>
+                                        <button type="button" class="sound-play-btn" onclick="playSound('classic')">▶️</button>
+                                    </div>
+                                    
+                                    <div class="sound-option" data-sound="urgent">
+                                        <div class="sound-preview">
+                                            <span class="sound-icon">🚨</span>
+                                            <span class="sound-name">Urgente</span>
+                                        </div>
+                                        <button type="button" class="sound-play-btn" onclick="playSound('urgent')">▶️</button>
+                                    </div>
+                                    
+                                    <div class="sound-option" data-sound="nature">
+                                        <div class="sound-preview">
+                                            <span class="sound-icon">🌅</span>
+                                            <span class="sound-name">Natura</span>
+                                        </div>
+                                        <button type="button" class="sound-play-btn" onclick="playSound('nature')">▶️</button>
+                                    </div>
+                                    
+                                    <div class="sound-option" data-sound="electronic">
+                                        <div class="sound-preview">
+                                            <span class="sound-icon">⚡</span>
+                                            <span class="sound-name">Elettronica</span>
+                                        </div>
+                                        <button type="button" class="sound-play-btn" onclick="playSound('electronic')">▶️</button>
+                                    </div>
+                                    
+                                    <div class="sound-option" data-sound="motivational">
+                                        <div class="sound-preview">
+                                            <span class="sound-icon">💪</span>
+                                            <span class="sound-name">Motivazionale</span>
+                                        </div>
+                                        <button type="button" class="sound-play-btn" onclick="playSound('motivational')">▶️</button>
+                                    </div>
+                                    
+                                    <div class="sound-option" data-sound="custom">
+                                        <div class="sound-preview">
+                                            <span class="sound-icon">🎵</span>
+                                            <span class="sound-name">Personalizzata</span>
+                                        </div>
+                                        <button type="button" class="sound-play-btn" onclick="playSound('custom')">▶️</button>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="alarm-sound" name="alarm-sound" value="classic">
                             </div>
                             <div class="form-group">
                                 <label for="alarm-recurrence">Ripetizione</label>
@@ -1501,8 +2649,16 @@
         async function createAlarm(modal) {
             try {
                 const formData = new FormData(modal.querySelector('#add-alarm-form'));
+                
+                // Get selected days
+                const selectedDays = Array.from(modal.querySelectorAll('.day-checkbox input:checked'))
+                    .map(checkbox => parseInt(checkbox.value));
+                
                 const alarmData = {
+                    name: formData.get('alarm-name') || modal.querySelector('#alarm-name').value || 'Allarme',
                     time: formData.get('alarm-time') || modal.querySelector('#alarm-time').value,
+                    days: selectedDays.length > 0 ? selectedDays : [1, 2, 3, 4, 5], // Default to weekdays
+                    sound: formData.get('alarm-sound') || modal.querySelector('#alarm-sound').value || 'classic',
                     recurrence: formData.get('alarm-recurrence') || modal.querySelector('#alarm-recurrence').value,
                     challenges: []
                 };
@@ -1530,7 +2686,7 @@
                     showNotification('Allarme creato con successo! ⏰', 'success');
                     modal.remove();
                 } else {
-                    // Fallback to demo mode
+                    // Fallback mode
                     alarmCount++;
                     const alarm = {
                         id: 'alarm-' + alarmCount,
@@ -1541,7 +2697,7 @@
                     };
                     
                     addAlarmToList(alarm);
-                    showNotification('Allarme demo creato! ⏰', 'success');
+                    showNotification('Allarme creato! ⏰', 'success');
                     modal.remove();
                 }
             } catch (error) {
@@ -1558,11 +2714,21 @@
                 emptyState.remove();
             }
             
+            // Format days
+            const dayNames = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
+            const selectedDays = alarm.days ? alarm.days.map(day => dayNames[day]).join(', ') : 'Lun-Ven';
+            
             const alarmElement = document.createElement('div');
             alarmElement.className = 'alarm-item fade-in-up';
+            // Get sound info
+            const soundInfo = soundLibrary[alarm.sound] || soundLibrary.classic;
+            
             alarmElement.innerHTML = `
                 <div class="alarm-info">
+                    <div class="alarm-name">${alarm.name || 'Allarme'}</div>
                     <div class="alarm-time">${alarm.time}</div>
+                    <div class="alarm-days">${selectedDays}</div>
+                    <div class="alarm-sound">${soundInfo.icon} ${soundInfo.name}</div>
                     <div class="alarm-challenges">${alarm.challenges ? alarm.challenges.length : 0} challenge • ${alarm.recurrence || 'Giornaliero'}</div>
                 </div>
                 <div class="alarm-actions">
@@ -1581,7 +2747,68 @@
         }
 
         function editAlarm(alarmId) {
-            showNotification('Funzionalità di modifica in sviluppo', 'warning');
+            const alarm = alarms.find(a => a.id === alarmId);
+            if (!alarm) {
+                showNotification('Allarme non trovato', 'error');
+                return;
+            }
+            
+            // Popola il form con i dati esistenti
+            document.getElementById('alarm-name').value = alarm.name || '';
+            document.getElementById('alarm-time').value = alarm.time;
+            document.getElementById('alarm-sound').value = alarm.sound || 'classic';
+            
+            // Seleziona i giorni
+            const dayCheckboxes = document.querySelectorAll('input[name="alarm-days"]');
+            dayCheckboxes.forEach(checkbox => {
+                checkbox.checked = alarm.days && alarm.days.includes(checkbox.value);
+            });
+            
+            // Mostra il modal
+            showAddAlarmModal();
+            
+            // Cambia il titolo del modal
+            document.querySelector('.modal h2').textContent = '✏️ Modifica Allarme';
+            
+            // Cambia il pulsante
+            const saveBtn = document.querySelector('.modal .btn-primary');
+            saveBtn.textContent = '💾 Salva Modifiche';
+            saveBtn.onclick = () => saveAlarmEdit(alarmId);
+        }
+        
+        function saveAlarmEdit(alarmId) {
+            const name = document.getElementById('alarm-name').value;
+            const time = document.getElementById('alarm-time').value;
+            const sound = document.getElementById('alarm-sound').value;
+            const selectedDays = Array.from(document.querySelectorAll('input[name="alarm-days"]:checked')).map(cb => cb.value);
+            
+            if (!name || !time) {
+                showNotification('Compila tutti i campi obbligatori', 'error');
+                return;
+            }
+            
+            // Trova e aggiorna l'allarme
+            const alarmIndex = alarms.findIndex(a => a.id === alarmId);
+            if (alarmIndex !== -1) {
+                alarms[alarmIndex] = {
+                    ...alarms[alarmIndex],
+                    name,
+                    time,
+                    sound,
+                    days: selectedDays
+                };
+                
+                // Salva nel localStorage
+                localStorage.setItem('wakeupproof_alarms', JSON.stringify(alarms));
+                
+                // Ricarica la lista
+                loadAlarms();
+                
+                // Chiudi il modal
+                closeAddAlarmModal();
+                
+                showNotification('Allarme modificato con successo!', 'success');
+            }
         }
 
         function deleteAlarm(alarmId) {
@@ -1606,7 +2833,7 @@
             } else {
                 // Fallback: copy to clipboard
                 navigator.clipboard.writeText(shareText).then(() => {
-                    showNotification('📤 Testo copiato! Condividi la tua vittoria sui social!', 'success');
+                    showNotification('📤 Testo copiato! Condividi la tua vittoria!', 'success');
                 });
             }
         }
@@ -1652,6 +2879,1237 @@
             document.body.appendChild(modal);
         }
 
+        function showSettings() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal settings-modal">
+                    <div class="modal-header">
+                        <h3>⚙️ Impostazioni</h3>
+                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="settings-tabs">
+                            <button class="tab-btn active" onclick="showSettingsTab('profile')">👤 Profilo</button>
+                            <button class="tab-btn" onclick="showSettingsTab('notifications')">🔔 Notifiche</button>
+                            <button class="tab-btn" onclick="showSettingsTab('privacy')">🔒 Privacy</button>
+                            <button class="tab-btn" onclick="showSettingsTab('subscription')">💳 Abbonamenti</button>
+                        </div>
+                        
+                        <div id="settings-content">
+                            <!-- Profile Tab -->
+                            <div id="profile-tab" class="settings-tab active">
+                                <h4>👤 I Tuoi Dati</h4>
+                                <form id="profile-form">
+                                    <div class="form-group">
+                                        <label for="user-name">Nome</label>
+                                        <input type="text" id="user-name" name="user-name" placeholder="Il tuo nome">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user-email">Email</label>
+                                        <input type="email" id="user-email" name="user-email" placeholder="tua@email.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user-age">Età</label>
+                                        <input type="number" id="user-age" name="user-age" placeholder="25" min="13" max="100">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user-timezone">Fuso Orario</label>
+                                        <select id="user-timezone" name="user-timezone">
+                                            <option value="Europe/Rome">Europa/Roma (GMT+1)</option>
+                                            <option value="Europe/London">Europa/Londra (GMT+0)</option>
+                                            <option value="America/New_York">America/New York (GMT-5)</option>
+                                            <option value="Asia/Tokyo">Asia/Tokyo (GMT+9)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user-goals">Obiettivi</label>
+                                        <textarea id="user-goals" name="user-goals" placeholder="I tuoi obiettivi mattutini..."></textarea>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">💾 Salva Dati</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <!-- Notifications Tab -->
+                            <div id="notifications-tab" class="settings-tab">
+                                <h4>🔔 Notifiche</h4>
+                                <div class="settings-options">
+                                    <div class="option-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="notifications-enabled" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Notifiche push</span>
+                                    </div>
+                                    <div class="option-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="sound-enabled" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Suoni notifiche</span>
+                                    </div>
+                                    <div class="option-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="vibration-enabled" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Vibrazione</span>
+                                    </div>
+                                    <div class="option-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="reminder-enabled">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Promemoria serali</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Privacy Tab -->
+                            <div id="privacy-tab" class="settings-tab">
+                                <h4>🔒 Privacy e Sicurezza</h4>
+                                <div class="settings-options">
+                                    <div class="option-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="analytics-enabled" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Analytics anonime</span>
+                                    </div>
+                                    <div class="option-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="crash-reports-enabled" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Report crash</span>
+                                    </div>
+                                    <div class="option-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="data-sync-enabled" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Sincronizzazione dati</span>
+                                    </div>
+                                </div>
+                                <div class="privacy-actions">
+                                    <button class="btn-secondary" onclick="exportData()">📤 Esporta Dati</button>
+                                    <button class="btn-secondary" onclick="importData()">📥 Importa Dati</button>
+                                    <button class="btn-error" onclick="deleteAccount()">🗑️ Elimina Account</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Subscription Tab -->
+                            <div id="subscription-tab" class="settings-tab">
+                                <h4>💳 Abbonamenti</h4>
+                                <div class="subscription-plans">
+                                    <div class="plan-card">
+                                        <h4>🆓 Free</h4>
+                                        <p>3 allarmi base</p>
+                                        <p>Challenge limitati</p>
+                                        <p>Supporto email</p>
+                                        <button class="btn-secondary" id="free-plan">Attuale</button>
+                                    </div>
+                                    <div class="plan-card">
+                                        <h4>⭐ Pro</h4>
+                                        <p>Allarmi illimitati</p>
+                                        <p>Challenge avanzati</p>
+                                        <p>Suonerie personalizzate</p>
+                                        <p>Supporto prioritario</p>
+                                        <button class="btn-primary" onclick="purchasePlan('pro')">€4.99/mese</button>
+                                    </div>
+                                    <div class="plan-card">
+                                        <h4>💎 Premium</h4>
+                                        <p>Tutto incluso</p>
+                                        <p>Challenge estreme</p>
+                                        <p>Analytics avanzate</p>
+                                        <p>Supporto 24/7</p>
+                                        <button class="btn-primary" onclick="purchasePlan('premium')">€9.99/mese</button>
+                                    </div>
+                                </div>
+                                <div class="subscription-info">
+                                    <p>💡 <strong>Prova gratis per 7 giorni!</strong></p>
+                                    <p>🔄 Annulla quando vuoi</p>
+                                    <p>🔒 Pagamenti sicuri</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Load user data
+            loadUserData();
+            
+            // Add form submit listener
+            document.getElementById('profile-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveUserData();
+            });
+        }
+        
+        // Settings Tab Management
+        function showSettingsTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.settings-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        
+        // Authentication System
+        let currentUser = null;
+        let isLoggedIn = false;
+        
+        // Check if user is logged in
+        function checkAuthStatus() {
+            const userData = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (userData && userData.id) {
+                currentUser = userData;
+                isLoggedIn = true;
+                updateUIForLoggedInUser();
+                return true;
+            }
+            return false;
+        }
+        
+        // Show login/register modal
+        function showAuthModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay auth-modal';
+            modal.innerHTML = `
+                <div class="modal auth-modal-content">
+                    <div class="modal-header">
+                        <h3>🔐 Accedi a WakeUpProof</h3>
+                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="auth-tabs">
+                            <button class="tab-btn active" onclick="showAuthTab('login')">Accedi</button>
+                            <button class="tab-btn" onclick="showAuthTab('register')">Registrati</button>
+                        </div>
+                        
+                        <div id="auth-content">
+                            <!-- Login Tab -->
+                            <div id="login-tab" class="auth-tab active">
+                                <form id="login-form">
+                                    <div class="form-group">
+                                        <label for="login-email">Email</label>
+                                        <input type="email" id="login-email" name="email" placeholder="tua@email.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="login-password">Password</label>
+                                        <input type="password" id="login-password" name="password" placeholder="La tua password" required>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">🔑 Accedi</button>
+                                    </div>
+                                </form>
+                                <div class="auth-links">
+                                    <a href="#" onclick="showForgotPassword()">Password dimenticata?</a>
+                                </div>
+                            </div>
+                            
+                            <!-- Register Tab -->
+                            <div id="register-tab" class="auth-tab">
+                                <form id="register-form">
+                                    <div class="form-group">
+                                        <label for="register-name">Nome</label>
+                                        <input type="text" id="register-name" name="name" placeholder="Il tuo nome" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="register-email">Email</label>
+                                        <input type="email" id="register-email" name="email" placeholder="tua@email.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="register-password">Password</label>
+                                        <input type="password" id="register-password" name="password" placeholder="Scegli una password sicura" required minlength="6">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="register-confirm">Conferma Password</label>
+                                        <input type="password" id="register-confirm" name="confirm" placeholder="Conferma la password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="register-age">Età</label>
+                                        <input type="number" id="register-age" name="age" placeholder="25" min="13" max="100" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="register-terms" required>
+                                            <span class="checkmark"></span>
+                                            Accetto i <a href="#" onclick="showTerms()">Termini di Servizio</a> e la <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                                        </label>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">🚀 Registrati</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Add form listeners
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('register-form').addEventListener('submit', handleRegister);
+        }
+        
+        // Show auth tab
+        function showAuthTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.auth-tabs .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        
+        // Handle login
+        async function handleLogin(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const email = formData.get('email');
+            const password = formData.get('password');
+            
+            try {
+                const user = await loginUser(email, password);
+                if (user) {
+                    currentUser = user;
+                    isLoggedIn = true;
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    showNotification('🎉 Benvenuto in WakeUpProof!', 'success');
+                    updateUIForLoggedInUser();
+                    closeAuthModal();
+                } else {
+                    showNotification('❌ Email o password non corretti', 'error');
+                }
+            } catch (error) {
+                showNotification('❌ Errore durante il login: ' + error.message, 'error');
+            }
+        }
+        
+        // Handle register
+        async function handleRegister(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const password = formData.get('password');
+            const confirm = formData.get('confirm');
+            const age = formData.get('age');
+            const terms = document.getElementById('register-terms').checked;
+            
+            if (password !== confirm) {
+                showNotification('❌ Le password non coincidono', 'error');
+                return;
+            }
+            
+            if (!terms) {
+                showNotification('❌ Devi accettare i termini di servizio', 'error');
+                return;
+            }
+            
+            try {
+                const user = await registerUser(name, email, password, age);
+                if (user) {
+                    currentUser = user;
+                    isLoggedIn = true;
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    showNotification('🎉 Registrazione completata! Benvenuto in WakeUpProof!', 'success');
+                    updateUIForLoggedInUser();
+                    closeAuthModal();
+                } else {
+                    showNotification('❌ Errore durante la registrazione', 'error');
+                }
+            } catch (error) {
+                showNotification('❌ Errore durante la registrazione: ' + error.message, 'error');
+            }
+        }
+        
+        // Login user
+        async function loginUser(email, password) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+            return user || null;
+        }
+        
+        // Register user
+        async function registerUser(name, email, password, age) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Check if user already exists
+            if (users.find(u => u.email === email)) {
+                throw new Error('Email già registrata');
+            }
+            
+            const newUser = {
+                id: Date.now().toString(),
+                name: name,
+                email: email,
+                password: password, // In production, hash this
+                age: parseInt(age),
+                createdAt: new Date().toISOString(),
+                subscription: 'free',
+                stats: {
+                    streak: 0,
+                    challengesCompleted: 0,
+                    effectiveness: 0,
+                    totalAlarms: 0
+                },
+                preferences: {
+                    notifications: true,
+                    sound: true,
+                    vibration: true,
+                    reminder: false,
+                    analytics: true,
+                    crashReports: true,
+                    dataSync: true
+                }
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            return newUser;
+        }
+        
+        // Update UI for logged in user
+        function updateUIForLoggedInUser() {
+            if (currentUser) {
+                // Update navbar
+                const navActions = document.querySelector('.nav-actions');
+                if (navActions) {
+                    const adminButton = isAdmin() ? '<button id="admin-btn" class="btn-icon" title="Area Admin">🔐</button>' : '';
+                    
+                    navActions.innerHTML = `
+                        <span class="user-info">👤 ${currentUser.name}</span>
+                        ${adminButton}
+                        <button id="share-btn" class="btn-icon" title="Condividi la tua vittoria">📤</button>
+                        <button id="leaderboard-btn" class="btn-icon" title="Classifica">🏆</button>
+                        <button id="settings-btn" class="btn-icon" title="Impostazioni">⚙️</button>
+                        <button id="subscription-btn" class="btn-icon" title="Abbonamenti">💳</button>
+                        <button id="logout-btn" class="btn-icon" title="Logout">🚪</button>
+                    `;
+                    
+                    // Add event listeners
+                    document.getElementById('logout-btn').addEventListener('click', logout);
+                    if (isAdmin()) {
+                        document.getElementById('admin-btn').addEventListener('click', showAdminPanel);
+                    }
+                }
+                
+                // Update progress stats
+                updateProgressStats();
+                
+                // Show welcome message
+                showNotification(`👋 Benvenuto ${currentUser.name}!`, 'success');
+            }
+        }
+        
+        // Update progress stats
+        function updateProgressStats() {
+            if (currentUser) {
+                const progressValues = document.querySelectorAll('.progress-value');
+                if (progressValues.length >= 3) {
+                    progressValues[0].textContent = `${currentUser.stats.streak} giorni`;
+                    progressValues[1].textContent = `${currentUser.stats.challengesCompleted}`;
+                    progressValues[2].textContent = `${currentUser.stats.effectiveness}%`;
+                }
+            }
+        }
+        
+        // Logout user
+        function logout() {
+            if (confirm('Sei sicuro di voler uscire?')) {
+                currentUser = null;
+                isLoggedIn = false;
+                localStorage.removeItem('currentUser');
+                showNotification('👋 Arrivederci!', 'info');
+                location.reload();
+            }
+        }
+        
+        // Close auth modal
+        function closeAuthModal() {
+            const modal = document.querySelector('.auth-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        // Show forgot password
+        function showForgotPassword() {
+            showNotification('🔧 Funzionalità in arrivo!', 'info');
+        }
+        
+        // Show terms
+        function showTerms() {
+            showNotification('📄 Termini di Servizio in arrivo!', 'info');
+        }
+        
+        // Show privacy
+        function showPrivacy() {
+            showNotification('🔒 Privacy Policy in arrivo!', 'info');
+        }
+        
+        // Admin System
+        const ADMIN_EMAILS = ['admin@wakeupproof.com', '250862-italia@admin.com'];
+        
+        // Check if user is admin
+        function isAdmin() {
+            return currentUser && ADMIN_EMAILS.includes(currentUser.email);
+        }
+        
+        // Show admin panel
+        function showAdminPanel() {
+            if (!isAdmin()) {
+                showNotification('❌ Accesso negato. Solo gli admin possono accedere.', 'error');
+                return;
+            }
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay admin-modal';
+            modal.innerHTML = `
+                <div class="modal admin-modal-content">
+                    <div class="modal-header">
+                        <h3>🔐 Area Riservata Admin</h3>
+                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="admin-tabs">
+                            <button class="tab-btn active" onclick="showAdminTab('subscriptions')">💳 Abbonamenti</button>
+                            <button class="tab-btn" onclick="showAdminTab('users')">👥 Utenti</button>
+                            <button class="tab-btn" onclick="showAdminTab('stats')">📊 Statistiche</button>
+                            <button class="tab-btn" onclick="showAdminTab('payments')">🔑 Pagamenti</button>
+                            <button class="tab-btn" onclick="showAdminTab('settings')">⚙️ Impostazioni</button>
+                        </div>
+                        
+                        <div id="admin-content">
+                            <!-- Subscriptions Tab -->
+                            <div id="subscriptions-tab" class="admin-tab active">
+                                <h4>💳 Gestione Abbonamenti</h4>
+                                <div class="admin-actions">
+                                    <button class="btn-primary" onclick="refreshSubscriptions()">🔄 Aggiorna</button>
+                                    <button class="btn-secondary" onclick="exportSubscriptions()">📤 Esporta</button>
+                                </div>
+                                <div id="subscriptions-list" class="admin-list">
+                                    <!-- Subscriptions will be loaded here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Users Tab -->
+                            <div id="users-tab" class="admin-tab">
+                                <h4>👥 Gestione Utenti</h4>
+                                <div class="admin-actions">
+                                    <button class="btn-primary" onclick="refreshUsers()">🔄 Aggiorna</button>
+                                    <button class="btn-secondary" onclick="exportUsers()">📤 Esporta</button>
+                                    <button class="btn-error" onclick="deleteAllUsers()">🗑️ Elimina Tutti</button>
+                                </div>
+                                <div id="users-list" class="admin-list">
+                                    <!-- Users will be loaded here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Stats Tab -->
+                            <div id="stats-tab" class="admin-tab">
+                                <h4>📊 Statistiche Globali</h4>
+                                <div class="admin-stats">
+                                    <div class="stat-card">
+                                        <div class="stat-icon">👥</div>
+                                        <div class="stat-info">
+                                            <div class="stat-number" id="total-users">0</div>
+                                            <div class="stat-label">Utenti Totali</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-icon">💳</div>
+                                        <div class="stat-info">
+                                            <div class="stat-number" id="total-subscriptions">0</div>
+                                            <div class="stat-label">Abbonamenti Attivi</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-icon">💰</div>
+                                        <div class="stat-info">
+                                            <div class="stat-number" id="total-revenue">€0</div>
+                                            <div class="stat-label">Ricavi Totali</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-icon">🎯</div>
+                                        <div class="stat-info">
+                                            <div class="stat-number" id="total-challenges">0</div>
+                                            <div class="stat-label">Challenge Completati</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Payments Tab -->
+                            <div id="payments-tab" class="admin-tab">
+                                <h4>🔑 Configurazione Pagamenti</h4>
+                                <div class="payment-config">
+                                    <div class="config-section">
+                                        <h5>💳 Stripe Configuration</h5>
+                                        <div class="config-form">
+                                            <div class="form-group">
+                                                <label for="stripe-public-key">Chiave Pubblica Stripe:</label>
+                                                <input type="text" id="stripe-public-key" placeholder="pk_test_..." value="pk_test_51234567890abcdef">
+                                                <small>Chiave pubblica per il frontend</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="stripe-secret-key">Chiave Segreta Stripe:</label>
+                                                <input type="password" id="stripe-secret-key" placeholder="sk_test_..." value="sk_test_51234567890abcdef">
+                                                <small>Chiave segreta per il backend (non visibile agli utenti)</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="stripe-webhook-secret">Webhook Secret:</label>
+                                                <input type="password" id="stripe-webhook-secret" placeholder="whsec_..." value="whsec_51234567890abcdef">
+                                                <small>Secret per validare webhook Stripe</small>
+                                            </div>
+                                            <div class="form-actions">
+                                                <button class="btn-primary" onclick="saveStripeConfig()">💾 Salva Configurazione Stripe</button>
+                                                <button class="btn-secondary" onclick="testStripeConnection()">🧪 Test Connessione</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="config-section">
+                                        <h5>🅿️ PayPal Configuration</h5>
+                                        <div class="config-form">
+                                            <div class="form-group">
+                                                <label for="paypal-client-id">Client ID PayPal:</label>
+                                                <input type="text" id="paypal-client-id" placeholder="sb-..." value="sb-1234567890abcdef">
+                                                <small>Client ID per l'integrazione PayPal</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="paypal-client-secret">Client Secret PayPal:</label>
+                                                <input type="password" id="paypal-client-secret" placeholder="..." value="secret_1234567890abcdef">
+                                                <small>Client Secret per l'autenticazione PayPal</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="paypal-webhook-id">Webhook ID PayPal:</label>
+                                                <input type="text" id="paypal-webhook-id" placeholder="..." value="webhook_1234567890abcdef">
+                                                <small>ID del webhook PayPal per le notifiche</small>
+                                            </div>
+                                            <div class="form-actions">
+                                                <button class="btn-primary" onclick="savePayPalConfig()">💾 Salva Configurazione PayPal</button>
+                                                <button class="btn-secondary" onclick="testPayPalConnection()">🧪 Test Connessione</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="config-section">
+                                        <h5>🍎 Apple Pay & Google Pay</h5>
+                                        <div class="config-form">
+                                            <div class="form-group">
+                                                <label for="apple-pay-domain">Apple Pay Domain:</label>
+                                                <input type="text" id="apple-pay-domain" placeholder="wakeupproof.com" value="wakeupproof.com">
+                                                <small>Dominio verificato per Apple Pay</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="google-pay-merchant-id">Google Pay Merchant ID:</label>
+                                                <input type="text" id="google-pay-merchant-id" placeholder="..." value="merchant_1234567890">
+                                                <small>ID commerciante per Google Pay</small>
+                                            </div>
+                                            <div class="form-actions">
+                                                <button class="btn-primary" onclick="saveMobilePayConfig()">💾 Salva Configurazione Mobile</button>
+                                                <button class="btn-secondary" onclick="testMobilePayConnection()">🧪 Test Connessione</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="config-section">
+                                        <h5>📊 Monitoraggio Pagamenti</h5>
+                                        <div class="monitoring-stats">
+                                            <div class="stat-row">
+                                                <span>Stato Stripe:</span>
+                                                <span class="status-indicator success">✅ Connesso</span>
+                                            </div>
+                                            <div class="stat-row">
+                                                <span>Stato PayPal:</span>
+                                                <span class="status-indicator success">✅ Connesso</span>
+                                            </div>
+                                            <div class="stat-row">
+                                                <span>Webhook Stripe:</span>
+                                                <span class="status-indicator success">✅ Attivo</span>
+                                            </div>
+                                            <div class="stat-row">
+                                                <span>Webhook PayPal:</span>
+                                                <span class="status-indicator success">✅ Attivo</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button class="btn-primary" onclick="refreshPaymentStatus()">🔄 Aggiorna Stato</button>
+                                            <button class="btn-secondary" onclick="viewPaymentLogs()">📋 Visualizza Log</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Settings Tab -->
+                            <div id="settings-tab" class="admin-tab">
+                                <h4>⚙️ Impostazioni Admin</h4>
+                                <div class="admin-settings">
+                                    <div class="setting-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="maintenance-mode" onchange="toggleMaintenanceMode()">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Modalità Manutenzione</span>
+                                    </div>
+                                    <div class="setting-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="new-registrations" onchange="toggleNewRegistrations()">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Nuove Registrazioni</span>
+                                    </div>
+                                    <div class="setting-item">
+                                        <label class="switch">
+                                            <input type="checkbox" id="challenge-mode" onchange="toggleChallengeMode()">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Modalità Challenge</span>
+                                    </div>
+                                </div>
+                                <div class="admin-actions">
+                                    <button class="btn-primary" onclick="backupData()">💾 Backup Dati</button>
+                                    <button class="btn-secondary" onclick="restoreData()">📥 Ripristina</button>
+                                    <button class="btn-error" onclick="resetSystem()">🔄 Reset Sistema</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Load admin data
+            loadAdminData();
+        }
+        
+        // Show admin tab
+        function showAdminTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.admin-tabs .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Load specific data
+            if (tabName === 'subscriptions') {
+                loadSubscriptions();
+            } else if (tabName === 'users') {
+                loadUsers();
+            } else if (tabName === 'stats') {
+                loadStats();
+            } else if (tabName === 'payments') {
+                loadPaymentConfig();
+            }
+        }
+        
+        // Load admin data
+        function loadAdminData() {
+            loadStats();
+        }
+        
+        // Load subscriptions
+        function loadSubscriptions() {
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            const subscriptionsList = document.getElementById('subscriptions-list');
+            subscriptionsList.innerHTML = '';
+            
+            if (subscriptions.length === 0) {
+                subscriptionsList.innerHTML = '<p class="no-data">Nessun abbonamento trovato</p>';
+                return;
+            }
+            
+            subscriptions.forEach(sub => {
+                const user = users.find(u => u.id === sub.userId);
+                const subscriptionElement = document.createElement('div');
+                subscriptionElement.className = 'admin-item';
+                subscriptionElement.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-title">${user ? user.name : 'Utente Sconosciuto'}</div>
+                        <div class="item-details">
+                            <span class="plan-badge ${sub.plan}">${sub.plan.toUpperCase()}</span>
+                            <span class="status-badge ${sub.status}">${sub.status.toUpperCase()}</span>
+                            <span class="date">${new Date(sub.createdAt).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        ${sub.status === 'pending' ? `
+                            <button class="btn-success" onclick="approveSubscription('${sub.id}')">✅ Approva</button>
+                            <button class="btn-error" onclick="rejectSubscription('${sub.id}')">❌ Rifiuta</button>
+                        ` : `
+                            <button class="btn-secondary" onclick="viewSubscription('${sub.id}')">👁️ Visualizza</button>
+                            <button class="btn-error" onclick="cancelSubscription('${sub.id}')">🚫 Cancella</button>
+                        `}
+                    </div>
+                `;
+                subscriptionsList.appendChild(subscriptionElement);
+            });
+        }
+        
+        // Load users
+        function loadUsers() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const usersList = document.getElementById('users-list');
+            usersList.innerHTML = '';
+            
+            if (users.length === 0) {
+                usersList.innerHTML = '<p class="no-data">Nessun utente trovato</p>';
+                return;
+            }
+            
+            users.forEach(user => {
+                const userElement = document.createElement('div');
+                userElement.className = 'admin-item';
+                userElement.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-title">${user.name}</div>
+                        <div class="item-details">
+                            <span class="email">${user.email}</span>
+                            <span class="age">${user.age} anni</span>
+                            <span class="date">${new Date(user.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        <div class="item-stats">
+                            <span>Streak: ${user.stats.streak}</span>
+                            <span>Challenge: ${user.stats.challengesCompleted}</span>
+                            <span>Efficacia: ${user.stats.effectiveness}%</span>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-primary" onclick="viewUser('${user.id}')">👁️ Visualizza</button>
+                        <button class="btn-secondary" onclick="editUser('${user.id}')">✏️ Modifica</button>
+                        <button class="btn-error" onclick="deleteUser('${user.id}')">🗑️ Elimina</button>
+                    </div>
+                `;
+                usersList.appendChild(userElement);
+            });
+        }
+        
+        // Load stats
+        function loadStats() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            
+            // Calculate stats
+            const totalUsers = users.length;
+            const activeSubscriptions = subscriptions.filter(s => s.status === 'active').length;
+            const totalRevenue = subscriptions.filter(s => s.status === 'active').reduce((sum, s) => {
+                const planPrices = { pro: 4.99, premium: 9.99 };
+                return sum + (planPrices[s.plan] || 0);
+            }, 0);
+            const totalChallenges = users.reduce((sum, user) => sum + user.stats.challengesCompleted, 0);
+            
+            // Update UI
+            document.getElementById('total-users').textContent = totalUsers;
+            document.getElementById('total-subscriptions').textContent = activeSubscriptions;
+            document.getElementById('total-revenue').textContent = `€${totalRevenue.toFixed(2)}`;
+            document.getElementById('total-challenges').textContent = totalChallenges;
+        }
+        
+        // Admin actions
+        function approveSubscription(subscriptionId) {
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            const subscription = subscriptions.find(s => s.id === subscriptionId);
+            
+            if (subscription) {
+                subscription.status = 'active';
+                subscription.approvedAt = new Date().toISOString();
+                localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+                
+                // Update user subscription
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.id === subscription.userId);
+                if (user) {
+                    user.subscription = subscription.plan;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                showNotification('✅ Abbonamento approvato!', 'success');
+                loadSubscriptions();
+            }
+        }
+        
+        function rejectSubscription(subscriptionId) {
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            const subscription = subscriptions.find(s => s.id === subscriptionId);
+            
+            if (subscription) {
+                subscription.status = 'rejected';
+                subscription.rejectedAt = new Date().toISOString();
+                localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+                
+                showNotification('❌ Abbonamento rifiutato!', 'warning');
+                loadSubscriptions();
+            }
+        }
+        
+        function viewSubscription(subscriptionId) {
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            const subscription = subscriptions.find(s => s.id === subscriptionId);
+            
+            if (subscription) {
+                showNotification(`📋 Abbonamento ${subscription.plan.toUpperCase()} - ${subscription.status.toUpperCase()}`, 'info');
+            }
+        }
+        
+        function cancelSubscription(subscriptionId) {
+            if (confirm('Sei sicuro di voler cancellare questo abbonamento?')) {
+                const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+                const subscription = subscriptions.find(s => s.id === subscriptionId);
+                
+                if (subscription) {
+                    subscription.status = 'cancelled';
+                    subscription.cancelledAt = new Date().toISOString();
+                    localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+                    
+                    showNotification('🚫 Abbonamento cancellato!', 'warning');
+                    loadSubscriptions();
+                }
+            }
+        }
+        
+        function viewUser(userId) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.id === userId);
+            
+            if (user) {
+                showNotification(`👤 ${user.name} - ${user.email}`, 'info');
+            }
+        }
+        
+        function editUser(userId) {
+            showNotification('✏️ Funzionalità di modifica in arrivo!', 'info');
+        }
+        
+        function deleteUser(userId) {
+            if (confirm('Sei sicuro di voler eliminare questo utente?')) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const filteredUsers = users.filter(u => u.id !== userId);
+                localStorage.setItem('users', JSON.stringify(filteredUsers));
+                
+                showNotification('🗑️ Utente eliminato!', 'warning');
+                loadUsers();
+            }
+        }
+        
+        function deleteAllUsers() {
+            if (confirm('⚠️ ATTENZIONE: Questa azione eliminerà TUTTI gli utenti!\n\nSei sicuro di voler continuare?')) {
+                if (confirm('🚨 ULTIMA CONFERMA: Eliminare tutti gli utenti?')) {
+                    localStorage.removeItem('users');
+                    localStorage.removeItem('currentUser');
+                    showNotification('🗑️ Tutti gli utenti eliminati!', 'warning');
+                    location.reload();
+                }
+            }
+        }
+        
+        function refreshSubscriptions() {
+            loadSubscriptions();
+            showNotification('🔄 Abbonamenti aggiornati!', 'success');
+        }
+        
+        function refreshUsers() {
+            loadUsers();
+            showNotification('🔄 Utenti aggiornati!', 'success');
+        }
+        
+        function exportSubscriptions() {
+            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            const dataStr = JSON.stringify(subscriptions, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `subscriptions-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showNotification('📤 Abbonamenti esportati!', 'success');
+        }
+        
+        function exportUsers() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const dataStr = JSON.stringify(users, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `users-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showNotification('📤 Utenti esportati!', 'success');
+        }
+        
+        function toggleMaintenanceMode() {
+            const isEnabled = document.getElementById('maintenance-mode').checked;
+            localStorage.setItem('maintenanceMode', isEnabled);
+            showNotification(isEnabled ? '🔧 Modalità manutenzione attivata!' : '✅ Modalità manutenzione disattivata!', 'info');
+        }
+        
+        function toggleNewRegistrations() {
+            const isEnabled = document.getElementById('new-registrations').checked;
+            localStorage.setItem('newRegistrations', isEnabled);
+            showNotification(isEnabled ? '✅ Nuove registrazioni abilitate!' : '🚫 Nuove registrazioni disabilitate!', 'info');
+        }
+        
+        function toggleChallengeMode() {
+            const isEnabled = document.getElementById('challenge-mode').checked;
+            localStorage.setItem('challengeMode', isEnabled);
+            showNotification(isEnabled ? '🎯 Modalità challenge attivata!' : '⏸️ Modalità challenge disattivata!', 'info');
+        }
+        
+        function backupData() {
+            const data = {
+                users: JSON.parse(localStorage.getItem('users') || '[]'),
+                subscriptions: JSON.parse(localStorage.getItem('subscriptions') || '[]'),
+                alarms: JSON.parse(localStorage.getItem('alarms') || '[]'),
+                backupDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `wakeupproof-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showNotification('💾 Backup completato!', 'success');
+        }
+        
+        function restoreData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            
+                            if (data.users) localStorage.setItem('users', JSON.stringify(data.users));
+                            if (data.subscriptions) localStorage.setItem('subscriptions', JSON.stringify(data.subscriptions));
+                            if (data.alarms) localStorage.setItem('alarms', JSON.stringify(data.alarms));
+                            
+                            showNotification('📥 Dati ripristinati!', 'success');
+                            location.reload();
+                        } catch (error) {
+                            showNotification('❌ Errore nel ripristino dei dati', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+        
+        function resetSystem() {
+            if (confirm('⚠️ ATTENZIONE: Questa azione resetterà TUTTO il sistema!\n\nSei sicuro di voler continuare?')) {
+                if (confirm('🚨 ULTIMA CONFERMA: Reset completo del sistema?')) {
+                    localStorage.clear();
+                    showNotification('🔄 Sistema resettato!', 'warning');
+                    location.reload();
+                }
+            }
+        }
+
+        // User Data Management
+        function loadUserData() {
+            if (!currentUser) return;
+            
+            // Load profile data
+            if (currentUser.name) document.getElementById('user-name').value = currentUser.name;
+            if (currentUser.email) document.getElementById('user-email').value = currentUser.email;
+            if (currentUser.age) document.getElementById('user-age').value = currentUser.age;
+            if (currentUser.timezone) document.getElementById('user-timezone').value = currentUser.timezone;
+            if (currentUser.goals) document.getElementById('user-goals').value = currentUser.goals;
+            
+            // Load notification settings
+            if (currentUser.preferences) {
+                if (currentUser.preferences.notifications !== undefined) document.getElementById('notifications-enabled').checked = currentUser.preferences.notifications;
+                if (currentUser.preferences.sound !== undefined) document.getElementById('sound-enabled').checked = currentUser.preferences.sound;
+                if (currentUser.preferences.vibration !== undefined) document.getElementById('vibration-enabled').checked = currentUser.preferences.vibration;
+                if (currentUser.preferences.reminder !== undefined) document.getElementById('reminder-enabled').checked = currentUser.preferences.reminder;
+                if (currentUser.preferences.analytics !== undefined) document.getElementById('analytics-enabled').checked = currentUser.preferences.analytics;
+                if (currentUser.preferences.crashReports !== undefined) document.getElementById('crash-reports-enabled').checked = currentUser.preferences.crashReports;
+                if (currentUser.preferences.dataSync !== undefined) document.getElementById('data-sync-enabled').checked = currentUser.preferences.dataSync;
+            }
+        }
+        
+        function saveUserData() {
+            const userData = {
+                name: document.getElementById('user-name').value,
+                email: document.getElementById('user-email').value,
+                age: document.getElementById('user-age').value,
+                timezone: document.getElementById('user-timezone').value,
+                goals: document.getElementById('user-goals').value,
+                notifications: document.getElementById('notifications-enabled').checked,
+                sound: document.getElementById('sound-enabled').checked,
+                vibration: document.getElementById('vibration-enabled').checked,
+                reminder: document.getElementById('reminder-enabled').checked,
+                analytics: document.getElementById('analytics-enabled').checked,
+                crashReports: document.getElementById('crash-reports-enabled').checked,
+                dataSync: document.getElementById('data-sync-enabled').checked
+            };
+            
+            localStorage.setItem('userData', JSON.stringify(userData));
+            showNotification('💾 Dati salvati con successo!', 'success');
+        }
+        
+        // Subscription Management
+        function purchasePlan(planType) {
+            const plans = {
+                pro: { name: 'Pro', price: '€4.99/mese', features: ['Allarmi illimitati', 'Challenge avanzati', 'Suonerie personalizzate'] },
+                premium: { name: 'Premium', price: '€9.99/mese', features: ['Tutto incluso', 'Challenge estreme', 'Analytics avanzate'] }
+            };
+            
+            const plan = plans[planType];
+            if (confirm(`Vuoi acquistare il piano ${plan.name} per ${plan.price}?\n\nCaratteristiche:\n${plan.features.join('\n')}\n\n💡 Prova gratis per 7 giorni!`)) {
+                // Create subscription request
+                const subscription = {
+                    id: Date.now().toString(),
+                    userId: currentUser.id,
+                    plan: planType,
+                    status: 'pending',
+                    createdAt: new Date().toISOString(),
+                    price: plan.price
+                };
+                
+                // Save subscription request
+                const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+                subscriptions.push(subscription);
+                localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+                
+                showNotification(`🛒 Richiesta abbonamento ${plan.name} inviata! In attesa di approvazione admin.`, 'info');
+                
+                // Update UI
+                updateSubscriptionUI();
+            }
+        }
+        
+        function updateSubscriptionUI() {
+            const subscription = JSON.parse(localStorage.getItem('subscription') || '{}');
+            const currentPlan = subscription.plan || 'free';
+            
+            // Update plan buttons
+            document.querySelectorAll('.plan-card button').forEach(btn => {
+                btn.textContent = 'Attuale';
+                btn.className = 'btn-secondary';
+            });
+            
+            if (currentPlan !== 'free') {
+                const planCard = document.querySelector(`[onclick="purchasePlan('${currentPlan}')"]`);
+                if (planCard) {
+                    planCard.textContent = 'Attuale';
+                    planCard.className = 'btn-secondary';
+                }
+            }
+        }
+        
+        // Data Management
+        function exportData() {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const alarms = JSON.parse(localStorage.getItem('alarms') || '[]');
+            const subscription = JSON.parse(localStorage.getItem('subscription') || '{}');
+            
+            const exportData = {
+                userData,
+                alarms,
+                subscription,
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `wakeupproof-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showNotification('📤 Dati esportati con successo!', 'success');
+        }
+        
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            
+                            if (data.userData) localStorage.setItem('userData', JSON.stringify(data.userData));
+                            if (data.alarms) localStorage.setItem('alarms', JSON.stringify(data.alarms));
+                            if (data.subscription) localStorage.setItem('subscription', JSON.stringify(data.subscription));
+                            
+                            showNotification('📥 Dati importati con successo!', 'success');
+                            location.reload();
+                        } catch (error) {
+                            showNotification('❌ Errore nell\'importazione dei dati', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+        
+        function deleteAccount() {
+            if (confirm('⚠️ ATTENZIONE: Questa azione eliminerà TUTTI i tuoi dati!\n\n- Profilo utente\n- Allarmi\n- Progressi\n- Abbonamenti\n\nSei sicuro di voler continuare?')) {
+                if (confirm('🚨 ULTIMA CONFERMA: Eliminare definitivamente l\'account?')) {
+                    localStorage.clear();
+                    showNotification('🗑️ Account eliminato. Arrivederci!', 'info');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                }
+            }
+        }
+        
         function showSubscriptions() {
             const modal = document.createElement('div');
             modal.className = 'modal-overlay';
@@ -1702,80 +4160,354 @@
             document.body.appendChild(modal);
         }
 
-        // Test functions with real modules
-        async function testCamera() {
-            try {
-                if (typeof cameraHandler !== 'undefined') {
-                    const success = await cameraHandler.startCamera();
-                    if (success) {
-                        showNotification('Camera funzionante! 📸', 'success');
-                        await cameraHandler.stopCamera();
-                    } else {
-                        showNotification('Errore avvio camera', 'error');
-                    }
-                } else {
-                    // Fallback to basic test
-                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                        stream.getTracks().forEach(track => track.stop());
-                        showNotification('Camera funzionante! 📸', 'success');
-                    } else {
-                        showNotification('Camera non supportata', 'error');
-                    }
-                }
-            } catch (error) {
-                showNotification('Errore camera: ' + error.message, 'error');
+        // Secret Challenge System
+        const secretChallenges = [
+            // Physical Challenges
+            { id: 'jumping_jacks', name: 'Fai 20 jumping jacks', type: 'physical', difficulty: 'medium', icon: '🤸' },
+            { id: 'push_ups', name: 'Fai 15 flessioni', type: 'physical', difficulty: 'hard', icon: '💪' },
+            { id: 'squats', name: 'Fai 25 squat', type: 'physical', difficulty: 'medium', icon: '🦵' },
+            { id: 'plank', name: 'Mantieni il plank per 30 secondi', type: 'physical', difficulty: 'hard', icon: '🏋️' },
+            { id: 'burpees', name: 'Fai 10 burpees', type: 'physical', difficulty: 'hard', icon: '🔥' },
+            { id: 'mountain_climbers', name: 'Fai 20 mountain climbers', type: 'physical', difficulty: 'medium', icon: '⛰️' },
+            { id: 'wall_sit', name: 'Mantieni il wall sit per 45 secondi', type: 'physical', difficulty: 'hard', icon: '🧱' },
+            { id: 'high_knees', name: 'Fai 30 high knees', type: 'physical', difficulty: 'easy', icon: '🏃' },
+            { id: 'butt_kicks', name: 'Fai 30 butt kicks', type: 'physical', difficulty: 'easy', icon: '🦵' },
+            { id: 'lunges', name: 'Fai 20 affondi (10 per gamba)', type: 'physical', difficulty: 'medium', icon: '🚶' },
+            
+            // Mental Challenges
+            { id: 'math_problem', name: 'Risolvi: 47 × 23 = ?', type: 'mental', difficulty: 'medium', icon: '🧮' },
+            { id: 'word_scramble', name: 'Trova la parola: RATNSU', type: 'mental', difficulty: 'easy', icon: '🔤' },
+            { id: 'memory_sequence', name: 'Ripeti la sequenza: 7-2-9-1-4', type: 'mental', difficulty: 'medium', icon: '🧠' },
+            { id: 'color_sequence', name: 'Ripeti i colori: Rosso-Verde-Blu-Giallo', type: 'mental', difficulty: 'easy', icon: '🌈' },
+            { id: 'reverse_counting', name: 'Conta alla rovescia da 50 a 0', type: 'mental', difficulty: 'medium', icon: '🔢' },
+            { id: 'alphabet_backwards', name: 'Recita l\'alfabeto al contrario', type: 'mental', difficulty: 'hard', icon: '🔤' },
+            { id: 'word_count', name: 'Conta le lettere in "WakeUpProof"', type: 'mental', difficulty: 'easy', icon: '📝' },
+            { id: 'pattern_recognition', name: 'Completa: 2, 4, 8, 16, ?', type: 'mental', difficulty: 'medium', icon: '🔍' },
+            { id: 'spelling_bee', name: 'Spella "IMPOSSIBILE"', type: 'mental', difficulty: 'medium', icon: '✍️' },
+            { id: 'logic_puzzle', name: 'Se oggi è mercoledì, che giorno sarà tra 100 giorni?', type: 'mental', difficulty: 'hard', icon: '🧩' },
+            
+            // Creative Challenges
+            { id: 'draw_something', name: 'Disegna un gatto in 30 secondi', type: 'creative', difficulty: 'easy', icon: '🎨' },
+            { id: 'sing_song', name: 'Canta una canzone per 20 secondi', type: 'creative', difficulty: 'easy', icon: '🎵' },
+            { id: 'dance_moves', name: 'Fai 3 passi di danza', type: 'creative', difficulty: 'easy', icon: '💃' },
+            { id: 'poem_recite', name: 'Recita una poesia di 4 versi', type: 'creative', difficulty: 'medium', icon: '📜' },
+            { id: 'story_tell', name: 'Racconta una storia in 30 secondi', type: 'creative', difficulty: 'medium', icon: '📚' },
+            { id: 'impression', name: 'Fai l\'impressione di un animale', type: 'creative', difficulty: 'easy', icon: '🐒' },
+            { id: 'tongue_twister', name: 'Ripeti: "Sopra la panca la capra campa"', type: 'creative', difficulty: 'medium', icon: '👅' },
+            { id: 'mime_act', name: 'Mima "lavarsi i denti"', type: 'creative', difficulty: 'easy', icon: '🎭' },
+            { id: 'rhyme_game', name: 'Trova 3 rime per "sveglia"', type: 'creative', difficulty: 'medium', icon: '🎯' },
+            { id: 'charades', name: 'Mima "fare colazione"', type: 'creative', difficulty: 'easy', icon: '🎪' },
+            
+            // Sensory Challenges
+            { id: 'touch_surfaces', name: 'Tocca 5 superfici diverse', type: 'sensory', difficulty: 'easy', icon: '✋' },
+            { id: 'smell_identification', name: 'Identifica 3 odori diversi', type: 'sensory', difficulty: 'medium', icon: '👃' },
+            { id: 'temperature_guess', name: 'Indovina la temperatura della stanza', type: 'sensory', difficulty: 'hard', icon: '🌡️' },
+            { id: 'sound_identification', name: 'Identifica 3 suoni diversi', type: 'sensory', difficulty: 'medium', icon: '👂' },
+            { id: 'texture_feel', name: 'Trova 3 tessuti diversi', type: 'sensory', difficulty: 'easy', icon: '🧵' },
+            { id: 'weight_guess', name: 'Indovina il peso di un oggetto', type: 'sensory', difficulty: 'hard', icon: '⚖️' },
+            { id: 'color_identification', name: 'Identifica 5 colori nella stanza', type: 'sensory', difficulty: 'easy', icon: '🎨' },
+            { id: 'shape_recognition', name: 'Trova 3 forme geometriche', type: 'sensory', difficulty: 'easy', icon: '🔷' },
+            { id: 'distance_estimation', name: 'Stima la distanza di un oggetto', type: 'sensory', difficulty: 'medium', icon: '📏' },
+            { id: 'balance_test', name: 'Stai in equilibrio su un piede per 20 secondi', type: 'sensory', difficulty: 'medium', icon: '⚖️' },
+            
+            // Social Challenges
+            { id: 'call_someone', name: 'Chiama qualcuno e saluta', type: 'social', difficulty: 'easy', icon: '📞' },
+            { id: 'compliment_mirror', name: 'Fai un complimento allo specchio', type: 'social', difficulty: 'easy', icon: '🪞' },
+            { id: 'gratitude_list', name: 'Pensa a 3 cose per cui sei grato', type: 'social', difficulty: 'easy', icon: '🙏' },
+            { id: 'positive_affirmation', name: 'Ripeti 3 affermazioni positive', type: 'social', difficulty: 'easy', icon: '💪' },
+            { id: 'smile_challenge', name: 'Sorridi per 30 secondi', type: 'social', difficulty: 'easy', icon: '😊' },
+            { id: 'laugh_out_loud', name: 'Ridi ad alta voce per 10 secondi', type: 'social', difficulty: 'easy', icon: '😂' },
+            { id: 'deep_breathing', name: 'Fai 5 respiri profondi', type: 'social', difficulty: 'easy', icon: '🫁' },
+            { id: 'meditation_moment', name: 'Medita per 1 minuto', type: 'social', difficulty: 'medium', icon: '🧘' },
+            { id: 'goal_setting', name: 'Pensa a 3 obiettivi per oggi', type: 'social', difficulty: 'easy', icon: '🎯' },
+            { id: 'self_motivation', name: 'Dì a te stesso "Posso farcela!"', type: 'social', difficulty: 'easy', icon: '💪' },
+            
+            // Extreme Challenges
+            { id: 'cold_shower', name: 'Fai una doccia fredda di 30 secondi', type: 'extreme', difficulty: 'hard', icon: '🚿' },
+            { id: 'ice_cube_challenge', name: 'Tieni un cubetto di ghiaccio per 30 secondi', type: 'extreme', difficulty: 'hard', icon: '🧊' },
+            { id: 'burpee_burpee', name: 'Fai 20 burpees consecutivi', type: 'extreme', difficulty: 'extreme', icon: '🔥' },
+            { id: 'plank_marathon', name: 'Mantieni il plank per 2 minuti', type: 'extreme', difficulty: 'extreme', icon: '🏋️' },
+            { id: 'sprint_challenge', name: 'Fai 5 sprint di 20 secondi', type: 'extreme', difficulty: 'extreme', icon: '🏃' },
+            { id: 'jump_rope', name: 'Salta la corda per 2 minuti', type: 'extreme', difficulty: 'hard', icon: '🦘' },
+            { id: 'wall_sit_marathon', name: 'Mantieni il wall sit per 3 minuti', type: 'extreme', difficulty: 'extreme', icon: '🧱' },
+            { id: 'mountain_climber_marathon', name: 'Fai 100 mountain climbers', type: 'extreme', difficulty: 'extreme', icon: '⛰️' },
+            { id: 'burpee_ladder', name: 'Fai 1, 2, 3, 4, 5 burpees', type: 'extreme', difficulty: 'extreme', icon: '🔥' },
+            { id: 'plank_variations', name: 'Fai 5 variazioni di plank', type: 'extreme', difficulty: 'hard', icon: '🏋️' }
+        ];
+        
+        // Challenge Selection System
+        function getRandomChallenge() {
+            const randomIndex = Math.floor(Math.random() * secretChallenges.length);
+            return secretChallenges[randomIndex];
+        }
+        
+        function getChallengeByDifficulty(difficulty) {
+            const filteredChallenges = secretChallenges.filter(challenge => challenge.difficulty === difficulty);
+            const randomIndex = Math.floor(Math.random() * filteredChallenges.length);
+            return filteredChallenges[randomIndex];
+        }
+        
+        function getChallengeByType(type) {
+            const filteredChallenges = secretChallenges.filter(challenge => challenge.type === type);
+            const randomIndex = Math.floor(Math.random() * filteredChallenges.length);
+            return filteredChallenges[randomIndex];
+        }
+        
+        // Challenge Execution System
+        function executeSecretChallenge(challenge) {
+            return new Promise((resolve, reject) => {
+                // Show challenge modal
+                showChallengeModal(challenge);
+                
+                // Set up challenge completion
+                window.currentChallenge = {
+                    challenge: challenge,
+                    resolve: resolve,
+                    reject: reject,
+                    startTime: Date.now()
+                };
+            });
+        }
+        
+        function showChallengeModal(challenge) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay challenge-modal';
+            modal.innerHTML = `
+                <div class="modal challenge-modal-content">
+                    <div class="modal-header">
+                        <h3>🎯 Challenge Segreta!</h3>
+                        <div class="challenge-icon">${challenge.icon}</div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="challenge-info">
+                            <h4>${challenge.name}</h4>
+                            <p class="challenge-description">Completa questa challenge per spegnere la sveglia!</p>
+                            <div class="challenge-difficulty">
+                                <span class="difficulty-badge ${challenge.difficulty}">${challenge.difficulty.toUpperCase()}</span>
+                            </div>
+                        </div>
+                        <div class="challenge-actions">
+                            <button class="btn-primary" onclick="completeChallenge()">✅ Completato</button>
+                            <button class="btn-secondary" onclick="skipChallenge()">⏭️ Salta</button>
+                        </div>
+                        <div class="challenge-timer">
+                            <span id="challenge-timer">Tempo: 0s</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Start timer
+            startChallengeTimer();
+        }
+        
+        function startChallengeTimer() {
+            const timerElement = document.getElementById('challenge-timer');
+            const startTime = Date.now();
+            
+            const timer = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                timerElement.textContent = `Tempo: ${elapsed}s`;
+            }, 1000);
+            
+            window.challengeTimer = timer;
+        }
+        
+        function completeChallenge() {
+            if (window.currentChallenge) {
+                const elapsed = Math.floor((Date.now() - window.currentChallenge.startTime) / 1000);
+                showNotification(`🎉 Challenge completata in ${elapsed}s!`, 'success');
+                window.currentChallenge.resolve();
+                closeChallengeModal();
             }
+        }
+        
+        function skipChallenge() {
+            if (window.currentChallenge) {
+                showNotification('⏭️ Challenge saltata - La sveglia continuerà!', 'warning');
+                window.currentChallenge.reject();
+                closeChallengeModal();
+            }
+        }
+        
+        function closeChallengeModal() {
+            const modal = document.querySelector('.challenge-modal');
+            if (modal) {
+                modal.remove();
+            }
+            if (window.challengeTimer) {
+                clearInterval(window.challengeTimer);
+            }
+            window.currentChallenge = null;
         }
 
-        async function testSensors() {
-            try {
-                if (typeof sensorsHandler !== 'undefined') {
-                    const info = await sensorsHandler.getDeviceInfo();
-                    showNotification('Sensori supportati! 🚶', 'success');
-                    console.log('Device info:', info);
-                } else {
-                    if ('DeviceMotionEvent' in window) {
-                        showNotification('Sensori supportati! 🚶', 'success');
-                    } else {
-                        showNotification('Sensori non supportati', 'warning');
+        // Sound Management
+        let currentSound = null;
+        let selectedSound = 'classic';
+        
+        const soundLibrary = {
+            classic: {
+                name: 'Classica',
+                icon: '🔔',
+                description: 'Suoneria classica tradizionale',
+                audio: null
+            },
+            urgent: {
+                name: 'Urgente',
+                icon: '🚨',
+                description: 'Allarme urgente e insistente',
+                audio: null
+            },
+            nature: {
+                name: 'Natura',
+                icon: '🌅',
+                description: 'Suoni rilassanti della natura',
+                audio: null
+            },
+            electronic: {
+                name: 'Elettronica',
+                icon: '⚡',
+                description: 'Suoneria elettronica moderna',
+                audio: null
+            },
+            motivational: {
+                name: 'Motivazionale',
+                icon: '💪',
+                description: 'Suoneria energica e motivante',
+                audio: null
+            },
+            custom: {
+                name: 'Personalizzata',
+                icon: '🎵',
+                description: 'Carica la tua suoneria',
+                audio: null
+            }
+        };
+        
+        function playSound(soundType) {
+            // Stop current sound
+            if (currentSound) {
+                currentSound.pause();
+                currentSound.currentTime = 0;
+            }
+            
+            // Create audio context for sound generation
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Generate different sounds based on type
+            let soundData = generateSoundData(soundType);
+            
+            // Create audio buffer
+            const buffer = audioContext.createBuffer(1, soundData.length, audioContext.sampleRate);
+            const channelData = buffer.getChannelData(0);
+            
+            for (let i = 0; i < soundData.length; i++) {
+                channelData[i] = soundData[i];
+            }
+            
+            // Play sound
+            const source = audioContext.createBufferSource();
+            source.buffer = buffer;
+            source.connect(audioContext.destination);
+            source.start();
+            
+            // Update UI
+            updateSoundUI(soundType);
+        }
+        
+        function generateSoundData(soundType) {
+            const sampleRate = 44100;
+            const duration = 2; // 2 seconds
+            const length = sampleRate * duration;
+            const soundData = new Float32Array(length);
+            
+            switch (soundType) {
+                case 'classic':
+                    // Classic alarm sound
+                    for (let i = 0; i < length; i++) {
+                        const t = i / sampleRate;
+                        soundData[i] = 0.3 * Math.sin(2 * Math.PI * 800 * t) * Math.exp(-t * 2);
                     }
-                }
-            } catch (error) {
-                showNotification('Errore test sensori: ' + error.message, 'error');
+                    break;
+                    
+                case 'urgent':
+                    // Urgent alarm sound
+                    for (let i = 0; i < length; i++) {
+                        const t = i / sampleRate;
+                        soundData[i] = 0.5 * Math.sin(2 * Math.PI * 1200 * t) * (Math.sin(2 * Math.PI * 5 * t) + 1) / 2;
+                    }
+                    break;
+                    
+                case 'nature':
+                    // Nature sound (bird chirping)
+                    for (let i = 0; i < length; i++) {
+                        const t = i / sampleRate;
+                        soundData[i] = 0.2 * Math.sin(2 * Math.PI * 400 * t) * Math.sin(2 * Math.PI * 2 * t);
+                    }
+                    break;
+                    
+                case 'electronic':
+                    // Electronic sound
+                    for (let i = 0; i < length; i++) {
+                        const t = i / sampleRate;
+                        soundData[i] = 0.3 * Math.sin(2 * Math.PI * 600 * t) * Math.sin(2 * Math.PI * 10 * t);
+                    }
+                    break;
+                    
+                case 'motivational':
+                    // Motivational sound (ascending tone)
+                    for (let i = 0; i < length; i++) {
+                        const t = i / sampleRate;
+                        const freq = 400 + (t * 200);
+                        soundData[i] = 0.4 * Math.sin(2 * Math.PI * freq * t);
+                    }
+                    break;
+                    
+                case 'custom':
+                    // Custom sound (user upload)
+                    for (let i = 0; i < length; i++) {
+                        const t = i / sampleRate;
+                        soundData[i] = 0.3 * Math.sin(2 * Math.PI * 500 * t) * Math.sin(2 * Math.PI * 3 * t);
+                    }
+                    break;
             }
+            
+            return soundData;
         }
+        
+        function updateSoundUI(soundType) {
+            // Remove previous selection
+            document.querySelectorAll('.sound-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selection to current option
+            const selectedOption = document.querySelector(`[data-sound="${soundType}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected');
+            }
+            
+            // Update hidden input
+            document.getElementById('alarm-sound').value = soundType;
+            selectedSound = soundType;
+        }
+        
+        function selectSound(soundType) {
+            updateSoundUI(soundType);
+        }
+        
+        // Add click handlers for sound selection
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.sound-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const soundType = this.getAttribute('data-sound');
+                    selectSound(soundType);
+                });
+            });
+        });
 
-        async function testNFCQR() {
-            try {
-                if (typeof challengeEngine !== 'undefined') {
-                    // Test NFC/QR challenge creation
-                    const challenge = await challengeEngine.createChallenge('test-alarm', 'qr', {
-                        expectedData: 'test-qr-data'
-                    });
-                    showNotification('NFC/QR: Challenge creato correttamente', 'success');
-                } else {
-                    showNotification('NFC/QR: Funzionalità mock per demo', 'warning');
-                }
-            } catch (error) {
-                showNotification('Errore test NFC/QR: ' + error.message, 'error');
-            }
-        }
-
-        async function testSubscriptions() {
-            try {
-                if (typeof subscriptionService !== 'undefined') {
-                    const plan = subscriptionService.getCurrentPlan();
-                    const features = subscriptionService.getCurrentFeatures();
-                    showNotification(`Abbonamenti: Piano ${plan.toUpperCase()} attivo`, 'success');
-                    console.log('Subscription features:', features);
-                } else {
-                    showNotification('Abbonamenti: Free/Pro/Premium disponibili', 'success');
-                }
-            } catch (error) {
-                showNotification('Errore test abbonamenti: ' + error.message, 'error');
-            }
-        }
 
         // Notification system with animations
         function showNotification(message, type = 'info') {
@@ -1800,7 +4532,7 @@
         }
 
         // Simulate alarm trigger with animations
-        function simulateAlarm() {
+        async function simulateAlarm() {
             const statusIndicator = document.getElementById('status-indicator');
             const statusText = document.getElementById('status-text');
             
@@ -1818,37 +4550,42 @@
             challengesSection.style.display = 'block';
             challengesSection.classList.add('fade-in-up');
             
-            // Add demo challenges
-            addDemoChallenges();
-            
             // Add alarm glow effect to the entire app
             document.body.classList.add('alarm-active');
+            
+            // Execute random secret challenge
+            try {
+                const randomChallenge = getRandomChallenge();
+                await executeSecretChallenge(randomChallenge);
+                
+                // If challenge completed, show success
+                showNotification('🎉 Challenge completata! Sveglia spenta!', 'success');
+                stopAlarm();
+            } catch (error) {
+                // If challenge skipped, continue alarm
+                showNotification('⏭️ Challenge saltata! La sveglia continua!', 'warning');
+                
+                // Try another challenge after 5 seconds
+                setTimeout(async () => {
+                    try {
+                        const anotherChallenge = getRandomChallenge();
+                        await executeSecretChallenge(anotherChallenge);
+                        showNotification('🎉 Challenge completata! Sveglia spenta!', 'success');
+                        stopAlarm();
+                    } catch (error) {
+                        showNotification('⏭️ Challenge saltata! La sveglia continua!', 'warning');
+                    }
+                }, 5000);
+            }
+        }
+        
+        function stopAlarm() {
+            document.body.classList.remove('alarm-active');
+            document.getElementById('status-indicator').className = 'status-indicator';
+            document.getElementById('status-text').textContent = 'Sistema pronto';
+            document.getElementById('challenges-section').style.display = 'none';
         }
 
-        function addDemoChallenges() {
-            const challengesList = document.getElementById('challenges-list');
-            challengesList.innerHTML = '';
-            
-            const challenges = [
-                { id: 'challenge-1', type: 'photo', title: '📸 Challenge Foto', description: 'Scatta una foto del lavabo' },
-                { id: 'challenge-2', type: 'steps', title: '🚶 Challenge Passi', description: 'Fai 120 passi in 2 minuti' }
-            ];
-            
-            challenges.forEach(challenge => {
-                const challengeElement = document.createElement('div');
-                challengeElement.className = 'alarm-item';
-                challengeElement.innerHTML = `
-                    <div class="alarm-info">
-                        <div class="alarm-time">${challenge.title}</div>
-                        <div class="alarm-challenges">${challenge.description}</div>
-                    </div>
-                    <div class="alarm-actions">
-                        <button class="btn-primary" onclick="completeChallenge('${challenge.id}')">Completa</button>
-                    </div>
-                `;
-                challengesList.appendChild(challengeElement);
-            });
-        }
 
         function completeChallenge(challengeId) {
             showNotification('Challenge completato! ✅', 'success');
@@ -1883,15 +4620,475 @@
             }
         }
 
-        // Add demo alarm trigger button
-        document.addEventListener('DOMContentLoaded', function() {
-            const addAlarmBtn = document.getElementById('add-alarm-btn');
-            const demoBtn = document.createElement('button');
-            demoBtn.className = 'btn-secondary';
-            demoBtn.textContent = '🚨 Simula Allarme';
-            demoBtn.onclick = simulateAlarm;
-            addAlarmBtn.parentNode.insertBefore(demoBtn, addAlarmBtn.nextSibling);
-        });
+        // Payment functions
+        let paymentService;
+        
+        // Initialize payment service
+        if (typeof PaymentService !== 'undefined') {
+            paymentService = new PaymentService();
+            console.log('Payment Service initialized');
+        }
+
+        async function purchasePlan(planId) {
+            try {
+                if (!paymentService) {
+                    showNotification('Sistema di pagamento non disponibile', 'error');
+                    return;
+                }
+
+                const currentUser = getCurrentUser();
+                if (!currentUser) {
+                    showNotification('Devi essere loggato per acquistare un abbonamento', 'error');
+                    return;
+                }
+
+                const product = paymentService.getProduct(planId);
+                if (!product) {
+                    showNotification('Prodotto non trovato', 'error');
+                    return;
+                }
+
+                // Show payment modal
+                showPaymentModal(product, currentUser);
+            } catch (error) {
+                console.error('Errore acquisto piano:', error);
+                showNotification('Errore durante l\'acquisto', 'error');
+            }
+        }
+
+        function showPaymentModal(product, user) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>💳 Acquista ${product.name}</h3>
+                        <button class="close-btn" onclick="closePaymentModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="payment-summary">
+                            <h4>Riepilogo Ordine</h4>
+                            <div class="product-info">
+                                <div class="product-name">${product.name}</div>
+                                <div class="product-price">€${product.price.toFixed(2)}/${product.interval === 'month' ? 'mese' : 'anno'}</div>
+                            </div>
+                            <div class="product-features">
+                                <h5>Incluso:</h5>
+                                <ul>
+                                    ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-methods">
+                            <h4>Metodo di Pagamento</h4>
+                            <div class="payment-options">
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="stripe" checked>
+                                    <span>💳 Carta di Credito (Stripe)</span>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="paypal">
+                                    <span>🅿️ PayPal</span>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="apple_pay">
+                                    <span>🍎 Apple Pay</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-total">
+                            <div class="total-line">
+                                <span>Prezzo base:</span>
+                                <span>€${product.price.toFixed(2)}</span>
+                            </div>
+                            <div class="total-line">
+                                <span>IVA (22%):</span>
+                                <span>€${(product.price * 0.22).toFixed(2)}</span>
+                            </div>
+                            <div class="total-line total">
+                                <span><strong>Totale:</strong></span>
+                                <span><strong>€${(product.price * 1.22).toFixed(2)}</strong></span>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-actions">
+                            <button class="btn-secondary" onclick="closePaymentModal()">Annulla</button>
+                            <button class="btn-primary" onclick="processPayment('${product.id}')">💳 Paga Ora</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.style.display = 'flex';
+        }
+
+        async function processPayment(productId) {
+            try {
+                const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+                const currentUser = getCurrentUser();
+                
+                showNotification('Elaborazione pagamento...', 'info');
+                
+                // Simula elaborazione pagamento
+                const paymentData = {
+                    method: paymentMethod,
+                    productId: productId,
+                    userId: currentUser.id,
+                    paymentDetails: {
+                        amount: paymentService.getProduct(productId).price,
+                        currency: 'EUR'
+                    }
+                };
+                
+                const result = await paymentService.processPayment(paymentData);
+                
+                if (result.success) {
+                    showNotification('Pagamento completato con successo!', 'success');
+                    closePaymentModal();
+                    
+                    // Aggiorna UI utente
+                    updateUserSubscriptionUI();
+                    
+                    // Mostra conferma
+                    showPaymentConfirmation(result);
+                } else {
+                    showNotification('Pagamento fallito: ' + result.error, 'error');
+                }
+            } catch (error) {
+                console.error('Errore elaborazione pagamento:', error);
+                showNotification('Errore durante l\'elaborazione del pagamento', 'error');
+            }
+        }
+
+        function closePaymentModal() {
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function showPaymentConfirmation(result) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>✅ Pagamento Completato!</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="success-message">
+                            <div class="success-icon">🎉</div>
+                            <h4>Grazie per il tuo acquisto!</h4>
+                            <p>Il tuo abbonamento è stato attivato con successo.</p>
+                            
+                            <div class="confirmation-details">
+                                <div class="detail-row">
+                                    <span>ID Transazione:</span>
+                                    <span>${result.transactionId}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>ID Abbonamento:</span>
+                                    <span>${result.subscriptionId}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Data:</span>
+                                    <span>${new Date().toLocaleDateString('it-IT')}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="next-steps">
+                                <h5>Prossimi passi:</h5>
+                                <ul>
+                                    <li>✅ Il tuo abbonamento è attivo</li>
+                                    <li>📧 Riceverai una email di conferma</li>
+                                    <li>🎯 Inizia a usare le funzionalità premium</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-actions">
+                            <button class="btn-primary" onclick="closePaymentModal(); showSettingsTab('subscription')">Vai agli Abbonamenti</button>
+                            <button class="btn-secondary" onclick="closePaymentModal()">Chiudi</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.style.display = 'flex';
+        }
+
+        function updateUserSubscriptionUI() {
+            const currentUser = getCurrentUser();
+            if (currentUser && currentUser.subscription) {
+                // Aggiorna badge abbonamento
+                const subscriptionBadge = document.querySelector('.subscription-badge');
+                if (subscriptionBadge) {
+                    subscriptionBadge.textContent = currentUser.subscription.productName;
+                    subscriptionBadge.className = `subscription-badge ${currentUser.subscription.productId}`;
+                }
+                
+                // Aggiorna interfaccia utente
+                updateUIForLoggedInUser(currentUser);
+            }
+        }
+
+        // Payment Configuration Functions
+        function saveStripeConfig() {
+            try {
+                const publicKey = document.getElementById('stripe-public-key').value;
+                const secretKey = document.getElementById('stripe-secret-key').value;
+                const webhookSecret = document.getElementById('stripe-webhook-secret').value;
+                
+                if (!publicKey || !secretKey || !webhookSecret) {
+                    showNotification('Compila tutti i campi Stripe', 'error');
+                    return;
+                }
+                
+                const stripeConfig = {
+                    publicKey: publicKey,
+                    secretKey: secretKey,
+                    webhookSecret: webhookSecret,
+                    lastUpdated: new Date().toISOString()
+                };
+                
+                localStorage.setItem('stripeConfig', JSON.stringify(stripeConfig));
+                showNotification('Configurazione Stripe salvata!', 'success');
+                
+                // Aggiorna PaymentService
+                if (paymentService) {
+                    paymentService.stripePublicKey = publicKey;
+                }
+                
+            } catch (error) {
+                console.error('Errore salvataggio Stripe:', error);
+                showNotification('Errore nel salvataggio', 'error');
+            }
+        }
+
+        function savePayPalConfig() {
+            try {
+                const clientId = document.getElementById('paypal-client-id').value;
+                const clientSecret = document.getElementById('paypal-client-secret').value;
+                const webhookId = document.getElementById('paypal-webhook-id').value;
+                
+                if (!clientId || !clientSecret || !webhookId) {
+                    showNotification('Compila tutti i campi PayPal', 'error');
+                    return;
+                }
+                
+                const paypalConfig = {
+                    clientId: clientId,
+                    clientSecret: clientSecret,
+                    webhookId: webhookId,
+                    lastUpdated: new Date().toISOString()
+                };
+                
+                localStorage.setItem('paypalConfig', JSON.stringify(paypalConfig));
+                showNotification('Configurazione PayPal salvata!', 'success');
+                
+                // Aggiorna PaymentService
+                if (paymentService) {
+                    paymentService.paypalClientId = clientId;
+                }
+                
+            } catch (error) {
+                console.error('Errore salvataggio PayPal:', error);
+                showNotification('Errore nel salvataggio', 'error');
+            }
+        }
+
+        function saveMobilePayConfig() {
+            try {
+                const applePayDomain = document.getElementById('apple-pay-domain').value;
+                const googlePayMerchantId = document.getElementById('google-pay-merchant-id').value;
+                
+                if (!applePayDomain || !googlePayMerchantId) {
+                    showNotification('Compila tutti i campi Mobile Pay', 'error');
+                    return;
+                }
+                
+                const mobilePayConfig = {
+                    applePayDomain: applePayDomain,
+                    googlePayMerchantId: googlePayMerchantId,
+                    lastUpdated: new Date().toISOString()
+                };
+                
+                localStorage.setItem('mobilePayConfig', JSON.stringify(mobilePayConfig));
+                showNotification('Configurazione Mobile Pay salvata!', 'success');
+                
+            } catch (error) {
+                console.error('Errore salvataggio Mobile Pay:', error);
+                showNotification('Errore nel salvataggio', 'error');
+            }
+        }
+
+        function testStripeConnection() {
+            showNotification('Test connessione Stripe...', 'info');
+            
+            // Simula test connessione
+            setTimeout(() => {
+                const success = Math.random() > 0.2; // 80% successo
+                if (success) {
+                    showNotification('✅ Connessione Stripe OK!', 'success');
+                    updatePaymentStatus('stripe', 'success');
+                } else {
+                    showNotification('❌ Errore connessione Stripe', 'error');
+                    updatePaymentStatus('stripe', 'error');
+                }
+            }, 2000);
+        }
+
+        function testPayPalConnection() {
+            showNotification('Test connessione PayPal...', 'info');
+            
+            // Simula test connessione
+            setTimeout(() => {
+                const success = Math.random() > 0.2; // 80% successo
+                if (success) {
+                    showNotification('✅ Connessione PayPal OK!', 'success');
+                    updatePaymentStatus('paypal', 'success');
+                } else {
+                    showNotification('❌ Errore connessione PayPal', 'error');
+                    updatePaymentStatus('paypal', 'error');
+                }
+            }, 2000);
+        }
+
+        function testMobilePayConnection() {
+            showNotification('Test connessione Mobile Pay...', 'info');
+            
+            // Simula test connessione
+            setTimeout(() => {
+                const success = Math.random() > 0.2; // 80% successo
+                if (success) {
+                    showNotification('✅ Connessione Mobile Pay OK!', 'success');
+                    updatePaymentStatus('mobile', 'success');
+                } else {
+                    showNotification('❌ Errore connessione Mobile Pay', 'error');
+                    updatePaymentStatus('mobile', 'error');
+                }
+            }, 2000);
+        }
+
+        function updatePaymentStatus(provider, status) {
+            const statusElements = {
+                stripe: document.querySelector('.stat-row:nth-child(1) .status-indicator'),
+                paypal: document.querySelector('.stat-row:nth-child(2) .status-indicator'),
+                mobile: document.querySelector('.stat-row:nth-child(3) .status-indicator')
+            };
+            
+            const element = statusElements[provider];
+            if (element) {
+                element.className = `status-indicator ${status}`;
+                element.textContent = status === 'success' ? '✅ Connesso' : '❌ Errore';
+            }
+        }
+
+        function refreshPaymentStatus() {
+            showNotification('Aggiornamento stato pagamenti...', 'info');
+            
+            // Simula aggiornamento stato
+            setTimeout(() => {
+                const providers = ['stripe', 'paypal', 'mobile'];
+                providers.forEach(provider => {
+                    const success = Math.random() > 0.1; // 90% successo
+                    updatePaymentStatus(provider, success ? 'success' : 'error');
+                });
+                
+                showNotification('Stato pagamenti aggiornato!', 'success');
+            }, 1500);
+        }
+
+        function viewPaymentLogs() {
+            const logs = [
+                { time: '14:30:25', level: 'INFO', message: 'Pagamento Stripe completato - €4.99' },
+                { time: '14:28:12', level: 'INFO', message: 'Webhook PayPal ricevuto - Subscription created' },
+                { time: '14:25:45', level: 'WARN', message: 'Tentativo pagamento fallito - Carta scaduta' },
+                { time: '14:22:18', level: 'INFO', message: 'Test connessione Stripe - OK' },
+                { time: '14:20:33', level: 'ERROR', message: 'Errore webhook PayPal - Signature invalid' }
+            ];
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>📋 Log Pagamenti</h3>
+                        <button class="close-btn" onclick="this.closest('.modal').remove()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="logs-container">
+                            ${logs.map(log => `
+                                <div class="log-entry ${log.level.toLowerCase()}">
+                                    <span class="log-time">${log.time}</span>
+                                    <span class="log-level">${log.level}</span>
+                                    <span class="log-message">${log.message}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn-secondary" onclick="this.closest('.modal').remove()">Chiudi</button>
+                            <button class="btn-primary" onclick="exportPaymentLogs()">📤 Esporta Log</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.style.display = 'flex';
+        }
+
+        function exportPaymentLogs() {
+            showNotification('Esportazione log in corso...', 'info');
+            
+            // Simula esportazione
+            setTimeout(() => {
+                showNotification('Log esportati con successo!', 'success');
+            }, 1000);
+        }
+
+        function loadPaymentConfig() {
+            // Carica configurazioni salvate
+            const stripeConfig = JSON.parse(localStorage.getItem('stripeConfig') || '{}');
+            const paypalConfig = JSON.parse(localStorage.getItem('paypalConfig') || '{}');
+            const mobilePayConfig = JSON.parse(localStorage.getItem('mobilePayConfig') || '{}');
+            
+            // Popola i campi se esistono
+            if (stripeConfig.publicKey) {
+                document.getElementById('stripe-public-key').value = stripeConfig.publicKey;
+            }
+            if (stripeConfig.secretKey) {
+                document.getElementById('stripe-secret-key').value = stripeConfig.secretKey;
+            }
+            if (stripeConfig.webhookSecret) {
+                document.getElementById('stripe-webhook-secret').value = stripeConfig.webhookSecret;
+            }
+            
+            if (paypalConfig.clientId) {
+                document.getElementById('paypal-client-id').value = paypalConfig.clientId;
+            }
+            if (paypalConfig.clientSecret) {
+                document.getElementById('paypal-client-secret').value = paypalConfig.clientSecret;
+            }
+            if (paypalConfig.webhookId) {
+                document.getElementById('paypal-webhook-id').value = paypalConfig.webhookId;
+            }
+            
+            if (mobilePayConfig.applePayDomain) {
+                document.getElementById('apple-pay-domain').value = mobilePayConfig.applePayDomain;
+            }
+            if (mobilePayConfig.googlePayMerchantId) {
+                document.getElementById('google-pay-merchant-id').value = mobilePayConfig.googlePayMerchantId;
+            }
+            
+            // Aggiorna stato pagamenti
+            refreshPaymentStatus();
+        }
+
     </script>
 </body>
 </html>

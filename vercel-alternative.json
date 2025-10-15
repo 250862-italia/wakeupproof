@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "wakeupproof-payments",
+  "builds": [
+    {
+      "src": "standalone.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/standalone.html"
+    }
+  ]
+}

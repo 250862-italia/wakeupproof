@@ -1,146 +1,175 @@
-# 🚨 WakeUpProof — Anti‑Snooze Alarm App (MVP)
+# 🚨 WakeUpProof - La Sveglia Che Non Puoi Spegnere!
 
-App mobile **a prova di scuse**: la sveglia **non si spegne** finché non completi una sfida reale verificata **on‑device** (NFC/QR in bagno, passi reali, foto del lavabo).  
-Modello **in abbonamento**: Free / Pro / Premium. Nessuna foto inviata al cloud per impostazione predefinita.
+## 🎯 Cos'è WakeUpProof?
 
----
+WakeUpProof è l'app anti-snooze definitiva che trasforma la tua mattina in una vittoria! Con challenge segrete random e suonerie personalizzate, non potrai più dormire troppo a lungo.
 
-## 🎯 Visione
-Creare la prima sveglia che combina **ML on‑device**, **challenge fisici** e **anti‑cheat serio**.  
-Promessa: se non fai l’azione giusta **ogni 30s** l’allarme rilancia.
+## ✨ Caratteristiche Principali
 
----
+### 🎲 Challenge Segrete Random
+- **50+ challenge diverse** che l'utente non può scegliere
+- **Categorie**: Fisiche, Mentali, Creative, Sensoriali, Sociali, Estreme
+- **Difficoltà variabile**: Easy, Medium, Hard, Extreme
+- **Timer** per ogni challenge
+- **Sistema di completamento** con feedback
 
-## 🧠 Architettura (v1.0)
-**Stack**
-- **App:** Flutter 3.x (Dart)
-- **ML/Vision:** MobileCLIP (ONNX quantizzato) + MLKit/CoreML (scanner/visione leggera)
-- **Backend SaaS:** Firebase (Auth, Firestore, Functions per Stripe webhooks)
-- **Pagamenti:** Stripe Billing (portal + webhook)
-- **Storage locale:** SQLite cifrato (SQLCipher)
-- **Analytics:** on‑device → export anonimo (opt‑in)
-- **CI/CD:** GitHub Actions + Cursor
+### ⏰ Sistema Allarmi Avanzato
+- **Orario personalizzabile** con giorni della settimana
+- **Nome allarme** personalizzato
+- **6 suonerie diverse**: Classica, Urgente, Natura, Elettronica, Motivazionale, Personalizzata
+- **Generazione audio** client-side con Web Audio API
 
-**Moduli**
-```
-/lib
-  /core
-    /alarm_engine/
-    /challenge_engine/
-      /photo/
-      /nfc_qr/
-      /steps/
-  /data
-    /db/
-    /models/
-    /subscription/
-  /ml/onnx/
-  /ui
-    /screens/
-    /widgets/
-```
+### ⚙️ Impostazioni Complete
+- **Gestione profilo utente** completa
+- **Sistema notifiche** personalizzabile
+- **Privacy e sicurezza** configurabile
+- **Sistema abbonamenti** Free/Pro/Premium
+- **Backup/restore** dati utente
 
----
+### 🎨 Design Accattivante
+- **Material Design 3** con colori neon
+- **Animazioni fluide** e transizioni
+- **PWA completa** installabile
+- **Responsive design** mobile-first
+- **Dark theme** con effetti glow
 
-## ⚙️ Funzionalità Core
-1) **Allarmi affidabili**
-   - Android: `SCHEDULE_EXACT_ALARM`, Foreground Service, `WAKE_LOCK`
-   - iOS: Local Notifications + richiesta Critical Alerts (fallback pronto)
-2) **Challenge Engine**
-   - **NFC/QR**: sticker in bagno (QR firmato dall’app / NFC UID whitelist)
-   - **Passi**: >120 in 2 minuti + cambio beacon Wi‑Fi/Bluetooth
-   - **Foto bagno**: confronto embedding con **template serale** + liveness (“mano in foto”)
-3) **Loop 30s**
-   - Mancato superamento → nuovo suono ogni 30s, escalation volume/vibrazione
-4) **Anti‑cheat**
-   - Randomizzazione task, EXIF/luminosità diverse, angolo obbligato
-   - Catena sfide se sospetto (es. Foto → NFC)
-5) **Privacy**
-   - Foto ed embedding **cifrati on‑device**; **auto‑delete** 24/72h (default 24h)
-6) **Abbonamenti**
-   - Free → 1 sveglia, 2 task
-   - Pro → 5 sveglie, 100 task, NFC/QR, report
-   - Premium → task personalizzati, statistiche storiche, coaching
+## 🚀 Tecnologie Utilizzate
 
----
+- **HTML5, CSS3, JavaScript** vanilla
+- **Web Audio API** per suonerie
+- **IndexedDB** per storage locale
+- **Service Worker** per offline
+- **Web Notifications** per allarmi
+- **Camera API** per challenge foto
+- **Sensors API** per contapassi
 
-## 💳 Abbonamenti (Stripe)
-Webhook chiave:
-- `invoice.payment_succeeded` → `subscription.active=true`
-- `invoice.payment_failed` → downgrade a Free
+## 📱 Installazione
 
-Endpoint suggerito (Firebase Functions): `/stripe/webhook`
-
-Variabili richieste:
-```
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-FIREBASE_PROJECT_ID=
-```
-
----
-
-## 🔐 Sicurezza
-- SQLite + SQLCipher, chiavi in Keychain/Keystore
-- QR firmati **ECDSA** generati all’installazione (no screenshot reuse)
-- NFC: whitelisting UID
-- GDPR‑ready: data minimization, portabilità su richiesta (report .zip locale)
-
----
-
-## 🚀 Setup Dev (con Cursor)
-1. **Prerequisiti:** Flutter 3.x, Dart SDK, Android Studio/Xcode, Firebase CLI  
-2. **Clona il repo:**
+1. **Clona il repository**:
    ```bash
-   git clone <repo> wakeup-proof && cd wakeup-proof
-   ```
-3. **Dipendenze:**
-   ```bash
-   flutter pub get
-   ```
-4. **Firebase:**
-   - Crea progetto, scarica `google-services.json` e `GoogleService-Info.plist`
-   - Posizionali in `/android/app` e `/ios/Runner`
-5. **Stripe:**
-   - Crea prodotto + prezzi (Free/Pro/Premium)
-   - Imposta webhook → `/stripe/webhook`
-   - Popola `.env` (vedi `.env.example`)
-6. **Run locale:**
-   ```bash
-   flutter run
+   git clone https://github.com/username/wakeup-proof.git
+   cd wakeup-proof
    ```
 
-> **Nota piattaforma:** su iOS l’uso di **Critical Alerts** è soggetto ad approvazione Apple. È già previsto un **fallback** (notifica + suono + vibrazioni + schermata lock).
+2. **Apri l'app**:
+   ```bash
+   open standalone.html
+   ```
 
----
+3. **Installa come PWA**:
+   - Apri in Chrome/Safari
+   - Clicca "Aggiungi alla schermata home"
+   - L'app sarà installata come app nativa
 
-## 🧪 Test & KPI
-- **Affidabilità allarme:** 7 giorni, 5 orari casuali (battery saver ON/OFF)
-- **Anti‑cheat:** screenshot QR, foto vecchie, oscillazioni → devono fallire
-- **KPI MVP:** Crash‑free ≥ 99.5% • Success rate ≥ 90% • TtW mediano < 90s
+## 🎯 Come Funziona
 
----
+1. **Crea un allarme** con orario e giorni
+2. **Scegli una suoneria** personalizzata
+3. **Quando suona**, appare una challenge segreta random
+4. **Completa la challenge** per spegnere la sveglia
+5. **Se salti**, appare una nuova challenge dopo 5 secondi
 
-## 📦 Struttura pacchetto
-- `pubspec.yaml` con dipendenze suggerite
-- `lib/main.dart` (bootstrap app)
-- Skeleton di `alarm_engine`, `challenge_engine`, `subscription_service`
-- Schema SQL iniziale (SQLCipher)
-- Workflow GitHub Actions per build/check
-- `INIT.md` con comandi “flutter create” lato piattaforma
+## 💳 Piani di Abbonamento
 
----
+### 🆓 Free
+- 3 allarmi base
+- Challenge limitati
+- Supporto email
 
-## 📈 Roadmap (4 sprint)
-- S1: scheduler & loop 30s + storage locale
-- S2: challenge NFC/QR + passi + foto (base)
-- S3: anti‑cheat PRO + UX onboarding
-- S4: beta (TestFlight/Closed Track) + metriche
+### ⭐ Pro - €4.99/mese
+- Allarmi illimitati
+- Challenge avanzati
+- Suonerie personalizzate
+- Supporto prioritario
 
----
+### 💎 Premium - €9.99/mese
+- Tutto incluso
+- Challenge estreme
+- Analytics avanzate
+- Supporto 24/7
+
+## 🔧 Sviluppo
+
+### Struttura Progetto
+```
+wakeup-proof/
+├── standalone.html          # App principale PWA
+├── index.html               # Redirect page
+├── package.json             # Configurazione Node.js
+├── vercel.json              # Configurazione Vercel
+├── netlify.toml             # Configurazione Netlify
+└── README.md                # Questo file
+```
+
+### Deploy
+L'app è configurata per il deploy su:
+- **Vercel** (raccomandato)
+- **Netlify**
+- **GitHub Pages**
+- **Firebase Hosting**
+
+## 🎨 Personalizzazione
+
+### Colori
+Modifica le variabili CSS in `standalone.html`:
+```css
+:root {
+  --primary-color: #ff6b6b;
+  --accent-color: #4ecdc4;
+  --gradient-neon: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+}
+```
+
+### Challenge
+Aggiungi nuove challenge in `secretChallenges` array:
+```javascript
+{ id: 'new_challenge', name: 'Nuova Challenge', type: 'physical', difficulty: 'medium', icon: '🔥' }
+```
+
+## 📊 Analytics
+
+L'app include:
+- **Statistiche personali** (streak, challenge completati, efficacia)
+- **Leaderboard globale** (in arrivo)
+- **Condivisione social** con navigator.share
+- **Export/import** dati utente
+
+## 🔒 Privacy
+
+- **Dati locali** salvati in localStorage
+- **Nessun tracking** esterno
+- **Analytics anonime** opzionali
+- **GDPR compliant**
+
+## 🐛 Bug Reports
+
+Se trovi un bug, apri una issue su GitHub con:
+- Descrizione del problema
+- Passi per riprodurre
+- Screenshot se necessario
+- Browser e versione
 
 ## 🤝 Contributi
-PR con issue collegata. Stile pulito, test inclusi, niente tracking invasivo.
+
+I contributi sono benvenuti! Per contribuire:
+
+1. Fork del repository
+2. Crea un branch per la feature
+3. Commit delle modifiche
+4. Push del branch
+5. Apri una Pull Request
 
 ## 📄 Licenza
-Proprietaria © 2025 — Magnificus Dominus Consulting Europe Srl. Tutti i diritti riservati.
+
+MIT License - vedi file LICENSE per dettagli
+
+## 🎉 Ringraziamenti
+
+- **Material Design 3** per il design system
+- **Web Audio API** per le suonerie
+- **PWA** per l'esperienza app-like
+- **Tutti i dormiglioni** che ci hanno ispirato! 😴
+
+---
+
+**🚨 WakeUpProof - Trasforma la tua mattina in una vittoria! 🚀**
