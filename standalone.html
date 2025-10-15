@@ -3996,36 +3996,7 @@
             showNotification('💾 Dati salvati con successo!', 'success');
         }
         
-        // Subscription Management
-        function purchasePlan(planType) {
-            const plans = {
-                pro: { name: 'Pro', price: '€4.99/mese', features: ['Allarmi illimitati', 'Challenge avanzati', 'Suonerie personalizzate'] },
-                premium: { name: 'Premium', price: '€9.99/mese', features: ['Tutto incluso', 'Challenge estreme', 'Analytics avanzate'] }
-            };
-            
-            const plan = plans[planType];
-            if (confirm(`Vuoi acquistare il piano ${plan.name} per ${plan.price}?\n\nCaratteristiche:\n${plan.features.join('\n')}\n\n💡 Prova gratis per 7 giorni!`)) {
-                // Create subscription request
-                const subscription = {
-                    id: Date.now().toString(),
-                    userId: currentUser.id,
-                    plan: planType,
-                    status: 'pending',
-                    createdAt: new Date().toISOString(),
-                    price: plan.price
-                };
-                
-                // Save subscription request
-                const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
-                subscriptions.push(subscription);
-                localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
-                
-                showNotification(`🛒 Richiesta abbonamento ${plan.name} inviata! In attesa di approvazione admin.`, 'info');
-                
-                // Update UI
-                updateSubscriptionUI();
-            }
-        }
+        // Subscription Management - REMOVED DUPLICATE FUNCTION
         
         function updateSubscriptionUI() {
             const subscription = JSON.parse(localStorage.getItem('subscription') || '{}');
