@@ -2346,7 +2346,7 @@
                 <button id="leaderboard-btn" class="btn-icon" title="Classifica">🏆</button>
                 <button id="settings-btn" class="btn-icon" title="Impostazioni">⚙️</button>
                 <button id="subscription-btn" class="btn-icon" title="Abbonamenti">💳</button>
-                <button id="chatbot-btn" class="btn-icon" title="Chatbot AI">🤖</button>
+                <button id="chatbot-btn" class="btn-icon" title="Chatbot AI" style="background: var(--accent-color); color: white;">🤖</button>
             </div>
         </nav>
 
@@ -3732,8 +3732,31 @@
         
         // Load subscriptions
         function loadSubscriptions() {
-            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+            let subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
             const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Se non ci sono abbonamenti, crea alcuni demo
+            if (subscriptions.length === 0) {
+                subscriptions = [
+                    {
+                        id: 'demo_1',
+                        userId: 'demo_user_1',
+                        plan: 'pro',
+                        status: 'pending',
+                        createdAt: new Date().toISOString(),
+                        price: '€4.99/mese'
+                    },
+                    {
+                        id: 'demo_2',
+                        userId: 'demo_user_2',
+                        plan: 'premium',
+                        status: 'active',
+                        createdAt: new Date(Date.now() - 86400000).toISOString(),
+                        price: '€9.99/mese'
+                    }
+                ];
+                localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+            }
             
             const subscriptionsList = document.getElementById('subscriptions-list');
             subscriptionsList.innerHTML = '';
@@ -3772,7 +3795,29 @@
         
         // Load users
         function loadUsers() {
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Se non ci sono utenti, crea alcuni demo
+            if (users.length === 0) {
+                users = [
+                    {
+                        id: 'demo_user_1',
+                        name: 'Mario Rossi',
+                        email: 'mario.rossi@email.com',
+                        age: 28,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 'demo_user_2',
+                        name: 'Giulia Bianchi',
+                        email: 'giulia.bianchi@email.com',
+                        age: 32,
+                        createdAt: new Date(Date.now() - 86400000).toISOString()
+                    }
+                ];
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
             const usersList = document.getElementById('users-list');
             usersList.innerHTML = '';
             
