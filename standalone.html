@@ -4730,18 +4730,96 @@
             paymentService = {
                 getProduct: function(planId) {
                     const products = {
-                        'pro': { id: 'pro', name: 'Pro Plan', price: 4.99, currency: 'EUR' },
-                        'premium': { id: 'premium', name: 'Premium Plan', price: 9.99, currency: 'EUR' }
+                        'pro': { 
+                            id: 'pro', 
+                            name: 'Pro Plan', 
+                            price: 4.99, 
+                            currency: 'EUR',
+                            interval: 'month',
+                            features: [
+                                'Sveglie illimitate',
+                                'Challenge avanzati',
+                                'Statistiche dettagliate',
+                                'Supporto prioritario'
+                            ]
+                        },
+                        'premium': { 
+                            id: 'premium', 
+                            name: 'Premium Plan', 
+                            price: 9.99, 
+                            currency: 'EUR',
+                            interval: 'month',
+                            features: [
+                                'Tutto Pro',
+                                'Challenge estreme',
+                                'Analytics avanzate',
+                                'Supporto 24/7'
+                            ]
+                        }
                     };
                     return products[planId] || null;
                 },
                 processPayment: async function(paymentData) {
-                    // Simulate payment processing
-                    return new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve({ success: true, transactionId: 'txn_' + Date.now() });
-                        }, 1000);
-                    });
+                    // Simula pagamento
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // Simula successo/fallimento (90% successo)
+                    const success = Math.random() > 0.1;
+                    
+                    if (success) {
+                        // Aggiorna abbonamento utente
+                        const currentUser = getCurrentUser();
+                        if (currentUser) {
+                            const subscription = {
+                                id: 'SUB_' + Date.now(),
+                                productId: paymentData.productId,
+                                productName: paymentData.productName || 'Abbonamento',
+                                price: paymentData.paymentDetails.amount,
+                                interval: 'month',
+                                status: 'active',
+                                startDate: new Date().toISOString(),
+                                endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                                transactionId: 'TXN_' + Date.now(),
+                                autoRenew: true
+                            };
+                            
+                            // Salva abbonamento
+                            currentUser.subscription = subscription;
+                            currentUser.subscriptionHistory = currentUser.subscriptionHistory || [];
+                            currentUser.subscriptionHistory.push(subscription);
+                            
+                            // Aggiorna localStorage
+                            const users = JSON.parse(localStorage.getItem('users') || '[]');
+                            const userIndex = users.findIndex(u => u.id === currentUser.id);
+                            if (userIndex !== -1) {
+                                users[userIndex] = currentUser;
+                                localStorage.setItem('users', JSON.stringify(users));
+                            }
+                            
+                            // Aggiorna abbonamenti admin
+                            const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+                            subscriptions.push({
+                                id: subscription.id,
+                                userId: currentUser.id,
+                                plan: paymentData.productId,
+                                status: 'active',
+                                createdAt: new Date().toISOString(),
+                                price: `€${paymentData.paymentDetails.amount}/mese`
+                            });
+                            localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+                        }
+                        
+                        return { 
+                            success: true, 
+                            transactionId: 'TXN_' + Date.now(),
+                            subscriptionId: 'SUB_' + Date.now()
+                        };
+                    } else {
+                        return { 
+                            success: false, 
+                            error: 'Pagamento rifiutato dalla banca' 
+                        };
+                    }
                 }
             };
             console.log('Fallback Payment Service initialized');
@@ -4763,6 +4841,12 @@
                 const product = paymentService.getProduct(planId);
                 if (!product) {
                     showNotification('Prodotto non trovato', 'error');
+                    return;
+                }
+
+                // Verifica se l'utente ha già un abbonamento attivo
+                if (currentUser.subscription && currentUser.subscription.status === 'active') {
+                    showNotification('Hai già un abbonamento attivo!', 'warning');
                     return;
                 }
 
@@ -4851,12 +4935,14 @@
                 showNotification('Elaborazione pagamento...', 'info');
                 
                 // Simula elaborazione pagamento
+                const product = paymentService.getProduct(productId);
                 const paymentData = {
                     method: paymentMethod,
                     productId: productId,
+                    productName: product.name,
                     userId: currentUser.id,
                     paymentDetails: {
-                        amount: paymentService.getProduct(productId).price,
+                        amount: product.price,
                         currency: 'EUR'
                     }
                 };
@@ -4872,6 +4958,11 @@
                     
                     // Mostra conferma
                     showPaymentConfirmation(result);
+                    
+                    // Ricarica abbonamenti admin se siamo in admin
+                    if (document.getElementById('subscriptions-tab')) {
+                        loadSubscriptions();
+                    }
                 } else {
                     showNotification('Pagamento fallito: ' + result.error, 'error');
                 }
