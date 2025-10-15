@@ -744,6 +744,66 @@
         .challenge-instructions strong {
             color: #2e7d32;
         }
+        
+        /* Math Input Styles */
+        .math-input {
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .math-input input {
+            font-size: 1.2rem;
+            padding: 0.8rem;
+            width: 200px;
+            text-align: center;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .math-input input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+        
+        /* Photo Input Styles */
+        .photo-input {
+            margin: 1rem 0;
+        }
+        
+        .photo-input input[type="file"] {
+            font-size: 1rem;
+            padding: 0.8rem;
+            width: 100%;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Action Input Styles */
+        .action-input {
+            margin: 1rem 0;
+        }
+        
+        .action-input button {
+            width: 100%;
+            font-size: 1.2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-input button:hover {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
 
         @keyframes alarm-glow {
             0%, 100% { box-shadow: var(--shadow); }
@@ -3185,6 +3245,52 @@
             const challenge = getRandomChallenge();
             const challengeDisplay = document.getElementById('challenge-display');
             
+            // Genera input specifico per tipo di challenge
+            let inputField = '';
+            let instructions = '';
+            
+            if (challenge.type === 'math') {
+                inputField = `
+                    <div class="math-input">
+                        <input type="number" id="math-answer" placeholder="Inserisci la risposta..." style="font-size: 1.2rem; padding: 0.5rem; width: 200px; text-align: center; border: 2px solid #4caf50; border-radius: 8px;">
+                        <button onclick="checkMathAnswer('${challenge.id}', ${challenge.answer})" class="btn btn-success" style="margin-left: 1rem;">✅ VERIFICA</button>
+                    </div>
+                `;
+                instructions = `
+                    <p><strong>ISTRUZIONI MATEMATICHE:</strong></p>
+                    <p>1. Risolvi il calcolo mostrato</p>
+                    <p>2. Inserisci la risposta nel campo</p>
+                    <p>3. Clicca "VERIFICA" per controllare</p>
+                    <p>4. Solo con risposta corretta la sveglia si spegne!</p>
+                `;
+            } else if (challenge.type === 'photo') {
+                inputField = `
+                    <div class="photo-input">
+                        <input type="file" id="photo-input" accept="image/*" capture="environment" style="font-size: 1rem; padding: 0.5rem; width: 100%; border: 2px solid #4caf50; border-radius: 8px;">
+                        <button onclick="checkPhotoTaken('${challenge.id}')" class="btn btn-success" style="margin-top: 1rem; width: 100%;">📸 FOTO SCATTATA</button>
+                    </div>
+                `;
+                instructions = `
+                    <p><strong>ISTRUZIONI FOTO:</strong></p>
+                    <p>1. Scatta la foto richiesta</p>
+                    <p>2. Seleziona la foto dal dispositivo</p>
+                    <p>3. Clicca "FOTO SCATTATA" per confermare</p>
+                    <p>4. Solo con foto la sveglia si spegne!</p>
+                `;
+            } else {
+                inputField = `
+                    <div class="action-input">
+                        <button onclick="confirmAction('${challenge.id}')" class="btn btn-success" style="width: 100%; font-size: 1.2rem; padding: 1rem;">✅ AZIONE COMPLETATA</button>
+                    </div>
+                `;
+                instructions = `
+                    <p><strong>ISTRUZIONI AZIONE:</strong></p>
+                    <p>1. Esegui l'azione richiesta</p>
+                    <p>2. Clicca "AZIONE COMPLETATA" solo dopo aver fatto l'azione</p>
+                    <p>3. La sveglia si spegnerà automaticamente</p>
+                `;
+            }
+            
             challengeDisplay.innerHTML = `
                 <div class="challenge-content">
                     <div class="challenge-text">
@@ -3193,12 +3299,9 @@
                         <p><strong>Tipo:</strong> ${challenge.type} | <strong>Difficoltà:</strong> ${challenge.difficulty}</p>
                         <p><strong>⚠️ OBBLIGATORIO:</strong> Devi completare questa azione per spegnere la sveglia!</p>
                         <div class="challenge-instructions">
-                            <p><strong>ISTRUZIONI:</strong></p>
-                            <p>1. Leggi attentamente la challenge</p>
-                            <p>2. Esegui l'azione richiesta</p>
-                            <p>3. Clicca "COMPLETA CHALLENGE" solo dopo aver fatto l'azione</p>
-                            <p>4. La sveglia si spegnerà automaticamente</p>
+                            ${instructions}
                         </div>
+                        ${inputField}
                     </div>
                 </div>
             `;
@@ -3207,6 +3310,40 @@
         function completeAlarmChallenge(alarmId) {
             console.log('Challenge completed for alarm:', alarmId);
             stopAlarm(alarmId);
+        }
+        
+        // Verifica risposta matematica
+        function checkMathAnswer(challengeId, correctAnswer) {
+            const userAnswer = parseInt(document.getElementById('math-answer').value);
+            console.log('Math challenge:', challengeId, 'User answer:', userAnswer, 'Correct:', correctAnswer);
+            
+            if (userAnswer === correctAnswer) {
+                showNotification('✅ Risposta corretta! Sveglia spenta!', 'success');
+                completeAlarmChallenge(challengeId);
+            } else {
+                showNotification('❌ Risposta sbagliata! Riprova!', 'error');
+                document.getElementById('math-answer').value = '';
+                document.getElementById('math-answer').focus();
+            }
+        }
+        
+        // Verifica foto scattata
+        function checkPhotoTaken(challengeId) {
+            const photoInput = document.getElementById('photo-input');
+            if (photoInput.files && photoInput.files.length > 0) {
+                console.log('Photo taken for challenge:', challengeId);
+                showNotification('📸 Foto confermata! Sveglia spenta!', 'success');
+                completeAlarmChallenge(challengeId);
+            } else {
+                showNotification('❌ Devi scattare una foto prima!', 'error');
+            }
+        }
+        
+        // Conferma azione fisica
+        function confirmAction(challengeId) {
+            console.log('Action confirmed for challenge:', challengeId);
+            showNotification('✅ Azione completata! Sveglia spenta!', 'success');
+            completeAlarmChallenge(challengeId);
         }
         
         function stopAlarm(alarmId) {
@@ -4987,6 +5124,20 @@
             { id: 'drink_water', name: 'BEVI un bicchiere d\'acqua', type: 'physical', difficulty: 'easy', icon: '💧', mandatory: true },
             { id: 'open_window', name: 'APRI la finestra e respira aria fresca', type: 'physical', difficulty: 'easy', icon: '🪟', mandatory: true },
             { id: 'stretch_arms', name: 'ALLUNGA le braccia verso l\'alto', type: 'physical', difficulty: 'easy', icon: '🤸', mandatory: true },
+            
+            // CHALLENGE MATEMATICHE INTERATTIVE
+            { id: 'math_addition', name: 'RISOLVI: 47 + 23 = ?', type: 'math', difficulty: 'medium', icon: '➕', mandatory: true, answer: 70 },
+            { id: 'math_subtraction', name: 'RISOLVI: 89 - 34 = ?', type: 'math', difficulty: 'medium', icon: '➖', mandatory: true, answer: 55 },
+            { id: 'math_multiplication', name: 'RISOLVI: 12 × 7 = ?', type: 'math', difficulty: 'hard', icon: '✖️', mandatory: true, answer: 84 },
+            { id: 'math_division', name: 'RISOLVI: 96 ÷ 8 = ?', type: 'math', difficulty: 'hard', icon: '➗', mandatory: true, answer: 12 },
+            { id: 'math_sequence', name: 'COMPLETA: 2, 4, 8, 16, ?', type: 'math', difficulty: 'hard', icon: '🔢', mandatory: true, answer: 32 },
+            
+            // CHALLENGE FOTO OBBLIGATORIE
+            { id: 'photo_selfie', name: 'Fai un SELFIE con sorriso', type: 'photo', difficulty: 'easy', icon: '🤳', mandatory: true },
+            { id: 'photo_kitchen', name: 'Fai una FOTO della cucina', type: 'photo', difficulty: 'easy', icon: '🏠', mandatory: true },
+            { id: 'photo_window', name: 'Fai una FOTO dalla finestra', type: 'photo', difficulty: 'easy', icon: '🪟', mandatory: true },
+            { id: 'photo_hands', name: 'Fai una FOTO delle tue mani', type: 'photo', difficulty: 'easy', icon: '✋', mandatory: true },
+            { id: 'photo_feet', name: 'Fai una FOTO dei tuoi piedi', type: 'photo', difficulty: 'easy', icon: '🦶', mandatory: true },
             
             // CHALLENGE MENTALI OBBLIGATORIE
             { id: 'say_good_morning', name: 'Dì "BUONGIORNO" ad alta voce', type: 'mental', difficulty: 'easy', icon: '🌅', mandatory: true },
