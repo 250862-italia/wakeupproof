@@ -682,6 +682,51 @@
             background: linear-gradient(135deg, #ffebee 0%, #fce4ec 100%);
             animation: alarm-glow 2s infinite;
         }
+        
+        /* Alarm Modal Styles */
+        .alarm-modal-content {
+            max-width: 500px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            border: 3px solid #ff1744;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+            animation: alarm-pulse 0.5s infinite;
+        }
+        
+        .alarm-header {
+            background: linear-gradient(135deg, #ff1744 0%, #ff4444 100%);
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            animation: shake 0.5s infinite;
+        }
+        
+        .alarm-status {
+            color: #ff1744;
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+        
+        .alarm-warning {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .btn-large {
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            margin: 0.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .alarm-actions {
+            text-align: center;
+            margin: 1rem 0;
+        }
 
         @keyframes alarm-glow {
             0%, 100% { box-shadow: var(--shadow); }
@@ -2974,12 +3019,19 @@
             }
         }
         
+        // Global alarm sound variables
+        let alarmSoundInterval = null;
+        let alarmAudioContext = null;
+        
         function playAlarmSound(soundType) {
             try {
-                console.log('🔊 Attempting to play alarm sound:', soundType);
+                console.log('🔊 Starting continuous alarm sound:', soundType);
+                
+                // Stop any existing alarm sound
+                stopAlarmSound();
                 
                 // Create audio context
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                alarmAudioContext = new (window.AudioContext || window.webkitAudioContext)();
                 
                 // Generate different sounds based on type
                 let frequency = 800;
@@ -3007,31 +3059,33 @@
                         duration = 0.5;
                 }
                 
-                // Play sound multiple times for better effect
-                for (let i = 0; i < 3; i++) {
-                    setTimeout(() => {
-                        const oscillator = audioContext.createOscillator();
-                        const gainNode = audioContext.createGain();
+                // Play sound continuously every 800ms
+                alarmSoundInterval = setInterval(() => {
+                    try {
+                        const oscillator = alarmAudioContext.createOscillator();
+                        const gainNode = alarmAudioContext.createGain();
                         
                         oscillator.connect(gainNode);
-                        gainNode.connect(audioContext.destination);
+                        gainNode.connect(alarmAudioContext.destination);
                         
-                        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                        oscillator.frequency.setValueAtTime(frequency, alarmAudioContext.currentTime);
                         oscillator.type = 'sine';
                         
-                        gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                        gainNode.gain.setValueAtTime(0.7, alarmAudioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, alarmAudioContext.currentTime + duration);
                         
-                        oscillator.start(audioContext.currentTime);
-                        oscillator.stop(audioContext.currentTime + duration);
+                        oscillator.start(alarmAudioContext.currentTime);
+                        oscillator.stop(alarmAudioContext.currentTime + duration);
                         
-                        console.log('🔊 Sound played:', i + 1, 'of 3');
-                    }, i * 600); // 600ms between sounds
-                }
+                        console.log('🔊 Continuous alarm sound playing...');
+                    } catch (error) {
+                        console.error('❌ Error in continuous sound:', error);
+                    }
+                }, 800); // Play every 800ms
                 
-                console.log('✅ Alarm sound sequence started:', soundType);
+                console.log('✅ Continuous alarm sound started:', soundType);
             } catch (error) {
-                console.error('❌ Error playing alarm sound:', error);
+                console.error('❌ Error starting alarm sound:', error);
                 // Fallback: try to play a simple beep
                 try {
                     const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8N2JNQY+');
@@ -3043,22 +3097,41 @@
             }
         }
         
+        function stopAlarmSound() {
+            if (alarmSoundInterval) {
+                clearInterval(alarmSoundInterval);
+                alarmSoundInterval = null;
+                console.log('🔇 Alarm sound stopped');
+            }
+            if (alarmAudioContext) {
+                alarmAudioContext.close();
+                alarmAudioContext = null;
+            }
+        }
+        
         function showSimpleAlarmModal(alarm) {
             const modal = document.createElement('div');
             modal.className = 'modal';
+            modal.id = 'alarm-modal';
             modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>🚨 Sveglia Attiva</h3>
+                <div class="modal-content alarm-modal-content">
+                    <div class="modal-header alarm-header">
+                        <h3>🚨 SVEGLIA ATTIVA! 🚨</h3>
                     </div>
                     <div class="modal-body">
                         <div class="alarm-info">
                             <h4>${alarm.name || 'Allarme'}</h4>
-                            <p>Orario: ${alarm.time}</p>
-                            <p>Suono: ${alarm.sound || 'classic'}</p>
+                            <p><strong>Orario:</strong> ${alarm.time}</p>
+                            <p><strong>Suono:</strong> ${alarm.sound || 'classic'}</p>
+                            <p><strong>Stato:</strong> <span class="alarm-status">SUONANDO</span></p>
                         </div>
                         <div class="alarm-actions">
-                            <button class="btn-primary" onclick="stopAlarm('${alarm.id}')">🔇 Spegni Sveglia</button>
+                            <button id="stop-alarm-btn" onclick="stopAlarm('${alarm.id}')" class="btn btn-danger btn-large">
+                                ⏹️ SPEGNI SVEGLIA
+                            </button>
+                        </div>
+                        <div class="alarm-warning">
+                            <p>⚠️ La sveglia continuerà a suonare finché non la spegni!</p>
                         </div>
                     </div>
                 </div>
@@ -3066,27 +3139,53 @@
             
             document.body.appendChild(modal);
             modal.style.display = 'flex';
+            
+            // Make modal non-dismissible
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+            
+            // Add pulsing animation to the stop button
+            const stopBtn = document.getElementById('stop-alarm-btn');
+            if (stopBtn) {
+                stopBtn.style.animation = 'pulse 1s infinite';
+                stopBtn.style.fontSize = '1.2rem';
+                stopBtn.style.padding = '1rem 2rem';
+            }
         }
         
         function showAlarmChallengeModal(alarm) {
             const modal = document.createElement('div');
             modal.className = 'modal';
+            modal.id = 'alarm-challenge-modal';
             modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>🚨 Sveglia Challenge</h3>
+                <div class="modal-content alarm-modal-content">
+                    <div class="modal-header alarm-header">
+                        <h3>🚨 SVEGLIA CHALLENGE! 🚨</h3>
                     </div>
                     <div class="modal-body">
                         <div class="alarm-info">
                             <h4>${alarm.name || 'Allarme'}</h4>
-                            <p>Completa la challenge per spegnere la sveglia!</p>
+                            <p><strong>Orario:</strong> ${alarm.time}</p>
+                            <p><strong>Stato:</strong> <span class="alarm-status">SUONANDO</span></p>
+                            <p><strong>⚠️ Completa la challenge per spegnere la sveglia!</strong></p>
                         </div>
                         <div class="challenge-content">
                             <div id="challenge-display">Caricamento challenge...</div>
                         </div>
                         <div class="alarm-actions">
-                            <button class="btn-primary" onclick="completeAlarmChallenge('${alarm.id}')">✅ Completa Challenge</button>
-                            <button class="btn-secondary" onclick="stopAlarm('${alarm.id}')">🔇 Spegni Comunque</button>
+                            <button id="complete-challenge-btn" class="btn btn-success btn-large" onclick="completeAlarmChallenge('${alarm.id}')">
+                                ✅ COMPLETA CHALLENGE
+                            </button>
+                            <button id="force-stop-btn" class="btn btn-danger btn-large" onclick="stopAlarm('${alarm.id}')">
+                                🔇 SPEGNI COMUNQUE
+                            </button>
+                        </div>
+                        <div class="alarm-warning">
+                            <p>⚠️ La sveglia continuerà a suonare finché non completi la challenge o la spegni!</p>
                         </div>
                     </div>
                 </div>
@@ -3094,6 +3193,30 @@
             
             document.body.appendChild(modal);
             modal.style.display = 'flex';
+            
+            // Make modal non-dismissible
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+            
+            // Add pulsing animation to buttons
+            const completeBtn = document.getElementById('complete-challenge-btn');
+            const forceStopBtn = document.getElementById('force-stop-btn');
+            
+            if (completeBtn) {
+                completeBtn.style.animation = 'pulse 1s infinite';
+                completeBtn.style.fontSize = '1.1rem';
+                completeBtn.style.padding = '0.8rem 1.5rem';
+            }
+            
+            if (forceStopBtn) {
+                forceStopBtn.style.animation = 'pulse 1s infinite';
+                forceStopBtn.style.fontSize = '1.1rem';
+                forceStopBtn.style.padding = '0.8rem 1.5rem';
+            }
             
             // Load random challenge
             loadRandomChallenge(alarm.id);
@@ -3121,21 +3244,35 @@
         }
         
         function stopAlarm(alarmId) {
-            console.log('Stopping alarm:', alarmId);
+            console.log('🔇 Stopping alarm:', alarmId);
+            
+            // Stop continuous alarm sound
+            stopAlarmSound();
             
             // Remove from active alarms
             activeAlarms = activeAlarms.filter(id => id !== alarmId);
             
-            // Close modal
-            const modal = document.querySelector('.modal');
-            if (modal) {
-                modal.remove();
+            // Close all alarm modals
+            const alarmModal = document.getElementById('alarm-modal');
+            const challengeModal = document.getElementById('alarm-challenge-modal');
+            
+            if (alarmModal) {
+                alarmModal.remove();
+            }
+            if (challengeModal) {
+                challengeModal.remove();
             }
             
-            // Stop any playing sounds
-            // Note: Web Audio API sounds will stop automatically after duration
+            // Also close any other modals
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (modal.id.includes('alarm') || modal.innerHTML.includes('Sveglia')) {
+                    modal.remove();
+                }
+            });
             
-            showNotification('Sveglia spenta! 🎉', 'success');
+            showNotification('🔇 Sveglia spenta! 🎉', 'success');
+            console.log('✅ Alarm stopped successfully');
         }
 
         function displayAlarms(alarms) {
